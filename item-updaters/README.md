@@ -1,2 +1,2 @@
 # item-updaters
-This service is responsible for keeping the WFDF database up to date. This checks for changes to wfcd's warframe-items list and scrapes the Warframe community forums for patchlogs on an hourly interval.
+This service is responsible for keeping the WFDF database up to date. This checks for changes to wfcd's warframe-items list and scrapes the Warframe community forums for recent patchlogs on an hourly interval.

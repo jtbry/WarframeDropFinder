@@ -1,2 +1,2 @@
 # wfdf-client
-This service is responsible for serving the Warframe Drop Finder front-end. The front-end is a single page application made using [ReactJS](https://reactjs.org/) and [Material-UI](https://material-ui.com/).
+This service is responsible for serving the Warframe Drop Finder front-end. The front-end is a single page application made using [ReactJS](https://reactjs.org/) and [Material-UI](https://material-ui.com/). In production, the app is served by NGINX and proxies to the back-end.
