@@ -1,0 +1,2 @@
+# item-api
+This service is responsible for running the back-end REST API that the [client](/client) app calls to. This API follows OpenAPI spec and is documented using Swagger. The Swagger documentation for this API will be available on the `/api/docs` endpoint of any running instance. This API uses the [ExpressJS](https://expressjs.com/) framework.

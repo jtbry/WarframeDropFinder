@@ -1,0 +1,4 @@
+extends: standard
+rules:
+  brace-style: off
+  valid-typeof: off
