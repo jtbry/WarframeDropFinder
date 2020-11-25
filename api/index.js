@@ -60,7 +60,7 @@ async function main () {
         .on('error', (err) => { throw err })
         .on('listening', () => { logger.info(`Worker ${process.pid} is ready.`) })
     } catch (err) {
-      logger.error(err)
+      logger.error(err.stack)
       process.exit(1)
     }
   }

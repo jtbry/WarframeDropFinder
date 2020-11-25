@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
       res.json(results)
     })
     .catch(error => {
-      logger.error(error)
+      logger.error(error.stack)
       res.status(500).json({ error: 'Internal Server Error Occured' })
     })
 })

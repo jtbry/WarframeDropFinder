@@ -36,11 +36,17 @@ router.post('/', (req, res) => {
   const db = req.app.get('db')
   db.collection('items').findOne({ uniqueName: req.body.itemUniqueName }, { projection: { _id: 0 } })
     .then(item => {
-      if (item) res.json(item)
+      if (item) {
+        if (item.patchlogs) {
+          item.patchlogLength = item.patchlogs.length
+          delete item.patchlogs
+        }
+        res.json(item)
+      }
       else res.status(404).json({ error: 'Item not found' })
     })
     .catch(error => {
-      logger.error(error)
+      logger.error(error.stack)
       res.status(500).json({ error: 'Internal Server Error Occured' })
     })
 })
