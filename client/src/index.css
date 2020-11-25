@@ -1,6 +1,14 @@
+h1, h2, h3, h4 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.smallText {
+  font-family: 'M PLUS 1p', sans-serif;
+}
+
 body {
   background-color: #f7f7f5;
-  font-family: 'M PLUS 1p', sans-serif;
+  font-family: 'Roboto', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

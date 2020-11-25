@@ -18,12 +18,14 @@ const useStyles = makeStyles((theme) => ({
 export default function Navbar(props) {
   const classes = useStyles();
   // todo: branding / navigation buttons
+  // todo: fix overflow without hiding search results
+  // currently: scroll bar appears when we don't need one
   return (
     <>
       <div className={classes.root}>
         <ItemSearchBar isNavbar />
       </div>
-      <div style={{paddingTop: '4rem'}}>
+      <div style={{paddingTop: '4rem', paddingBottom: '1rem'}}>
         {props.children}
       </div>
     </>

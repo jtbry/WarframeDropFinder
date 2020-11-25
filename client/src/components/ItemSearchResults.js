@@ -9,6 +9,8 @@ const resultsStyle = {
   borderTop: '1px solid #c4c4c4', 
   borderRadius: '0px 0px 3px 3px',
   width: '70%',
+  position: 'relative',
+  zIndex: '99'
 }
 const itemAvatarStyle = {
   width: '3.5rem',

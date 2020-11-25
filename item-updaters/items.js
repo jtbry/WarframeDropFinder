@@ -17,11 +17,14 @@ class Items {
     // todo: item cleaning. For now we will store the entire object as given from warframe-items but
     //   in the future we should probably split items up to help save space and bandwidth
     //   for example: checking for common components like Orokin Cells
-
-    // if there is a way to upsert multiple items in one query that could be used
-    // to trade less queries for more memory usage
-    // since we are not able to upsert multiple items at once we should optimize
-    // for memory usage by only processing one object at a time (stream-json)
+    // todo: store drop locations seperately, currently there is a lot of duplicates.
+    //    Will also make it easier to search them
+    // todo: possibly store components seperately as well
+    //    Will allow for components to easily show up in search results
+    //    Will also make individual component pages easier
+    // todo: store patchlog data seperately
+    //    patchlogs array can be stored seperately with their item's
+    //    uniqueName attached so they can be fetched later
     return new Promise((resolve, reject) => {
       const updateObject = { added: 0, changed: 0, unchanged: 0, removed: 0 }
       const itemStream = new Writable({
@@ -29,16 +32,13 @@ class Items {
           if (value) {
             const existingItem = itemMap.get(value.uniqueName)
             if (!existingItem) {
-              // Add new item
-              // Upsert instead of insert will ensure no duplicates are added
-              // uniqueName field should be indexed in mongodb for performance increase
-              // when an item is not added, and filtering by indexed field, insert vs upsert performance should be similar
               await db.collection('items').updateOne({ uniqueName: value.uniqueName }, { $set: value }, { upsert: true })
               updateObject.added += 1
             } else {
               // Update existing item
               if (!isEqual(existingItem, value)) {
                 // todo: don't consider wikiaThumbnail as a change, these change/add often and it's misleading
+                // todo: add lastUpdated field and store incoming update hash to be displayed on the site
                 await db.collection('items').updateOne({ uniqueName: value.uniqueName }, { $set: value }, { upsert: true })
                 updateObject.changed += 1
               } else updateObject.unchanged += 1
