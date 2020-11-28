@@ -10,6 +10,9 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 // todo: branding / customization
 // Change public/manifest.json and favicos / logos
 // Create and implement a color scheme. For now it is white/grey monochrome
+// todo: make actual css classes out of commonly used styles
+// turn commonly used styles like sectionNameStyles into actual
+// css classes so they are easier to use and change in the future
 const muiTheme = createMuiTheme({
   palette: {
     primary: {

@@ -41,6 +41,9 @@ router.post('/', (req, res) => {
   const db = req.app.get('db')
 
   // Build MongoDB Query
+  // todo: allow for components to appear in search results
+  // Not sure how to return ONLY the matching parent object
+  // i.e only the component, not the whole item
   const searchQuery = Object.assign({
     name: new RegExp(req.body.itemName, 'i')
   }, req.body.itemFilters || {})
@@ -49,6 +52,7 @@ router.post('/', (req, res) => {
     uniqueName: 1,
     name: 1,
     type: 1,
+    category: 1,
     imageName: 1,
     tradable: 1,
     vaulted: 1

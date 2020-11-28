@@ -78,8 +78,8 @@ class Patchlogs {
     await db.collection('updates').insertOne({
       hash: incomingHash,
       type: 'Patchlogs',
-      started: startedDate.toISOString(),
-      ended: finishedDate.toISOString(),
+      started: startedDate,
+      ended: finishedDate,
       added: updateResult.added,
       changed: updateResult.changed,
       unchanged: updateResult.unchanged

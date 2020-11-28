@@ -4,9 +4,13 @@ import ItemLoading from './ItemLoading'
 import Navbar from '../../components/NavbarPage'
 import { default as wfdfApi } from '../../apis/wfdf'
 import Container from '@material-ui/core/Container'
-import WarframeContent from './WarframeContent'
+import PowersuitsItem from './PowersuitsItem'
 
 class Item extends React.Component {
+  // todo: some sort of client sided caching
+  // warframe market implements a form of client caching
+  // that doesn't fetch from the API on every page reload
+  // maybe we can do the same for items specifically, not market data
   constructor(props) {
     super(props)
     this.itemUniqueName = '/' + props.match.params[0]
@@ -38,15 +42,17 @@ class Item extends React.Component {
     } else if(this.state.data) {
       // todo: Item Category Components
       // Mods: Mods
-      // Arcanes: Arcanes
-      // DropLocation: Node, Relics
-      // Weapons: Primary, Secondary, Melee
-      // Companions: Sentinels, Pets, Archwings, ArchMelee
-      // Generic: Misc, Glyphs, Skins, Gear, Fish, Quests, Resources, Sigil
+      // Node: Nodes
+      // Melee: Arch-Melee, Melee
+      // Weapon: Primary, Secondary
+      // Misc: Arcanes, Misc, Skins
+      // Companions: Pets, Sentinels
+      // Generic: Fish, Gear, Glyphs, Quests, Relics, Resources, Sigils
       let element = undefined
-      if(this.state.data.category === 'Warframes') {
+      const category = this.state.data.category
+      if(category === 'Warframes' || category === 'Archwing') {
         element = (
-          <WarframeContent item={this.state.data} />
+          <PowersuitsItem item={this.state.data} />
         )
       } else {
         element = (

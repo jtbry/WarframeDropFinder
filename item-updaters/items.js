@@ -122,7 +122,7 @@ class Items {
       this.removeItemContentsFile()
       return false
     } else {
-      const existingItems = await db.collection('items').find({}, { projection: { _id: 0 } }).toArray()
+      const existingItems = await db.collection('items').find({}, { projection: { _id: 0, marketData: 0, 'components.marketData': 0 } }).toArray()
       const itemMap = new Map(existingItems.map(item => [item.uniqueName, item]))
       const updateResult = await this.updateItems(db, itemMap)
       this.removeItemContentsFile()
@@ -130,8 +130,8 @@ class Items {
       await db.collection('updates').insertOne({
         hash: incomingHash,
         type: 'Items',
-        started: startedDate.toISOString(),
-        ended: finishedDate.toISOString(),
+        started: startedDate,
+        ended: finishedDate,
         added: updateResult.added,
         changed: updateResult.changed,
         unchanged: updateResult.unchanged

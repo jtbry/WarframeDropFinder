@@ -8,7 +8,7 @@ const mongoDbUrl = process.env.mongoConnectionUrl || 'mongodb://localhost:27017'
 const app = express()
 const logger = require('./helpers/logger')
 
-// todo: caching with redis
+// todo: caching with redis, maybe with nginx
 // todo: set up unit testing
 async function main () {
   if (cluster.isMaster && process.env.NODE_ENV === 'production') {

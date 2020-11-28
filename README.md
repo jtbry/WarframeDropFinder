@@ -18,7 +18,7 @@ To watch the output of the service you're developing you can use the `docker-com
 - [NexusHub](https://github.com/nexus-devs/NexusHub) for inspiration.
 - [WFCD Warframe Items](https://github.com/WFCD/warframe-items) for warframe items list.
 - [WFCD Patchlogs](https://github.com/WFCD/warframe-patchlogs) for inspiration.
-- [Warframe Market](https://warframe.market/) for real time item platinum prices. (WIP)
+- [Warframe Market](https://warframe.market/) for item platinum prices.
 - [Digital Extremes / Warframe](https://www.warframe.com/landing) for all warframe assets.
 
 <br />

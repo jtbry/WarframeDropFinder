@@ -39,7 +39,7 @@ export default function ItemSearchResults(props) {
                     <div style={{display: 'inline-block'}} >
                       <span style={{display: 'block', fontWeight: '500', fontSize: '1.1rem', marginLeft: '1rem'}}>{item.name}</span>
                       <span style={{display: 'block', marginLeft: '1rem'}}>
-                        <Chip size="small" color="primary" label={item.type} />
+                        <Chip size="small" color="primary" label={item.category} />
                         {item.tradable && <Chip style={{marginLeft: '.5rem'}} size="small" color="primary" label="Tradable" /> }
                         {item.vaulted && <Chip style={{marginLeft: '.5rem'}} size="small" color="primary" label="Vaulted" /> }
                       </span>
