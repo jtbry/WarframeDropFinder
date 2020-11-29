@@ -17,3 +17,29 @@ a {
   color: #00259c;
   text-decoration: none;
 }
+
+.itemSectionName {
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.secondarySectionName {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.itemDetailsHolder {
+  padding-left: .5rem;
+  padding-right: .5rem;
+  padding-bottom: .1rem;
+  padding-top: .1rem;
+  margin-top: .5rem;
+}
+
+.pageContentCard {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}

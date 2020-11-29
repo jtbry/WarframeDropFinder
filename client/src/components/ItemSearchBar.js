@@ -47,6 +47,9 @@ class ItemSearchBar extends React.Component {
 
   render() {
     // todo: filters menu / dropdown
+    // todo: filters will only be displayed on a 'Detailed Search'
+    // page where more components are displayed and paginated
+    // this will serve similarly to an 'item list' rather than search
     const styling = {}
     if(this.props.isNavbar) styling.backgroundColor = '#f2f2f2'
     if(this.state.data) {

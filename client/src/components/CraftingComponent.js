@@ -6,29 +6,17 @@ import CardContent from '@material-ui/core/CardContent'
 import ItemPricing from './ItemPricing'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
-const sectionNameStyles = {
-  fontSize: '1.3rem',
-  fontWeight: '700',
-  textTransform: 'uppercase',
-  fontFamily: '\'Montserrat\', sans-serif'
-}
-
-// todo: link to component page to show full drop location list
-// todo: if marketData field exists but is undefined then there was
-// an error fetching marketData likely meaning that the item does not
-// exist on WFM
 class CraftingComponent extends React.Component {
   constructor(props) {
     super(props)
     this.component = props.component
     this.set = props.set
-    this.state = { componentPrice: undefined }
   }
 
   render() {
     const component = this.component
     return(
-      <Card style={{display: 'flex', marginTop: '1rem',}}>
+      <Card className='pageContentCard'>
         <img 
           src={`https://cdn.warframestat.us/img/${component.imageName}`} 
           alt={component.name}
@@ -37,7 +25,15 @@ class CraftingComponent extends React.Component {
           width='13%'
         />
         <CardContent>
-            <span style={sectionNameStyles}>{component.name} <Button style={{marginLeft: '3rem'}} href={`/component${component.uniqueName}`}>More Info <ArrowRightAltIcon/> </Button></span>
+            <span className='itemSectionName'>{component.name}
+            <Button 
+              disableElevation 
+              variant='contained' 
+              color='primary' 
+              endIcon={<ArrowRightAltIcon/>} 
+              style={{marginLeft: '3rem'}} 
+              href={`/component${component.uniqueName}`}>More Info</Button>
+            </span>
             <p>{component.description}</p>
             <p style={{alignItems: 'center', display: 'flex', flexWrap: 'wrap', textTransform: 'uppercase', fontSize: '1rem'}}>
               {component.drops ? 
@@ -54,4 +50,3 @@ class CraftingComponent extends React.Component {
 }
 
 export default CraftingComponent
-// todo: integrate market data with card

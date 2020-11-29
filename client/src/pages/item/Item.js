@@ -1,16 +1,14 @@
 import React from 'react'
 import ItemError from './ItemError'
 import ItemLoading from './ItemLoading'
-import Navbar from '../../components/NavbarPage'
-import { default as wfdfApi } from '../../apis/wfdf'
-import Container from '@material-ui/core/Container'
 import PowersuitsItem from './PowersuitsItem'
+import Navbar from '../../components/NavbarPage'
+import Container from '@material-ui/core/Container'
+import ItemHeader from '../../components/ItemHeader'
+import { default as wfdfApi } from '../../apis/wfdf'
+import CraftingComponent from '../../components/CraftingComponent'
 
 class Item extends React.Component {
-  // todo: some sort of client sided caching
-  // warframe market implements a form of client caching
-  // that doesn't fetch from the API on every page reload
-  // maybe we can do the same for items specifically, not market data
   constructor(props) {
     super(props)
     this.itemUniqueName = '/' + props.match.params[0]
@@ -50,19 +48,32 @@ class Item extends React.Component {
       // Generic: Fish, Gear, Glyphs, Quests, Relics, Resources, Sigils
       let element = undefined
       const category = this.state.data.category
-      if(category === 'Warframes' || category === 'Archwing') {
-        element = (
-          <PowersuitsItem item={this.state.data} />
-        )
-      } else {
-        element = (
-          <h1>{this.state.data.name}</h1>
-        )
+      switch (category) {
+        case 'Warframes':
+        case 'Archwing':
+          element = <PowersuitsItem item={this.state.data} />
+          break
+        default:
+          element = <></>
+          break
       }
+      const shouldRenderComponents = (this.state.data.components && this.state.data.components.length > 0)
       return(
         <Navbar>
           <Container maxWidth="lg">
+            <ItemHeader item={this.state.data} />
             {element}
+            {shouldRenderComponents &&
+              (<h2 className='itemSectionName' style={{textAlign: 'center', fontSize: '1.5rem'}}>Components</h2>)
+            }
+            {shouldRenderComponents && this.state.data.components.map(component => {
+              return(
+                <CraftingComponent
+                  key={component.uniqueName} 
+                  component={component} 
+                />
+              )
+            })}
           </Container>
         </Navbar>
       )

@@ -13,6 +13,9 @@ export default function PatchlogCard(props) {
   return (
     <Card style={{height: '100%'}} variant="elevation">
       <CardContent>
+      <Typography color="textSecondary" align="center" gutterBottom>
+          {props.data.type} Update
+        </Typography>
         <Typography color="textSecondary" align="center" gutterBottom>
           {daysAgoStr}
         </Typography>
@@ -33,14 +36,9 @@ export default function PatchlogCard(props) {
         </Typography>)
         }
         <Typography color="textSecondary" align="center" gutterBottom>
-          {props.data.type}
-        </Typography>
-        <Typography color="textSecondary" align="center" gutterBottom>
           Took {updateTime} minute{updateTime > 1 ? 's' : ''}
         </Typography>
       </CardContent>
     </Card>
   );
 }
-
-// todo: show time diff of started and ended (duration of update)
