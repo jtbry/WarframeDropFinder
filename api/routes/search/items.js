@@ -2,48 +2,39 @@ const express = require('express')
 const router = express.Router()
 const logger = require('../../helpers/logger')
 
-/**
- * @swagger
- * /search/items:
- *  post:
- *    tags:
- *      - Search
- *    summary: Search for an item by name
- *    consumes:
- *      - application/json
- *    requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              required:
- *                - itemName
- *              properties:
- *                itemName:
- *                  example: Ash
- *                  type: string
- *                limit:
- *                  type: number
- *                  example: 4
- *                itemFilters:
- *                  type: object
- *    responses:
- *      200:
- *        description: OK
- *      400:
- *        description: INVALID REQUEST
- *      500:
- *        description: ERROR
- */
+const docs = [
+  {
+    method: 'post',
+    summary: 'Search for an item by name',
+    reqBody: {
+      required: true,
+      requiredParams: ['itemName'],
+      schema: {
+        type: 'object',
+        properties: {
+          itemName: {
+            type: 'string',
+            example: 'Ash'
+          },
+          limit: {
+            type: 'number',
+            example: 4
+          },
+          itemFilters: {
+            type: 'object'
+          }
+        }
+      }
+    },
+    responses: [200, 400, 500]
+  }
+]
+
 router.post('/', (req, res) => {
   if (!req.body.itemName || typeof req.body.itemName !== 'string' || req.body.itemName.length < 3) return res.status(400).json({ error: 'Invalid itemName given' })
   const db = req.app.get('db')
 
   // Build MongoDB Query
-  // todo: allow for components to appear in search results
-  // Not sure how to return ONLY the matching parent object
-  // i.e only the component, not the whole item
   const searchQuery = Object.assign({
     name: new RegExp(req.body.itemName, 'i')
   }, req.body.itemFilters || {})
@@ -75,4 +66,7 @@ router.post('/', (req, res) => {
     })
 })
 
-module.exports = router
+module.exports = {
+  route: router,
+  spec: docs
+}

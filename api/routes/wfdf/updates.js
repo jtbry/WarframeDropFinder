@@ -1,21 +1,17 @@
 const express = require('express')
 const router = express.Router()
-const logger = require('../helpers/logger')
+const logger = require('../../helpers/logger')
 
-/**
- * @swagger
- * /updates:
- *  get:
- *    tags:
- *      - General
- *    summary: Get recent WFDF updates
- *    responses:
- *      200:
- *        description: OK
- *      500:
- *        description: ERROR
- */
+const docs = [
+  {
+    method: 'get',
+    summary: 'Get recent WFDF updates',
+    responses: [200, 500]
+  }
+]
+
 router.get('/', (req, res) => {
+  // todo: return only the most recent from each type of update
   const db = req.app.get('db')
   db.collection('updates').find({}, { projection: { _id: 0 } })
     .sort({ ended: -1 })
@@ -30,4 +26,7 @@ router.get('/', (req, res) => {
     })
 })
 
-module.exports = router
+module.exports = {
+  route: router,
+  spec: docs
+}

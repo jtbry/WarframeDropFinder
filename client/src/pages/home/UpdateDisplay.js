@@ -1,6 +1,6 @@
 import React from 'react'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import Grid from '@material-ui/core/Grid'
+import Loading from '../../components/Loading'
 import { default as wfdfApi } from '../../apis/wfdf'
 import UpdateCard from '../../components/UpdateCard'
 
@@ -24,7 +24,7 @@ class UpdateDisplay extends React.Component {
   render() {
     if(this.state.loading) {
       return(
-        <CircularProgress color="primary" />
+        <Loading />
       )
     }
     if(this.state.error) {

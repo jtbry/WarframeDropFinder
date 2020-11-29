@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import Home from './pages/home/Home'
 import Item from './pages/item/Item'
+import Component from './pages/component/Component'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 
 // todo: branding / customization
@@ -34,6 +35,7 @@ ReactDOM.render(
       <Router>
         <Switch>
           <Route path="/item/*" component={Item} />
+          <Route path="/component/*" component={Component} />
           <Route exact path="/" component={Home} />
           <Redirect to='/' />
         </Switch>

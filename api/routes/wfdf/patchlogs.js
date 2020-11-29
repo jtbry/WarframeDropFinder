@@ -1,20 +1,15 @@
 const express = require('express')
 const router = express.Router()
-const logger = require('../helpers/logger')
+const logger = require('../../helpers/logger')
 
-/**
- * @swagger
- * /patchlogs:
- *  get:
- *    tags:
- *      - General
- *    summary: Get recent Warframe patchlogs
- *    responses:
- *      200:
- *        description: OK
- *      500:
- *        description: ERROR
- */
+const docs = [
+  {
+    method: 'get',
+    summary: 'Get recent Warframe patchlogs',
+    responses: [200, 500]
+  }
+]
+
 router.get('/', (req, res) => {
   const db = req.app.get('db')
   db.collection('patchlogs').find({}, { projection: { _id: 0 } })
@@ -30,4 +25,7 @@ router.get('/', (req, res) => {
     })
 })
 
-module.exports = router
+module.exports = {
+  route: router,
+  spec: docs
+}

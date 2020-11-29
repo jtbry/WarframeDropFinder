@@ -1,39 +1,34 @@
 const express = require('express')
 const router = express.Router()
-const logger = require('../helpers/logger')
+const logger = require('../../helpers/logger')
 
-/**
- * @swagger
- * /item:
- *  post:
- *    tags:
- *      - General
- *    summary: Get an item by uniqueName
- *    consumes:
- *      - application/json
- *    requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              required:
- *                - itemUniqueName
- *              properties:
- *                itemUniqueName:
- *                  type: string
- *                  example: /Lotus/Powersuits/Ninja/Ninja
- *    responses:
- *      200:
- *        description: OK
- *      400:
- *        description: INVALID REQUEST
- *      500:
- *        description: ERROR
- */
+const docs = [
+  {
+    method: 'post',
+    summary: 'Get an item by uniqueName',
+    reqBody: {
+      required: true,
+      requiredParams: ['itemUniqueName'],
+      schema: {
+        type: 'object',
+        properties: {
+          itemUniqueName: {
+            type: 'string',
+            example: '/Lotus/Powersuits/Ninja/Ninja'
+          }
+        }
+      }
+    },
+    responses: [200, 400, 500]
+  }
+]
+
 router.post('/', (req, res) => {
   if (!req.body.itemUniqueName || typeof req.body.itemUniqueName !== 'string') return res.status(400).json({ error: 'Invalid itemUniqueName given' })
   const db = req.app.get('db')
+  // todo: only send drops array size for items/components like we do with patchlogs
+  // also remove patchlogs from component items
+  // save bandwith
   db.collection('items').findOne({ uniqueName: req.body.itemUniqueName }, { projection: { _id: 0 } })
     .then(item => {
       if (item) {
@@ -51,4 +46,7 @@ router.post('/', (req, res) => {
     })
 })
 
-module.exports = router
+module.exports = {
+  route: router,
+  spec: docs
+}

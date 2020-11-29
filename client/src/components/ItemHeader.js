@@ -33,13 +33,14 @@ export default function ItemHeader(props) {
               href={`${item.wikiaUrl}`} target="_blank">Wiki Page</Button>}
           </h1>
           <p>{item.description}</p>
-          <p className="smallText" style={{alignItems: 'center', display: 'flex', flexWrap: 'wrap', textTransform: 'uppercase', fontSize: '.7rem'}}>
+          {props.showSmallText && <p className="smallText" style={{alignItems: 'center', display: 'flex', flexWrap: 'wrap', textTransform: 'uppercase', fontSize: '.7rem'}}>
             {item.type}
             {item.aura && (<><ArrowRightOutlinedIcon/>{item.aura}</>)}
             {item.tradable && (<><ArrowRightOutlinedIcon/>{'tradable'}</>)}
             {item.vaulted && (<><ArrowRightOutlinedIcon/>{'vaulted'}</>)}
             {item.introduced && (<><ArrowRightOutlinedIcon/>{item.introduced}</>)}
-          </p>
+          </p>}
+          {props.children}
         </CardContent>
       </Card>
     </div>

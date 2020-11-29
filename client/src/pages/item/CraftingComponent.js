@@ -3,7 +3,7 @@ import Card from '@material-ui/core/Card'
 import Button from '@material-ui/core/Button'
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
 import CardContent from '@material-ui/core/CardContent'
-import ItemPricing from './ItemPricing'
+import ItemPricing from '../../components/ItemPricing'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 class CraftingComponent extends React.Component {

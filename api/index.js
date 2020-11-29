@@ -7,10 +7,21 @@ const mongoClient = require('mongodb').MongoClient
 const mongoDbUrl = process.env.mongoConnectionUrl || 'mongodb://localhost:27017'
 const app = express()
 const logger = require('./helpers/logger')
+const path = require('path')
+const swaggerGenerator = require('./helpers/swaggerGenerator')
 
 // todo: caching with redis, maybe with nginx
 // todo: set up unit testing
 async function main () {
+  if (cluster.isMaster) {
+    // Generate swagger docs, only needs to happen once so the master will handle it
+    try {
+      swaggerGenerator(path.join(__dirname, 'routes'))
+    } catch (error) {
+      logger.error(error.stack)
+    }
+  }
+
   if (cluster.isMaster && process.env.NODE_ENV === 'production') {
     // Fork the app into clusters from main.
     for (let i = 0; i < cpuCount; ++i) {

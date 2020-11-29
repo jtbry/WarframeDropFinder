@@ -1,12 +1,12 @@
 import React from 'react'
 import ItemError from './ItemError'
-import ItemLoading from './ItemLoading'
 import PowersuitsItem from './PowersuitsItem'
+import Loading from '../../components/Loading'
 import Navbar from '../../components/NavbarPage'
 import Container from '@material-ui/core/Container'
 import ItemHeader from '../../components/ItemHeader'
 import { default as wfdfApi } from '../../apis/wfdf'
-import CraftingComponent from '../../components/CraftingComponent'
+import CraftingComponent from './CraftingComponent'
 
 class Item extends React.Component {
   constructor(props) {
@@ -33,7 +33,13 @@ class Item extends React.Component {
   render() {
     if(this.state.loading) {
       return(
-        <ItemLoading />
+        <Navbar>
+          <Container maxWidth="lg">
+            <div style={{textAlign: 'center', marginTop: '3rem'}}>
+              <Loading />
+            </div>
+          </Container>
+        </Navbar>
       )
     } else if(this.state.error || !this.state.data) {
       return(<ItemError />)
@@ -61,7 +67,7 @@ class Item extends React.Component {
       return(
         <Navbar>
           <Container maxWidth="lg">
-            <ItemHeader item={this.state.data} />
+            <ItemHeader item={this.state.data} showSmallText />
             {element}
             {shouldRenderComponents &&
               (<h2 className='itemSectionName' style={{textAlign: 'center', fontSize: '1.5rem'}}>Components</h2>)

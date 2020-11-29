@@ -6,11 +6,11 @@ class WFDF {
   }
 
   getRecentPatchlogs() {
-    return Axios.get(`/api/${this.apiVersion}/patchlogs`)
+    return Axios.get(`/api/${this.apiVersion}/wfdf/patchlogs`)
   }
 
   getRecentUpdates() {
-    return Axios.get(`/api/${this.apiVersion}/updates`)
+    return Axios.get(`/api/${this.apiVersion}/wfdf/updates`)
   }
 
   searchForItem(itemName, filters) {
@@ -23,7 +23,11 @@ class WFDF {
   }
 
   getItem(uniqueItemName) {
-    return Axios.post(`/api/${this.apiVersion}/item`, {itemUniqueName: uniqueItemName})
+    return Axios.post(`/api/${this.apiVersion}/items`, {itemUniqueName: uniqueItemName})
+  }
+
+  getComponent(uniqueComponentName) {
+    return Axios.post(`/api/${this.apiVersion}/items/component`, {componentUniqueName: uniqueComponentName})
   }
 }
 
