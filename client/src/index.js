@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import Home from './pages/home/Home'
 import Item from './pages/item/Item'
+import Drops from './pages/drops/Drops'
 import Component from './pages/component/Component'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 
@@ -36,6 +37,7 @@ ReactDOM.render(
         <Switch>
           <Route path="/item/*" component={Item} />
           <Route path="/component/*" component={Component} />
+          <Route path="/drops/*" component={Drops} />
           <Route exact path="/" component={Home} />
           <Redirect to='/' />
         </Switch>

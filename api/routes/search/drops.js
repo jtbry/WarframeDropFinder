@@ -27,9 +27,7 @@ const docs = [
 ]
 
 router.post('/', (req, res) => {
-  // todo: goal of this endpoint is to find all drops.location || components.drops.location similar to given locationName
-  //  need to be unique occurences and need to fetch the locationName only, not the whole item
-  if (!req.body.locationName || typeof req.body.locationName !== 'string' || req.body.locationName.length < 3) return res.status(400).json({ error: 'Invalid locationName given' })
+  // todo: search for drop locations similar to given name, same as item search
   res.json({ error: 'wip' })
 })
 

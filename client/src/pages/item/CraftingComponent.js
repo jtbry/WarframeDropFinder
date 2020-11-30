@@ -35,14 +35,14 @@ class CraftingComponent extends React.Component {
               href={`/component${component.uniqueName}`}>More Info</Button>
             </span>
             <p>{component.description}</p>
-            <p style={{alignItems: 'center', display: 'flex', flexWrap: 'wrap', textTransform: 'uppercase', fontSize: '1rem'}}>
+            <div style={{alignItems: 'center', display: 'flex', flexWrap: 'wrap', textTransform: 'uppercase', fontSize: '1rem'}}>
               {component.drops ? 
-                (<a href={`/drops${component.uniqueName}`}>Drops from {component.drops.length} locations</a>)
+                (<a href={`/drops${component.uniqueName}?isComponent=true`}>Drops from {component.drops.length} locations</a>)
                 : (<>Drops Unknown</>)
               }
               <FiberManualRecordIcon style={{fontSize: '.5rem', marginLeft: '1rem', marginRight: '1rem'}} />
               <ItemPricing item={component} seperator={<FiberManualRecordIcon style={{fontSize: '.5rem', marginLeft: '1rem', marginRight: '1rem'}} />} />
-            </p>
+            </div>
         </CardContent>
       </Card>
     )

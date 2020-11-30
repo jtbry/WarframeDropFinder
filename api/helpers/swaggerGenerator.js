@@ -29,6 +29,7 @@ function getSpecFromRoute (path, tags) {
       else docSpec.consumes = 'application/json'
       if (doc.reqBody) {
         // Route's request body
+        // todo: use request body to generate the parameters field as well
         docSpec.requestBody = {}
         if (doc.reqBody.required) docSpec.requestBody.required = true
         if (doc.reqBody.schema) {

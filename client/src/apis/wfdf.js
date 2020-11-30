@@ -1,6 +1,9 @@
 import Axios from 'axios'
 
 class WFDF {
+  // todo: jsdoc for these exports
+  // todo: make all these requests into promises that return the data
+  // object so we don't have to get the data in the react component
   constructor() {
     this.apiVersion = 'v1'
   }
@@ -28,6 +31,10 @@ class WFDF {
 
   getComponent(uniqueComponentName) {
     return Axios.post(`/api/${this.apiVersion}/items/component`, {componentUniqueName: uniqueComponentName})
+  }
+
+  getItemDrops(uniqueItemName, isComponent) {
+    return Axios.post(`/api/${this.apiVersion}/items/drops`, {itemUniqueName: uniqueItemName, isComponent: isComponent})
   }
 }
 

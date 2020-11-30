@@ -1,22 +1,25 @@
 import React from 'react'
-import ItemSet from './ItemSet'
 import wfdf from '../../apis/wfdf'
+import Button from '@material-ui/core/Button'
 import Loading from '../../components/Loading'
 import Navbar from '../../components/NavbarPage'
+import DropLocationTable from './DropLocationTable'
 import Container from '@material-ui/core/Container'
 import ItemHeader from '../../components/ItemHeader'
 import ItemPricing from '../../components/ItemPricing'
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 class Component extends React.Component {
   constructor(props) {
     super(props)
-    this.componentUniqueName = '/' + props.match.params[0]
+    this.itemUniqueName = '/' + props.match.params[0]
     this.state = {loading: true, error: false, data: undefined}
   }
 
   componentDidMount() {
-    wfdf.getComponent(this.componentUniqueName)
+    const isComponent = (this.props.location.search.includes('isComponent'))
+    wfdf.getItemDrops(this.itemUniqueName, isComponent)
       .then(response => {
         this.setState({loading: false, error: false, data: response.data})
       })
@@ -49,28 +52,25 @@ class Component extends React.Component {
       )
     }
     if(this.state.data) {
-      const component = this.state.data.component
+      const item = this.state.data.item
       return (
         <Navbar>
           <Container maxWidth="lg">
-            <ItemHeader item={component}>
-              <p style={{alignItems: 'center', display: 'flex', flexWrap: 'wrap', textTransform: 'uppercase', fontSize: '1rem'}}>
-                {component.dropLength ? 
-                  (<a href={`/drops${component.uniqueName}?isComponent=true`}>Drops from {component.dropLength} locations</a>)
-                  : (<>Drops Unknown</>)
-                }
-                <FiberManualRecordIcon style={{fontSize: '.5rem', marginLeft: '1rem', marginRight: '1rem'}} />
-                <ItemPricing item={component} seperator={<FiberManualRecordIcon style={{fontSize: '.5rem', marginLeft: '1rem', marginRight: '1rem'}} />} />
-              </p>
+            <ItemHeader item={item}>
+              <div style={{alignItems: 'center', display: 'flex', flexWrap: 'wrap', textTransform: 'uppercase', fontSize: '1rem'}}>
+                <ItemPricing item={item} seperator={<FiberManualRecordIcon style={{fontSize: '.5rem', marginLeft: '1rem', marginRight: '1rem'}} />} />
+                <Button style={{marginLeft: '1rem'}} disableElevation variant='contained' color='primary' endIcon={<ArrowRightAltIcon/>} 
+                href={`${this.state.data.isComponent ? '/component' : '/item'}${item.uniqueName}`}>
+                  More Info
+                </Button>
+              </div>
             </ItemHeader>
-            {this.state.data.sets && 
-              (<h2 className='itemSectionName' style={{textAlign: 'center', fontSize: '1.5rem'}}>Used for {this.state.data.sets.length} item{this.state.data.sets.length > 1 ? 's' : ''}</h2>)
+            {item.drops && 
+              (<h2 className='itemSectionName' style={{textAlign: 'center', fontSize: '1.5rem'}}>Drops from {item.drops.length} location{item.drops.length > 1 ? 's' : ''}</h2>)
             }
-            {this.state.data.sets && this.state.data.sets.map(set => {
-                return(
-                  <ItemSet key={set.uniqueName} set={set} />
-                )
-            })}
+            {item.drops && 
+              <DropLocationTable drops={item.drops} />
+            }
           </Container>
         </Navbar>  
       )

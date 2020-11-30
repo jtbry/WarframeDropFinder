@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
     db.collection('items').find(query, componentProjection).toArray()
   ])
     .then(results => {
-      if (!results[0] || !results[1]) {
+      if (!results[0] || !results[1] || !results[1][0]) {
         res.status(404).json({ error: 'Component or set not found' })
       } else {
         if (results[1][0].components[0].drops) {

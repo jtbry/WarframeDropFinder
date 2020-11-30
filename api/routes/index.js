@@ -10,7 +10,6 @@ router.use('/api/v1/wfdf', require('./wfdf'))
 // front-end will have seperate page to display endpoints
 // todo: crafting component endpoint
 // return components like Neurodes and list of items they can make
-router.use('/api/v1/dropLocation', require('./dropLocation').route)
 
 router.use('/api/docs', swaggerUi.serve)
 const swaggerDocument = require('../data/swagger.json')
