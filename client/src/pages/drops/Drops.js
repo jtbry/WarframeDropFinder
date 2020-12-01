@@ -10,7 +10,7 @@ import ItemPricing from '../../components/ItemPricing'
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
-class Component extends React.Component {
+class ItemDropsData extends React.Component {
   constructor(props) {
     super(props)
     this.itemUniqueName = '/' + props.match.params[0]
@@ -78,4 +78,4 @@ class Component extends React.Component {
   }
 }
 
-export default Component
+export default ItemDropsData

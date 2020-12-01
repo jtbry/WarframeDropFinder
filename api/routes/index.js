@@ -5,6 +5,7 @@ const swaggerUi = require('swagger-ui-express')
 router.use('/api/v1/search', require('./search'))
 router.use('/api/v1/items', require('./items'))
 router.use('/api/v1/wfdf', require('./wfdf'))
+router.use('/api/v1/drops', require('./drops'))
 // todo: component endpoint similar to item endpoint
 // return component and what set it belongs to.
 // front-end will have seperate page to display endpoints

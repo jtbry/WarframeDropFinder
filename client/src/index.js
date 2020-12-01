@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 import Home from './pages/home/Home'
 import Item from './pages/item/Item'
 import Drops from './pages/drops/Drops'
+import Location from './pages/location/Location'
 import Component from './pages/component/Component'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 
@@ -38,6 +39,7 @@ ReactDOM.render(
           <Route path="/item/*" component={Item} />
           <Route path="/component/*" component={Component} />
           <Route path="/drops/*" component={Drops} />
+          <Route path="/location/*" component={Location} />
           <Route exact path="/" component={Home} />
           <Redirect to='/' />
         </Switch>

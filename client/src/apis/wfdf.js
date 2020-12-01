@@ -34,7 +34,11 @@ class WFDF {
   }
 
   getItemDrops(uniqueItemName, isComponent) {
-    return Axios.post(`/api/${this.apiVersion}/items/drops`, {itemUniqueName: uniqueItemName, isComponent: isComponent})
+    return Axios.post(`/api/${this.apiVersion}/drops/item`, {itemUniqueName: uniqueItemName, isComponent: isComponent})
+  }
+
+  getDropLocation(locationName) {
+    return Axios.post(`/api/${this.apiVersion}/drops/location`, {locationName: locationName})
   }
 }
 
