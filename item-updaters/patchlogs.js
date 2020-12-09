@@ -5,6 +5,11 @@ const crypto = require('crypto')
 class Patchlogs {
   constructor () {
     this.updatesPageUrl = 'https://forums.warframe.com/forum/3-pc-update-notes/page/1'
+    this.requestOptions = {
+      headers: {
+        'User-Agent': 'Mozilla/5.0'
+      }
+    }
   }
 
   async updatePatchlogs (db, patchlogsJson) {
@@ -48,7 +53,7 @@ class Patchlogs {
   getUpdatePageData () {
     return new Promise((resolve, reject) => {
       let updatePageData = ''
-      https.get(this.updatesPageUrl, (response) => {
+      https.get(this.updatesPageUrl, this.requestOptions, (response) => {
         if (response.statusCode !== 200) throw new Error(`${response.statusCode}: ${response.statusMessage}`)
         response.on('data', (chunk) => {
           updatePageData += chunk
