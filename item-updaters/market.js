@@ -38,7 +38,7 @@ class Market {
     itemEndpoint += itemSetName.toLowerCase().split(' ').join('_')
     if (itemType !== '') itemEndpoint += ('_' + itemType.toLowerCase().split(' ').join('_'))
     if (returnItemEndpoint) return itemEndpoint
-    else return `https://api.warframe.market/v1/items/${itemEndpoint}/statistics`
+    else return encodeURI(`https://api.warframe.market/v1/items/${itemEndpoint}/statistics`)
   }
 
   makeWfmApiRequest (url) {

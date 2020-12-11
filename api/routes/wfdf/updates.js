@@ -11,11 +11,22 @@ const docs = [
 ]
 
 router.get('/', (req, res) => {
-  // todo: return only the most recent from each type of update
   const db = req.app.get('db')
-  db.collection('updates').find({}, { projection: { _id: 0 } })
-    .sort({ ended: -1 })
-    .limit(4)
+  db.collection('updates').aggregate(
+    [
+      { $sort: { ended: 1 } },
+      {
+        $group:
+          {
+            _id: '$type',
+            type: { $last: '$type' },
+            started: { $last: '$started' },
+            ended: { $last: '$ended' },
+            update: { $last: '$update' }
+          }
+      }
+    ]
+  )
     .toArray()
     .then(results => {
       res.json(results)

@@ -51,13 +51,11 @@ async function main () {
     if (scrapeResults) {
       console.log(scrapeResults)
       await db.collection('updates').insertOne({
+        type: 'Market',
         hash: crypto.createHash('md5').update(Date.now().toString()).digest('hex'),
-        items: scrapeResults.items,
-        components: scrapeResults.components,
-        unchanged: scrapeResults.unchanged,
         started: scrapeStarted,
         ended: scrapeEnded,
-        type: 'Market'
+        update: scrapeResults
       })
     } else console.log('Market is up to date')
   } catch (err) {

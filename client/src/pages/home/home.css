@@ -1,0 +1,21 @@
+.pageSection {
+  width: 100vw;
+  background-color: var(--background-secondary);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  height: 100%;
+  background-image: url('../../assets/bg_pattern.png');
+  box-shadow: 
+        inset 0px 11px 8px -10px var(--text-secondary),
+        inset 0px -11px 8px -10px var(--text-secondary);
+}
+
+.majorPageHeader {
+  font-size: 3rem;
+}
+
+.homePageHeader {
+  text-align: center;
+  align-content: center;
+  padding-bottom: 2rem;
+}
