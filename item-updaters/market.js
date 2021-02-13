@@ -158,6 +158,7 @@ class Market {
     }, itemProjection).toArray()
 
     if (itemsMissingData.length > 0) {
+      console.log(`Updating market data for ${itemsMissingData.length} items`)
       for (const item of itemsMissingData) {
         let itemChanged = false
         if (item.tradable) {

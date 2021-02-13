@@ -25,7 +25,6 @@ export default function SearchResults(props) {
       </Paper>
     )
   } else {
-    // todo: make images look better somehow
     return(
       <Paper variant='outlined' style={resultContainerStyles} className='decorativeBottomBorder'>
         <Grid container spacing={1} direction="column">

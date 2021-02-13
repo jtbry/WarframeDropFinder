@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import Home from './pages/home'
+import Item from './pages/item'
 
 const muiTheme = createMuiTheme({
   palette: {
@@ -31,6 +32,7 @@ ReactDOM.render(
       <Router>
         <Switch>
           <Route exact path='/' component={Home} />
+          <Route path='/items/*' component={Item} />
           <Redirect to='/' />
         </Switch>
       </Router>

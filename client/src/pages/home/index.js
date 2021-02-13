@@ -21,9 +21,7 @@ export default function Home(props) {
         <Container maxWidth="lg">
           <h2>Recent Warframe Patchlogs</h2>
           <WarframePatchlogs />
-
           <br /> <br />
-
           <h2>Recent DropFinder Updates</h2>
           <WfdfUpdates />
         </Container>
