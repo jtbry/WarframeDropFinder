@@ -28,7 +28,13 @@ body {
 .smallText {
   font-family: 'Open Sans', sans-serif;
   font-weight: 400;
-  font-size: .4rem;
+  font-size: .7rem;
+}
+
+.minorText {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
 }
 
 svg {

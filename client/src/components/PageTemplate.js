@@ -1,12 +1,23 @@
 import React from 'react'
 import Container from '@material-ui/core/Container'
+import ItemSearchBar from './ItemSearchBar'
+
 
 export default function PageTemplate(props) {
-  // todo: navbar etc, page template items present on all pages
-  // except the home page
+  const styles = {
+    width: '100%',
+    textAlign: 'center',
+    paddingTop: '1rem'
+  }
+
   return(
+    <>
+    <div style={styles}>
+      <ItemSearchBar isNavbar />
+    </div>
     <Container maxWidth='lg'>
       {props.children}
     </Container>
+    </>
   )
 }

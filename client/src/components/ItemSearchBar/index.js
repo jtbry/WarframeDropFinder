@@ -56,7 +56,7 @@ class ItemSearchBar extends React.Component {
       background: 'white',
       borderRadius: (this.state.searchResultsObject ? '3px 3px 0px 0px' : '3px'),
       padding: '0 30px',
-      width: '40%'
+      width: (this.props.isNavbar ? '60%' : '40%')
     }
     // todo: figure out nicer looking way to indicate active filters
     // todo: resubmit existing search if filters change

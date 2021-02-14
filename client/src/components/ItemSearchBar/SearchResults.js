@@ -25,12 +25,18 @@ export default function SearchResults(props) {
       </Paper>
     )
   } else {
+    // todo: fix item navigation.
+    // for now clicking on an item result will refresh the page
+    // but ideally we can achieve this with updating state somewhere
+    // without refreshing the page if you navigate to a new item from another item
+    // it will not update the data displayed on the page.
+    // the browser fwd and back buttons are not working for the same reason
     return(
       <Paper variant='outlined' style={resultContainerStyles} className='decorativeBottomBorder'>
         <Grid container spacing={1} direction="column">
           {results.map((item, idx) => {
             return(
-              <Grid style={{padding: '1rem'}} item key={idx} className='clickableBackground' onClick={() => {history.push(`items${item.uniqueName}`)}}>
+              <Grid style={{padding: '1rem'}} item key={idx} className='clickableBackground' onClick={() => {history.push(`/items${item.uniqueName}`); window.location.reload()}}>
                 <div style={{display: 'flex', textAlign: 'left', alignContent: 'left'}}>
                 <div style={{display: 'flex'}}>
                     <Avatar style={{width: '3.5rem',height: '3.5rem'}} variant="rounded" src={`https://cdn.warframestat.us/img/${item.imageName}`} alt={item.name} />
