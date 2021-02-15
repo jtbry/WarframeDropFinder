@@ -1,5 +1,6 @@
 import React from 'react'
-import { Card, CardContent, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
+import CollapsingCard from '../../components/CollapsingCard'
 
 function fixFieldName(field) {
   let name = field.split(/(?=[A-Z])/).join(" ")
@@ -19,7 +20,7 @@ function fixFieldValue(name, value) {
 function getItemStats(item) {
   let unwantedFields = ["uniqueName", "wikiaUrl", "wikiaThumbnail", "description",
     "type", "productCategory", "imageName", "conclave",
-    "category", "aura", "components", "color",
+    "category", "aura", "components", "color", "patchlogLength",
     "marketData", "tradable", "name", "vaulted", 
     "introduced", "abilities", "passiveDescription", "polarities"]
   let stats = []
@@ -40,9 +41,11 @@ export default function ItemStats(props) {
   const item = props.item
   const stats = getItemStats(item)
   return(
-    <Card style={{display: 'flex', padding: '0px', marginTop: '1rem'}}>
-      <CardContent style={{paddingTop: '0px'}}>
-        <h1>Item Stats</h1>
+    <CollapsingCard 
+      cardStyle={{display: 'flex', padding: '0px', marginTop: '1rem'}}
+      contentStyle={{paddingTop: '0px'}}
+      title={<h1>Item Stats</h1>}
+      content={
         <Grid container spacing={4}>
         {stats.map(stat => {
           if(stat.value) {
@@ -54,7 +57,7 @@ export default function ItemStats(props) {
           } else return null
         })}
         </Grid>
-      </CardContent>
-    </Card>
+      }
+    />
   )
 }

@@ -1,11 +1,12 @@
 import Axios from 'axios';
 import React from 'react'
-import { Redirect } from 'react-router-dom';
 import PageTemplate from '../../components/PageTemplate'
-import Loading from '../../components/Loading'
 import ItemHeader from './ItemHeader'
 import ItemAbilities from './ItemAbilities'
 import ItemStats from './ItemStats'
+import ComponentTable from '../../components/ComponentTable'
+import DropTable from '../../components/DropTable'
+import LoadingPage from '../../components/LoadingPage'
 
 class Item extends React.Component {
   constructor(props) {
@@ -27,30 +28,7 @@ class Item extends React.Component {
   }
 
   render() {
-    if(this.state.error) {
-      return(
-        <PageTemplate>
-          <h3>Error Finding Item</h3>
-        </PageTemplate>
-      )
-    } else if(this.state.loading) {
-      return(
-        <PageTemplate>
-          <div style={{marginTop: '5rem'}}>
-            <Loading />
-          </div>
-        </PageTemplate>
-      )
-    } else if(this.state.data) {
-      // todo: some form of dynamic rendering
-      // not all items have the same fields but certain categories share fields
-      // with other categories. need to either dynamically read these fields in one page
-      // or make a new page for all categories.
-
-      // Page layout:
-      // Item Header - Basic item name, description, picture etc. All items have this
-      // Item Stats - Any stat related data, health, damage, etc. Should be dynamic
-      // Item Drops or Components - Display drop locations or components, items will have one or the other.
+    if(this.state.data) {
       return(
         <PageTemplate>
           <ItemHeader item={this.state.data} />
@@ -58,12 +36,12 @@ class Item extends React.Component {
             abilities={this.state.data.abilities} 
             passive={this.state.data.passiveDescription} />}
           <ItemStats item={this.state.data} />
+          {this.state.data.components && <ComponentTable components={this.state.data.components} />}
+          {this.state.data.drops && <DropTable drops={this.state.data.drops} />}
         </PageTemplate>
       )
     } else {
-      return(
-        <Redirect to='/' />
-      )
+      return(<LoadingPage loading={this.state.loading} error={this.state.error} />)
     }
   }
 }

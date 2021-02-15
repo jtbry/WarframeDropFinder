@@ -1,12 +1,14 @@
 import React from 'react'
-import { Card, CardContent, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
+import CollapsingCard from '../../components/CollapsingCard';
 
 export default function ItemAbilities(props) {
   const abilities = props.abilities;
   return(
-    <Card style={{display: 'flex', padding: '0px', marginTop: '1rem'}}>
-      <CardContent style={{paddingTop: '0px'}}>
-        <h1>Item Abilities</h1>
+    <CollapsingCard cardStyle={{display: 'flex', padding: '0px', marginTop: '1rem'}}
+      contentStyle={{paddingTop: '0px'}}
+      title={<h1>Item Abilities</h1>}
+      content={
         <Grid container spacing={2}>
         {props.passive && <Grid item key={'passive'}>
           <h4>Passive</h4>
@@ -21,7 +23,7 @@ export default function ItemAbilities(props) {
           )
         })}
         </Grid>
-      </CardContent>
-    </Card>
+      }
+    />
   )
 }

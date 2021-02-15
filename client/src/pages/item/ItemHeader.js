@@ -54,6 +54,7 @@ export default function ItemHeader(props) {
             {item.tradable && (<><ArrowRightOutlinedIcon/>{'tradable'}</>)}
             {item.vaulted && (<><ArrowRightOutlinedIcon/>{'vaulted'}</>)}
             {item.introduced && (<><ArrowRightOutlinedIcon/>{item.introduced}</>)}
+            {item.patchlogLength && <><ArrowRightOutlinedIcon/>Patchlogs</>}
           </p>
         </CardContent>
       </Card>
