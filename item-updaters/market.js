@@ -48,13 +48,13 @@ class Market {
         switch (response.statusCode) {
           case 302:
             response.destroy()
-            resolve(undefined)
+            resolve({ unavailable: true })
             break
           case 503:
           case 429:
             response.destroy()
-            resolve(undefined)
             this.reqShouldWait = true
+            resolve(this.makeWfmApiUrl(url))
             break
           case 200:
             response.on('data', chunk => {
@@ -62,7 +62,12 @@ class Market {
             })
             response.on('end', () => {
               const dataJson = JSON.parse(data)
-              resolve(dataJson.payload.statistics_live['48hours'])
+              if (dataJson.payload.statistics_live['48hours'].length >= 2) {
+                resolve(dataJson.payload.statistics_live['48hours'])
+              }
+              else if (dataJson.payload.statistics_live['90days'].length >= 2) {
+                resolve(dataJson.payload.statistics_live['90days'])
+              } else resolve(undefined)
             })
             break
           default:
@@ -93,30 +98,47 @@ class Market {
     try {
       let wfmMarketData = await this.makeWfmApiRequest(itemMarketUrl)
       if (wfmMarketData) {
-        // todo: consider mod levels in pricing
-        wfmMarketData = wfmMarketData.filter(o => o.order_type === 'sell')
-        if (wfmMarketData.length <= 0) return undefined // No sell orders
-        const itemMarketData = {
-          name: itemMarketName,
-          volume: wfmMarketData[0].volume,
-          min: wfmMarketData[0].min_price,
-          max: wfmMarketData[0].max_price,
-          avg: wfmMarketData[0].avg_price,
-          lastUpdate: new Date()
+        if (wfmMarketData.unavailable) {
+          return {
+            unavailable: true,
+            lastUpdate: new Date()
+          }
         }
-        for (let i = 1; i < wfmMarketData.length; ++i) {
-          if (wfmMarketData[i].min_price < itemMarketData.min) itemMarketData.min = wfmMarketData[i].min_price
-          if (wfmMarketData[i].max_price > itemMarketData.max) itemMarketData.max = wfmMarketData[i].max_price
-          // todo: is this volume number reliable??? It is giving fairly high numbers.
-          itemMarketData.volume += wfmMarketData[i].volume
-          itemMarketData.avg += wfmMarketData[i].avg_price
+        else {
+          // todo: mod levels in pricing
+          const targetDate = new Date()
+          targetDate.setHours(targetDate.getHours() - 1, 0, 0, 0)
+          wfmMarketData = wfmMarketData.filter(data => new Date(data.datetime).getTime() === targetDate.getTime())
+          wfmMarketData = wfmMarketData.filter(data => {
+            if (data.mod_rank) return (data.mod_rank === 0)
+            else return true
+          })
+
+          const buyStats = wfmMarketData.find(data => data.order_type === 'buy')
+          const sellStats = wfmMarketData.find(data => data.order_type === 'sell')
+          if (!buyStats || !sellStats) return { wfmName: itemMarketName, lastUpdate: new Date() }
+          return {
+            wfmName: itemMarketName,
+            sell: {
+              volume: sellStats.volume,
+              min: sellStats.min_price,
+              max: sellStats.max_price,
+              avg: sellStats.avg_price
+            },
+            buy: {
+              volume: buyStats.volume,
+              min: buyStats.min_price,
+              max: buyStats.max_price,
+              avg: buyStats.avg_price
+            },
+            lastUpdate: new Date()
+          }
         }
-        itemMarketData.avg = Math.round(itemMarketData.avg / wfmMarketData.length)
-        return itemMarketData
       } else {
         return undefined
       }
     } catch (error) {
+      console.log(itemMarketName)
       console.log(error)
       this.reqErrors += 1
     }
@@ -162,17 +184,16 @@ class Market {
       for (const item of itemsMissingData) {
         let itemChanged = false
         if (item.tradable) {
-          if (item.marketData !== null || (item.marketData && item.marketData.lastUpdate <= requiredLastUpdate)) {
-            item.marketData = await this.getMarketDataForItem(item.name, (item.components ? 'set' : ''))
-            itemChanged = true
-            updateResult.items += 1
-          }
+          if (item.marketData && item.marketData.unavailable) continue
+          item.marketData = await this.getMarketDataForItem(item.name, (item.components ? 'set' : ''))
+          itemChanged = true
+          updateResult.items += 1
         }
 
         if (item.components) {
           for (const component of item.components) {
             if (component.tradable) {
-              if (component.marketData && !(component.marketData.lastUpdate <= requiredLastUpdate)) continue
+              if (component.marketData && component.marketData.unavailable) continue
               component.marketData = await this.getMarketDataForItem(item.name, component.name)
               itemChanged = true
               updateResult.components += 1
