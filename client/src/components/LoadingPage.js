@@ -6,7 +6,7 @@ export default function LoadingPage(props) {
   // todo: more advanced / nicer error page
   return(
     <PageTemplate>
-      {props.loading &&
+      {(props.loading && !props.error) &&
         <Loading />
       }
       {props.error && 

@@ -36,7 +36,7 @@ export default function SearchResults(props) {
         <Grid container spacing={1} direction="column">
           {results.map((item, idx) => {
             return(
-              <Grid style={{padding: '1rem'}} item key={idx} className='clickableBackground' onClick={() => {history.push(`/items${item.uniqueName}`); window.location.reload()}}>
+              <Grid style={{padding: '1rem'}} item key={idx} className='clickableBackground' onClick={() => {history.push(`/item${item.uniqueName}`); window.location.reload()}}>
                 <div style={{display: 'flex', textAlign: 'left', alignContent: 'left'}}>
                 <div style={{display: 'flex'}}>
                     <Avatar style={{width: '3.5rem',height: '3.5rem'}} variant="rounded" src={`https://cdn.warframestat.us/img/${item.imageName}`} alt={item.name} />

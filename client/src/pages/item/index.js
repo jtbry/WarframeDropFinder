@@ -7,6 +7,7 @@ import ItemStats from './ItemStats'
 import ComponentTable from '../../components/ComponentTable'
 import DropTable from '../../components/DropTable'
 import LoadingPage from '../../components/LoadingPage'
+import ItemMarketData from './ItemMarketData'
 
 class Item extends React.Component {
   constructor(props) {
@@ -19,11 +20,11 @@ class Item extends React.Component {
       .then(response => {
         if(response.status === 200) {
           this.setState({loading: false, data: response.data})
-        } else this.setState({error: true})
+        } else this.setState({loading: false, error: true})
       })
       .catch(error => {
         console.error(error)
-        this.setState({error: true})
+        this.setState({loading: false, error: true})
       })
   }
 
@@ -32,6 +33,7 @@ class Item extends React.Component {
       return(
         <PageTemplate>
           <ItemHeader item={this.state.data} />
+          {this.state.data.marketData && <ItemMarketData marketData={this.state.data.marketData}/>}
           {this.state.data.abilities && <ItemAbilities 
             abilities={this.state.data.abilities} 
             passive={this.state.data.passiveDescription} />}
