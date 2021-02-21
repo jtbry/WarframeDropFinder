@@ -16,6 +16,7 @@ function createImageHeader(cat, imgName, itemName) {
         />
       )
     case 'Glyphs':
+    case 'Component':
       return(
         <img
           src={`https://cdn.warframestat.us/img/${imgName}`} 
@@ -36,8 +37,16 @@ function createImageHeader(cat, imgName, itemName) {
   }
 }
 
+function createWikiaUrl(potentialWikiaUrl, name) {
+  if(potentialWikiaUrl) return potentialWikiaUrl
+  else {
+    return `https://warframe.fandom.com/wiki/${name.replaceAll(' ', '_')}`
+  }
+}
+
 export default function ItemHeader(props) {
   const item = props.item
+  if(props.isComponent) item.category = 'Component'
   return (
     <div>
       <div style={{textAlign: 'center'}}>
@@ -48,7 +57,7 @@ export default function ItemHeader(props) {
           <h1>{item.name}</h1>
           <p>{item.description}</p>
           <p className="minorText" style={{alignItems: 'center', display: 'flex', flexWrap: 'wrap', textTransform: 'uppercase'}}>
-            <a rel='noreferrer' href={`${item.wikiaUrl}`} target="_blank">Wiki Page</a>
+            <a rel='noreferrer' href={createWikiaUrl(item.wikiaUrl, item.name)} target="_blank">Wiki Page</a>
             {item.type && (<><ArrowRightOutlinedIcon/>{item.type}</>)}
             {item.aura && (<><ArrowRightOutlinedIcon/>{item.aura}</>)}
             {item.tradable && (<><ArrowRightOutlinedIcon/>{'tradable'}</>)}

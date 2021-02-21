@@ -37,9 +37,8 @@ router.post('/', (req, res) => {
       if (!results[0] || !results[1] || !results[1][0]) {
         res.status(404).json({ error: 'Component or set not found' })
       } else {
-        if (results[1][0].components[0].drops) {
-          results[1][0].components[0].dropLength = results[1][0].components[0].drops.length
-          delete results[1][0].components[0].drops
+        if (results[1][0].components[0].parents) {
+          delete results[1][0].components[0].parents
         }
         res.json({
           component: results[1][0].components[0],

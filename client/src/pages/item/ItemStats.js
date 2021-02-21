@@ -38,6 +38,7 @@ function getItemStats(item) {
 }
 
 export default function ItemStats(props) {
+  // todo make this more aesthetically pleasing
   const item = props.item
   const stats = getItemStats(item)
   return(

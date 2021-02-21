@@ -2,8 +2,8 @@ import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody
 import React from 'react'
 
 export default function DropTable(props) {
+  // todo: sort by drop chance, paginate
   const drops = props.drops
-  console.log(drops)
   return(
     <TableContainer component={Paper} style={{marginTop: '1rem'}}>
       <h1 style={{paddingLeft: '1rem'}}>Drop Locations</h1>

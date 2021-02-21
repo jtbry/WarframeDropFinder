@@ -1,31 +1,29 @@
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
 import React from 'react'
 
-export default function ComponentTable(props) {
-  // todo sort by amount, ducats price, plat price - paginate
-  const components = props.components
+export default function ItemSetTable(props) {
+  // todo sort by plat price, paginate
+  const sets = props.sets
   return(
     <TableContainer component={Paper} style={{marginTop: '1rem'}}>
-      <h1 style={{paddingLeft: '1rem'}}>Item Components</h1>
+      <h1 style={{paddingLeft: '1rem'}}>Sets for this Component</h1>
       <Table aria-label="Component Table">
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
-            <TableCell>Amount</TableCell>
             <TableCell>Ducats Price</TableCell>
             <TableCell>Plat Price</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {components.map((component,idx) => {
+          {sets.map((set,idx) => {
             return(
               <TableRow key={idx}>
                 <TableCell>
-                  <a href={`/component${component.uniqueName}`}>{component.name}</a>
+                  <a href={`/item${set.uniqueName}`}>{set.name}</a>
                 </TableCell>
-                <TableCell>{component.itemCount}</TableCell>
-                <TableCell>{(component.ducats ? component.ducats : 'N/A')}</TableCell>
-                <TableCell>{(component.marketData ? component.marketData.sell.avg : 'N/A')}</TableCell>
+                <TableCell>{(set.ducats ? set.ducats : 'N/A')}</TableCell>
+                <TableCell>{(set.marketData && !set.marketData.unavailable ? set.marketData.sell.avg : 'N/A')}</TableCell>
               </TableRow>
             )
           })}

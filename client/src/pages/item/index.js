@@ -33,7 +33,7 @@ class Item extends React.Component {
       return(
         <PageTemplate>
           <ItemHeader item={this.state.data} />
-          {this.state.data.marketData && <ItemMarketData marketData={this.state.data.marketData}/>}
+          {this.state.data.marketData && !this.state.data.marketData.unavailable && <ItemMarketData marketData={this.state.data.marketData}/>}
           {this.state.data.abilities && <ItemAbilities 
             abilities={this.state.data.abilities} 
             passive={this.state.data.passiveDescription} />}
