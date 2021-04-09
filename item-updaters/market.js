@@ -182,6 +182,8 @@ class Market {
     if (itemsMissingData.length > 0) {
       console.log(`Updating market data for ${itemsMissingData.length} items`)
       for (const item of itemsMissingData) {
+        // We don't want relic data and it's broken, skip for now.
+        if (item.type === 'Relic') continue
         let itemChanged = false
         if (item.tradable) {
           if (item.marketData && item.marketData.unavailable) continue
