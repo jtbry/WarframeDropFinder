@@ -23,7 +23,7 @@ export default function ItemSetTable(props) {
                   <a href={`/item${set.uniqueName}`}>{set.name}</a>
                 </TableCell>
                 <TableCell>{(set.ducats ? set.ducats : 'N/A')}</TableCell>
-                <TableCell>{(set.marketData && !set.marketData.unavailable ? set.marketData.sell.avg : 'N/A')}</TableCell>
+                <TableCell>{(set.marketData && (!set.marketData.unavailable && set.marketData.sell)? set.marketData.sell.avg : 'N/A')}</TableCell>
               </TableRow>
             )
           })}
