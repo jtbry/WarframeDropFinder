@@ -128,13 +128,11 @@ class Items {
       this.removeItemContentsFile()
       const finishedDate = new Date()
       await db.collection('updates').insertOne({
-        hash: incomingHash,
         type: 'Items',
+        hash: incomingHash,
         started: startedDate,
         ended: finishedDate,
-        added: updateResult.added,
-        changed: updateResult.changed,
-        unchanged: updateResult.unchanged
+        update: updateResult
       })
       return updateResult
     }

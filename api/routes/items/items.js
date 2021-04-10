@@ -24,20 +24,16 @@ const docs = [
 ]
 
 router.post('/', (req, res) => {
+  // todo: check to see if this item is a component of other items: for example
+  // orokin cells can be searched for, display the items they can be used to craft.
   if (!req.body.itemUniqueName || typeof req.body.itemUniqueName !== 'string') return res.status(400).json({ error: 'Invalid itemUniqueName given' })
   const db = req.app.get('db')
-  db.collection('items').findOne({ uniqueName: req.body.itemUniqueName }, { projection: { _id: 0 } })
+  db.collection('items').findOne({ uniqueName: req.body.itemUniqueName }, { projection: { _id: 0, 'components.drops': 0 } })
     .then(item => {
       if (item) {
         if (item.patchlogs) {
           item.patchlogLength = item.patchlogs.length
           delete item.patchlogs
-        }
-        if (item.drops) {
-          // todo: do the same for all components
-          // preferablly this will be done in the projection
-          item.dropsLength = item.drops.length
-          delete item.drops
         }
         res.json(item)
       }

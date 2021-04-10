@@ -13,17 +13,18 @@ class Patchlogs {
   }
 
   async updatePatchlogs (db, patchlogsJson) {
-    const updateObject = { added: 0, changed: 0, unchanged: 0, removed: 0 }
+    const updateObject = { majors: 0, hotfixes: 0, changed: 0 }
     for (const patchlog of patchlogsJson) {
       const existingPatchlog = await db.collection('patchlogs').findOne({ name: patchlog.name })
       if (existingPatchlog) {
         if (existingPatchlog.link !== patchlog.link) {
           await db.collection('patchlogs').updateOne({ _id: existingPatchlog._id }, { $set: { link: patchlog.link } })
           updateObject.changed += 1
-        } else updateObject.unchanged += 1
+        }
       } else {
         await db.collection('patchlogs').insertOne(patchlog)
-        updateObject.added += 1
+        if (patchlog.name.match(/Hotfix/i)) updateObject.hotfixes += 1
+        else updateObject.majors += 1
       }
     }
     return updateObject
@@ -81,13 +82,11 @@ class Patchlogs {
     const updateResult = await this.updatePatchlogs(db, updatePageJson)
     const finishedDate = new Date()
     await db.collection('updates').insertOne({
-      hash: incomingHash,
       type: 'Patchlogs',
+      hash: incomingHash,
       started: startedDate,
       ended: finishedDate,
-      added: updateResult.added,
-      changed: updateResult.changed,
-      unchanged: updateResult.unchanged
+      update: updateResult
     })
     return updateResult
   }

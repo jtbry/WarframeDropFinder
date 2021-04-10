@@ -1,32 +1,29 @@
+import './index.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
 import reportWebVitals from './reportWebVitals'
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
-import Home from './pages/home/Home'
-import Item from './pages/item/Item'
-import Drops from './pages/drops/Drops'
-import Location from './pages/location/Location'
-import Component from './pages/component/Component'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
+import Home from './pages/home'
+import Item from './pages/item'
+import ItemComponent from './pages/component'
+import Location from './pages/location'
 
-// todo: branding / customization
-// Change public/manifest.json and favicos / logos
-// Create and implement a color scheme. For now it is white/grey monochrome
 const muiTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#white'
+      main: '#5A4EA6'
     },
     text: {
-      primary: '#020204'
+      primary: '#120504',
+      secondary: '#787878'
     },
     secondary: {
-      main: '#BEBBB6'
+      main: '#3F3CA6'
     },
     background: {
-      default: 'white',
-      paper: 'white'
+      default: '#F2F2F2',
+      paper: '#FCFCFC'
     }
   }
 });
@@ -36,11 +33,10 @@ ReactDOM.render(
     <ThemeProvider theme={muiTheme}>
       <Router>
         <Switch>
-          <Route path="/item/*" component={Item} />
-          <Route path="/component/*" component={Component} />
-          <Route path="/drops/*" component={Drops} />
-          <Route path="/location/*" component={Location} />
-          <Route exact path="/" component={Home} />
+          <Route exact path='/' component={Home} />
+          <Route path='/item/*' component={Item} />
+          <Route path='/component/*' component={ItemComponent} />
+          <Route path='/location/*' component={Location} />
           <Redirect to='/' />
         </Switch>
       </Router>
