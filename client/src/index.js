@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 import Home from './pages/home'
 import Item from './pages/item'
 import ItemComponent from './pages/component'
+import Location from './pages/location'
 
 const muiTheme = createMuiTheme({
   palette: {
@@ -35,6 +36,7 @@ ReactDOM.render(
           <Route exact path='/' component={Home} />
           <Route path='/item/*' component={Item} />
           <Route path='/component/*' component={ItemComponent} />
+          <Route path='/location/*' component={Location} />
           <Redirect to='/' />
         </Switch>
       </Router>

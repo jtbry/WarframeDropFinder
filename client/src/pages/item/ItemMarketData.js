@@ -16,17 +16,20 @@ export default function ItemMarketData(props) {
           <Grid container style={{marginTop: '-1rem'}}>
             <Grid item xs={6}>
               <h3>Sell Orders</h3>
-              <p>{marketData.sell.volume} orders</p>
+              {marketData.sell ? 
+              <><p>{marketData.sell.volume} orders</p>
               <p>{marketData.sell.min} min. price</p>
               <p>{marketData.sell.max} max price</p>
-              <p>{marketData.sell.avg} avg price</p>
+              <p>{marketData.sell.avg} avg price</p></> : <p>Issue with sell data</p>}
             </Grid>
+
             <Grid item xs={6}>
               <h3>Buy Orders</h3>
-              <p>{marketData.buy.volume} orders</p>
+              {marketData.buy ?
+              <><p>{marketData.buy.volume} orders</p>
               <p>{marketData.buy.min} min. price</p>
               <p>{marketData.buy.max} max price</p>
-              <p>{marketData.buy.avg} avg price</p>
+              <p>{marketData.buy.avg} avg price</p></> : <p>Issue with buy data</p>}
             </Grid>
           </Grid>
         </div>

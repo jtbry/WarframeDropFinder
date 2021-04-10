@@ -25,7 +25,7 @@ export default function ComponentTable(props) {
                 </TableCell>
                 <TableCell>{component.itemCount}</TableCell>
                 <TableCell>{(component.ducats ? component.ducats : 'N/A')}</TableCell>
-                <TableCell>{(component.marketData ? component.marketData.sell.avg : 'N/A')}</TableCell>
+                <TableCell>{(component?.marketData?.sell ? component.marketData.sell.avg : 'N/A')}</TableCell>
               </TableRow>
             )
           })}

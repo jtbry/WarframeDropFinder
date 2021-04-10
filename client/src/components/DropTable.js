@@ -21,7 +21,7 @@ export default function DropTable(props) {
                 <TableCell>
                   <a href={`/location/${encodeURI(drop.location)}`}>{drop.location}</a>
                 </TableCell>
-                <TableCell>{Math.round(drop.chance*100)}%</TableCell>
+                <TableCell>{drop.chance * 100 >= 1 ? Math.round(drop.chance * 100) : drop.chance * 100}%</TableCell>
               </TableRow>
             )
           })}
