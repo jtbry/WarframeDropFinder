@@ -1,0 +1,12 @@
+services:
+  mongodb:
+      container_name: wfdf-mongodb
+      image: mongo
+      restart: always
+      ports:
+        - "27017:27017"
+      volumes:
+        - wfdf:/data/db
+volumes:
+  wfdf:
+    external: false
