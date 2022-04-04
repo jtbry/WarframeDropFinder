@@ -4,34 +4,84 @@ using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
+// Build configation from json file and evironment variables
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", true, true)
     .AddEnvironmentVariables()
     .Build();
 
+// Create http client
 HttpClient httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Add("User-Agent", "wfdf-data-fetcher/1.0");
 
+// Create mongo client and updates services
 MongoClient dbClient = new MongoClient(configuration.GetConnectionString("MongoDb"));
 IMongoDatabase db = dbClient.GetDatabase("wfdf");
+UpdatesService updatesService = new UpdatesService(db);
 
-bool shouldForce = Environment.GetCommandLineArgs().Contains("--force");
+// Get current commit
 GithubCommit currentCommit;
-if (!shouldForce) {
+var response = await httpClient.GetAsync("https://api.github.com/repos/WFCD/warframe-items/commits/master");
+response.EnsureSuccessStatusCode();
+var jsonString = await response.Content.ReadAsStringAsync();
+currentCommit = JsonSerializer.Deserialize<GithubCommit>(jsonString) ?? throw new Exception("Failed to fetch commit data");
+
+// Check if we should update
+bool shouldForce = Environment.GetCommandLineArgs().Contains("--force");
+if (!shouldForce)
+{
     // Check if we've already updated for the most recent git commit
-    var response = await httpClient.GetAsync("https://api.github.com/repos/WFCD/warframe-items/commits/master");
-    response.EnsureSuccessStatusCode();
-
-    var jsonString = await response.Content.ReadAsStringAsync();
-    currentCommit = JsonSerializer.Deserialize<GithubCommit>(jsonString) ?? throw new Exception("Failed to fetch commit data");
-
-    UpdatesService updatesServices = new UpdatesService(db);
-    var existingCommit = await updatesServices.GetCommitBySha(currentCommit.sha);
-    if (existingCommit is not null) {
-        Console.WriteLine("Already updated to commit " + existingCommit.sha);
+    var existingCommit = await updatesService.GetUpdateByCommitSha(currentCommit.sha);
+    if (existingCommit is not null)
+    {
+        Console.WriteLine("Already updated to commit " + existingCommit.commitSha);
         return;
     }
-    await updatesServices.AddCommit(currentCommit);
-    System.Console.WriteLine("Added commit " + currentCommit.sha);
 }
+
+Console.WriteLine("Updating to sha " + currentCommit.sha);
+ItemsService itemsService = new ItemsService(db);
+List<string> whitelist = new List<string> { "Arcanes", "Melee", "Mods", "Primary", "Relics", "Secondary", "Sentinels", "SentinelWeapons", "Warframes" };
+
+// Fill update file list
+List<string> rawUrls = new List<string>();
+if (shouldForce)
+{
+    // Create rawUrls for all categories
+    foreach (var category in whitelist)
+    {
+        rawUrls.Add($"https://raw.githubusercontent.com/WFCD/warframe-items/{currentCommit.sha}/data/json/{category}.json");
+    }
+}
+else
+{
+    // Get raw urls for all updated categories in this commit
+    foreach (var file in currentCommit.files)
+    {
+        string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(file.fileName);
+        if (whitelist.Contains(fileNameWithoutExt))
+        {
+            rawUrls.Add(fileNameWithoutExt);
+        }
+    }
+}
+
+var startTime = DateTime.Now;
+foreach (var rawUrl in rawUrls)
+{
+    // TODO: handle item deletions
+    ItemFileParser parser = new ItemFileParser(rawUrl, httpClient);
+    var items = await parser.Parse();
+    await itemsService.UpsertManyItems(items);
+    System.Console.WriteLine("Updated " + items.Count + " items from " + rawUrl.Split('/').Last());
+}
+
+var endTime = DateTime.Now;
+var wfdfUpdate = new WfdfUpdate {
+    commitSha = currentCommit.sha,
+    isForced = shouldForce,
+    updatedCategories = rawUrls.Select(c => c.Split('/').Last().Split('.').First()),
+    secondsTaken = (int)(endTime - startTime).TotalSeconds
+};
+await updatesService.AddWfdfUpdate(wfdfUpdate);

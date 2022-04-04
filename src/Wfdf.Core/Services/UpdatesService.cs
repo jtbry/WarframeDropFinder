@@ -5,16 +5,16 @@ namespace Wfdf.Core.Services;
 
 public class UpdatesService
 {
-    private readonly IMongoCollection<GithubCommit> _updates;
+    private readonly IMongoCollection<WfdfUpdate> _updates;
 
     public UpdatesService(IMongoDatabase database)
     {
-        _updates = database.GetCollection<GithubCommit>("updates");
+        _updates = database.GetCollection<WfdfUpdate>("updates");
     }
 
-    public async Task<GithubCommit> GetCommitBySha(string sha)
-        => await _updates.Find(update => update.sha == sha).FirstOrDefaultAsync();
+    public async Task<WfdfUpdate> GetUpdateByCommitSha(string sha)
+        => await _updates.Find(update => update.commitSha == sha).FirstOrDefaultAsync();
 
-    public async Task AddCommit(GithubCommit commit)
-        => await _updates.InsertOneAsync(commit);
+    public async Task AddWfdfUpdate(WfdfUpdate update)
+        => await _updates.InsertOneAsync(update);
 }
