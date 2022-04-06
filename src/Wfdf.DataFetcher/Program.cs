@@ -42,8 +42,9 @@ if (!shouldForce)
 
 Console.WriteLine("Updating to sha " + currentCommit.sha);
 ItemsService itemsService = new ItemsService(db);
-List<string> whitelist = new List<string> { "Arcanes", "Melee", "Mods", "Primary", "Relics", "Secondary", "Sentinels", "SentinelWeapons", "Warframes" };
+List<string> whitelist = new List<string> {"Arcanes", "Melee", "Mods", "Primary", "Relics", "Secondary", "Sentinels", "SentinelWeapons", "Warframes" };
 
+// TODO: handle il8n file
 // Fill update file list
 List<string> rawUrls = new List<string>();
 if (shouldForce)

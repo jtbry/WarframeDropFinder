@@ -1,12 +1,35 @@
+version: '3.4'
 services:
   mongodb:
-      container_name: wfdf-mongodb
+      container_name: mongodb
       image: mongo
       restart: always
       ports:
         - "27017:27017"
       volumes:
         - wfdf:/data/db
+  datafetcher:
+    container_name: datafetcher
+    image: datafetcher
+    depends_on:
+      - mongodb
+    build:
+      context: .
+      dockerfile: src/Wfdf.DataFetcher/Dockerfile
+    environment:
+      - ConnectionStrings__MongoDb=mongodb://mongodb:27017/    
+  ofelia:
+    image: mcuadros/ofelia:latest
+    container_name: datafetcher-scheduler
+    command: daemon --docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      ofelia.job-run.datafetcher.schedule: "@every hour"
+      ofelia.job-run.datafetcher.image: "datafetcher"
+      ofelia.job-run.datafetcher.environment: '["ConnectionStrings__MongoDb=mongodb://mongodb:27017/"]'
+      ofelia.job-run.datafetcher.network: "warframedropfinder_default"
+      ofelia.job-run.datafetcher.delete: true
 volumes:
   wfdf:
     external: false

@@ -1,5 +1,8 @@
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace Wfdf.Core.Models;
 
+[BsonIgnoreExtraElements]
 public class WfdfUpdate 
 {
     public string commitSha { get; set; } = "N/A";
