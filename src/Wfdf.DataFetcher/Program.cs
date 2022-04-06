@@ -21,14 +21,25 @@ IMongoDatabase db = dbClient.GetDatabase("wfdf");
 UpdatesService updatesService = new UpdatesService(db);
 
 // Get current commit
+bool shouldForce = Environment.GetCommandLineArgs().Contains("--force");
 GithubCommit currentCommit;
 var response = await httpClient.GetAsync("https://api.github.com/repos/WFCD/warframe-items/commits/master");
-response.EnsureSuccessStatusCode();
-var jsonString = await response.Content.ReadAsStringAsync();
-currentCommit = JsonSerializer.Deserialize<GithubCommit>(jsonString) ?? throw new Exception("Failed to fetch commit data");
+if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+{
+    System.Console.WriteLine("Rate limit hit, forcing currentCommit to master");
+    currentCommit = new GithubCommit {
+        sha = "master",
+    };
+    shouldForce = true;
+}
+else 
+{
+    response.EnsureSuccessStatusCode();
+    var jsonString = await response.Content.ReadAsStringAsync();
+    currentCommit = JsonSerializer.Deserialize<GithubCommit>(jsonString) ?? throw new Exception("Failed to fetch commit data");
+}
 
 // Check if we should update
-bool shouldForce = Environment.GetCommandLineArgs().Contains("--force");
 if (!shouldForce)
 {
     // Check if we've already updated for the most recent git commit
@@ -42,7 +53,7 @@ if (!shouldForce)
 
 Console.WriteLine("Updating to sha " + currentCommit.sha);
 ItemsService itemsService = new ItemsService(db);
-List<string> whitelist = new List<string> {"Arcanes", "Melee", "Mods", "Primary", "Relics", "Secondary", "Sentinels", "SentinelWeapons", "Warframes" };
+List<string> whitelist = new List<string> { "Arcanes", "Melee", "Mods", "Primary", "Relics", "Secondary", "Sentinels", "SentinelWeapons", "Warframes" };
 
 // TODO: handle il8n file
 // Fill update file list
@@ -79,7 +90,8 @@ foreach (var rawUrl in rawUrls)
 }
 
 var endTime = DateTime.Now;
-var wfdfUpdate = new WfdfUpdate {
+var wfdfUpdate = new WfdfUpdate
+{
     commitSha = currentCommit.sha,
     isForced = shouldForce,
     updatedCategories = rawUrls.Select(c => c.Split('/').Last().Split('.').First()),

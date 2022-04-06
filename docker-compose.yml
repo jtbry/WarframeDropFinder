@@ -25,7 +25,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
-      ofelia.job-run.datafetcher.schedule: "@every hour"
+      ofelia.job-run.datafetcher.schedule: "@hourly"
       ofelia.job-run.datafetcher.image: "datafetcher"
       ofelia.job-run.datafetcher.environment: '["ConnectionStrings__MongoDb=mongodb://mongodb:27017/"]'
       ofelia.job-run.datafetcher.network: "warframedropfinder_default"
