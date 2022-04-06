@@ -16,7 +16,11 @@ public class ItemFileParser
         var response = await _client.GetAsync(_fileRawUrl);
         response.EnsureSuccessStatusCode();
         var responseString = await response.Content.ReadAsStringAsync();
-        var items = JsonSerializer.Deserialize<List<Item>>(responseString) ?? new List<Item>();
+        var deserializeOptions = new JsonSerializerOptions
+        {
+            Converters = { new ItemJsonConverter() }
+        };
+        var items = JsonSerializer.Deserialize<List<Item>>(responseString, deserializeOptions) ?? new List<Item>();
         return items;
     }
 }

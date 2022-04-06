@@ -13,16 +13,23 @@ public class ItemsService
         _items = database.GetCollection<Item>("items");
     }
 
+    private ReplaceOneModel<Item> CreateItemUpsertModel(Item item)
+    {
+        return new ReplaceOneModel<Item>(
+                Builders<Item>.Filter.Eq(s => s.uniqueName, item.uniqueName),
+                item
+            )
+        { IsUpsert = true };
+    }
+
     public async Task UpsertManyItems(List<Item> items)
     {
         var updates = new List<WriteModel<Item>>();
         foreach (var item in items)
         {
-            var upsertOne = new ReplaceOneModel<Item>(
-                Builders<Item>.Filter.Eq(s => s.uniqueName, item.uniqueName),
-                item
-            ) { IsUpsert = true };
-            updates.Add(upsertOne);
+            // TODO: clean up item here, try to fill empty fields
+            // seperate components, etc
+            updates.Add(CreateItemUpsertModel(item));
         }
         await _items.BulkWriteAsync(updates);
     }
