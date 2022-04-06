@@ -74,7 +74,7 @@ else
         string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(file.fileName);
         if (whitelist.Contains(fileNameWithoutExt))
         {
-            rawUrls.Add(fileNameWithoutExt);
+            rawUrls.Add($"https://raw.githubusercontent.com/WFCD/warframe-items/{currentCommit.sha}/data/json/{fileNameWithoutExt}.json");
         }
     }
 }
