@@ -53,7 +53,7 @@ if (!shouldForce)
 
 Console.WriteLine("Updating to sha " + currentCommit.sha);
 ItemsService itemsService = new ItemsService(db);
-List<string> whitelist = new List<string> { "Arcanes", "Melee", "Mods", "Primary", "Relics", "Secondary", "Sentinels", "SentinelWeapons", "Warframes" };
+List<string> whitelist = new List<string> { "Melee", "Mods", "Primary", "Relics", "Secondary", "Sentinels", "SentinelWeapons", "Warframes" };
 
 // TODO: handle il8n file
 // Fill update file list
@@ -80,12 +80,20 @@ else
 }
 
 var startTime = DateTime.Now;
+List<WfdfCategoryUpdateResult> categoryResults = new List<WfdfCategoryUpdateResult>();
 foreach (var rawUrl in rawUrls)
 {
     // TODO: handle item deletions
     ItemFileParser parser = new ItemFileParser(rawUrl, httpClient);
     var items = await parser.Parse();
-    await itemsService.UpsertManyItems(items);
+    var result = await itemsService.UpsertManyItems(items);
+    categoryResults.Add(new WfdfCategoryUpdateResult
+    {
+        category = rawUrl.Split('/').Last().Split('.').First(),
+        itemsModified = result.ModifiedCount,
+        itemsInserted = result.InsertedCount,
+        itemsDeleted = result.DeletedCount,
+    });
     System.Console.WriteLine("Updated " + items.Count + " items from " + rawUrl.Split('/').Last());
 }
 
@@ -94,7 +102,7 @@ var wfdfUpdate = new WfdfUpdate
 {
     commitSha = currentCommit.sha,
     isForced = shouldForce,
-    updatedCategories = rawUrls.Select(c => c.Split('/').Last().Split('.').First()),
-    secondsTaken = (int)(endTime - startTime).TotalSeconds
+    updatedCategories = categoryResults,
+    secondsTaken = (int)(endTime - startTime).TotalSeconds,
 };
 await updatesService.AddWfdfUpdate(wfdfUpdate);

@@ -11,6 +11,7 @@ public class ItemsService
     public ItemsService(IMongoDatabase database)
     {
         _items = database.GetCollection<Item>("items");
+        _items.Indexes.CreateOne(new CreateIndexModel<Item>(Builders<Item>.IndexKeys.Ascending("uniqueName")));
     }
 
     private ReplaceOneModel<Item> CreateItemUpsertModel(Item item)
@@ -22,16 +23,14 @@ public class ItemsService
         { IsUpsert = true };
     }
 
-    public async Task UpsertManyItems(List<Item> items)
+    public async Task<BulkWriteResult> UpsertManyItems(List<Item> items)
     {
         var updates = new List<WriteModel<Item>>();
         foreach (var item in items)
         {
-            // TODO: clean up item here, try to fill empty fields
-            // seperate components, etc
             updates.Add(CreateItemUpsertModel(item));
         }
-        await _items.BulkWriteAsync(updates);
+        return await _items.BulkWriteAsync(updates);
     }
 
 }
