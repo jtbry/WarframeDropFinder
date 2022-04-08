@@ -12,4 +12,5 @@ public class Item
     public string wikiaUrl { get; set; } = string.Empty;
     public string imageName { get; set; } = string.Empty;
     public IEnumerable<Patchlog> patchlogs { get; set; } = new List<Patchlog>();
+    public IEnumerable<DropSource> drops { get; set; } = new List<DropSource>();
 }
