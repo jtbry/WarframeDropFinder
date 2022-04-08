@@ -13,4 +13,5 @@ public class Item
     public string imageName { get; set; } = string.Empty;
     public IEnumerable<Patchlog> patchlogs { get; set; } = new List<Patchlog>();
     public IEnumerable<DropSource> drops { get; set; } = new List<DropSource>();
+    public IEnumerable<Component> components { get; set; } = new List<Component>();
 }
