@@ -29,7 +29,6 @@ services:
       ofelia.job-run.datafetcher.image: "datafetcher"
       ofelia.job-run.datafetcher.environment: '["ConnectionStrings__MongoDb=mongodb://mongodb:27017/"]'
       ofelia.job-run.datafetcher.network: "warframedropfinder_default"
-      ofelia.job-run.datafetcher.delete: true
 volumes:
   wfdf:
     external: false
