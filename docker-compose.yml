@@ -8,21 +8,11 @@ services:
         - "27017:27017"
       volumes:
         - wfdf:/data/db
-  datafetcher:
-    container_name: datafetcher
-    image: datafetcher
-    depends_on:
-      - mongodb
-    build:
-      context: .
-      dockerfile: src/Wfdf.DataFetcher/Dockerfile
-    environment:
-      - ConnectionStrings__MongoDb=mongodb://mongodb:27017/    
   scheduler:
     image: jtbry/ofelia:latest
     container_name: scheduler
     depends_on:
-      - datafetcher
+      - mongodb
     command: daemon --config=/etc/ofelia/config.ini
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
