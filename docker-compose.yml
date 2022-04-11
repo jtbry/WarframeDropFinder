@@ -18,9 +18,11 @@ services:
       dockerfile: src/Wfdf.DataFetcher/Dockerfile
     environment:
       - ConnectionStrings__MongoDb=mongodb://mongodb:27017/    
-  ofelia:
-    image: mcuadros/ofelia:latest
-    container_name: datafetcher-scheduler
+  scheduler:
+    image: jtbry/ofelia:latest
+    container_name: scheduler
+    depends_on:
+      - datafetcher
     command: daemon --docker
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro

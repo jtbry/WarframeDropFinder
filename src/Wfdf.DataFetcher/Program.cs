@@ -58,28 +58,14 @@ List<string> whitelist = new List<string> { "Arcanes", "Melee", "Mods", "Primary
 // TODO: handle il8n file
 // Fill update file list
 List<string> rawUrls = new List<string>();
-if (shouldForce)
+// Create rawUrls for all categories
+foreach (var category in whitelist)
 {
-    // Create rawUrls for all categories
-    foreach (var category in whitelist)
-    {
-        rawUrls.Add($"https://raw.githubusercontent.com/WFCD/warframe-items/{currentCommit.sha}/data/json/{category}.json");
-    }
-}
-else
-{
-    // Get raw urls for all updated categories in this commit
-    foreach (var file in currentCommit.files)
-    {
-        string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(file.fileName);
-        if (whitelist.Contains(fileNameWithoutExt))
-        {
-            rawUrls.Add($"https://raw.githubusercontent.com/WFCD/warframe-items/{currentCommit.sha}/data/json/{fileNameWithoutExt}.json");
-        }
-    }
+    rawUrls.Add($"https://raw.githubusercontent.com/WFCD/warframe-items/{currentCommit.sha}/data/json/{category}.json");
 }
 
 var startTime = DateTime.Now;
+// TODO: fix category results, currently full inserts report a 0 and all items are marked as modified
 List<WfdfCategoryUpdateResult> categoryResults = new List<WfdfCategoryUpdateResult>();
 foreach (var rawUrl in rawUrls)
 {
