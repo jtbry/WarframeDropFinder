@@ -2,7 +2,7 @@ version: '3.4'
 services:
   mongodb:
       container_name: mongodb
-      image: mongo
+      image: mongo:latest
       restart: always
       ports:
         - "27017:27017"
@@ -23,14 +23,10 @@ services:
     container_name: scheduler
     depends_on:
       - datafetcher
-    command: daemon --docker
+    command: daemon --config=/etc/ofelia/config.ini
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    labels:
-      ofelia.job-run.datafetcher.schedule: "@hourly"
-      ofelia.job-run.datafetcher.image: "datafetcher"
-      ofelia.job-run.datafetcher.environment: '["ConnectionStrings__MongoDb=mongodb://mongodb:27017/"]'
-      ofelia.job-run.datafetcher.network: "warframedropfinder_default"
+      - ./ofelia.ini:/etc/ofelia/config.ini
 volumes:
   wfdf:
     external: false
