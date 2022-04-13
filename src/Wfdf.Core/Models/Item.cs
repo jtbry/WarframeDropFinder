@@ -1,7 +1,8 @@
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace Wfdf.Core.Models;
 
-
-
+[BsonIgnoreExtraElements]
 public class Item
 {
     public string uniqueName { get; set; } = string.Empty;

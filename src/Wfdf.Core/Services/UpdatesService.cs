@@ -7,7 +7,7 @@ public class UpdatesService
 {
     private readonly IMongoCollection<WfdfUpdate> _updates;
 
-    public UpdatesService(IMongoDatabase database)
+    public UpdatesService(WfdfDatabase database)
     {
         _updates = database.GetCollection<WfdfUpdate>("updates");
     }

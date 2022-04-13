@@ -1,4 +1,5 @@
-﻿using Wfdf.Core.Models;
+﻿using Wfdf.Core;
+using Wfdf.Core.Models;
 using Wfdf.Core.Services;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
@@ -16,9 +17,8 @@ HttpClient httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Add("User-Agent", "wfdf-data-fetcher/1.0");
 
 // Create mongo client and updates services
-MongoClient dbClient = new MongoClient(configuration.GetConnectionString("MongoDb"));
-IMongoDatabase db = dbClient.GetDatabase("wfdf");
-UpdatesService updatesService = new UpdatesService(db);
+WfdfDatabase dbClient = new WfdfDatabase(configuration.GetConnectionString("MongoDb"));
+UpdatesService updatesService = new UpdatesService(dbClient);
 
 // Get current commit
 bool shouldForce = Environment.GetCommandLineArgs().Contains("--force");
@@ -52,7 +52,7 @@ if (!shouldForce)
 }
 
 Console.WriteLine("Updating to sha " + currentCommit.sha);
-ItemsService itemsService = new ItemsService(db);
+ItemsService itemsService = new ItemsService(dbClient);
 List<string> whitelist = new List<string> { "Arcanes", "Melee", "Mods", "Primary", "Relics", "Secondary", "Sentinels", "SentinelWeapons", "Warframes" };
 
 // TODO: handle il8n file
