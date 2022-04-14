@@ -1,4 +1,3 @@
-using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Wfdf.Core.Models;
@@ -34,7 +33,14 @@ public class ItemsService
         return await _items.BulkWriteAsync(updates);
     }
 
-    public async Task<IEnumerable<Item>> SelectRandomItems(int count)
-        => await _items.AsQueryable().
-            Where(i => i.category != "Relics" && i.category != "Arcanes").Sample(count).ToListAsync();
+    public async Task<IEnumerable<PartialItem>> SelectRandomItems(int count)
+    {
+        // These are the most abundant and least interesting so we blacklist them
+        var categoryBlacklist = new List<string> { "Mods", "Arcanes", "Relics" };
+        var items =  await _items.AsQueryable()
+            .Where(i => !categoryBlacklist.Contains(i.category))
+            .Sample(count)
+            .ToListAsync();
+        return items.Select(i => (PartialItem)i);
+    }
 }
