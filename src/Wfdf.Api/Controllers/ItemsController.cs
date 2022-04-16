@@ -19,8 +19,8 @@ public class ItemsController : ControllerBase
 
     [HttpGet]
     [Route("GetRandomItems")]
-    public async Task<IEnumerable<PartialItem>> GetRandomItems()
-        => await _itemsService.SelectRandomItems(5);
+    public async Task<IEnumerable<PartialItem>> GetRandomItems(int count = 5)
+        => await _itemsService.SelectRandomItems(count);
     
     [HttpGet]
     [Route("GetItemByUniqueName")]
