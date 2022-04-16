@@ -27,10 +27,21 @@ services:
       dockerfile: ./src/Wfdf.Api/Dockerfile
     environment:
       - ConnectionStrings__MongoDb=mongodb://mongodb:27017/
-      - ReactAppDomain=localhost
+      - ReactAppDomain=http://localhost
     ports:
       - "5207:5207"
-
+  client:
+    container_name: client
+    image: client
+    depends_on:
+      - api
+    build:
+      context: ./src/client
+      dockerfile: Dockerfile
+      args:
+        - API_URL=http://localhost:5207
+    ports:
+      - "80:80"
 volumes:
   wfdf:
     external: false
