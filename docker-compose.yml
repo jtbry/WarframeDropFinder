@@ -17,6 +17,20 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./ofelia.ini:/etc/ofelia/config.ini
+  api:
+    container_name: web-api
+    image: web-api
+    depends_on:
+      - mongodb
+    build:
+      context: .
+      dockerfile: ./src/Wfdf.Api/Dockerfile
+    environment:
+      - ConnectionStrings__MongoDb=mongodb://mongodb:27017/
+      - ReactAppDomain=localhost
+    ports:
+      - "5207:5207"
+
 volumes:
   wfdf:
     external: false
