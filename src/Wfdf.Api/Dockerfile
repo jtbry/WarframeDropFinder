@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 5207
+EXPOSE 8080
 
 ENV ASPNETCORE_URLS=http://+:8080
 
