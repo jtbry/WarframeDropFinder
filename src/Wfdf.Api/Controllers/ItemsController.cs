@@ -21,4 +21,14 @@ public class ItemsController : ControllerBase
     [Route("GetRandomItems")]
     public async Task<IEnumerable<PartialItem>> GetRandomItems()
         => await _itemsService.SelectRandomItems(5);
+    
+    [HttpGet]
+    [Route("GetItemByUniqueName")]
+    public async Task<Item> GetItemByUniqueName(string uniqueName)
+        => await _itemsService.FindItemByUniqueName(uniqueName);
+
+    [HttpGet]
+    [Route("SearchItemByName")]
+    public async Task<IEnumerable<PartialItem>> SearchItemByName(string name)
+        => await _itemsService.SearchItemByName(name);
 }

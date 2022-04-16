@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Wfdf.Core.Models;
@@ -32,6 +33,16 @@ public class ItemsService
         }
         return await _items.BulkWriteAsync(updates);
     }
+
+    public async Task<IEnumerable<PartialItem>> SearchItemByName(string name)
+    {
+        var filter = Builders<Item>.Filter.Regex("name", new BsonRegularExpression(name));
+        var matches = await _items.Find(filter).ToListAsync();
+        return matches.Select(i => (PartialItem)i);
+    }
+
+    public async Task<Item> FindItemByUniqueName(string uniqueName)
+        => await _items.Find(i => i.uniqueName == uniqueName).FirstAsync();
 
     public async Task<IEnumerable<PartialItem>> SelectRandomItems(int count)
     {
