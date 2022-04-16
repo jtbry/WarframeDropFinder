@@ -23,8 +23,8 @@ services:
     depends_on:
       - mongodb
     build:
-      context: .
-      dockerfile: ./src/Wfdf.Api/Dockerfile
+      context: ./src/
+      dockerfile: ./Wfdf.Api/Dockerfile
     environment:
       - ConnectionStrings__MongoDb=mongodb://mongodb:27017/
       - ReactAppDomain=http://localhost

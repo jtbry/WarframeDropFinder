@@ -6,10 +6,11 @@ ENV ASPNETCORE_URLS=http://+:5207
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["src/Wfdf.Api/Wfdf.Api.csproj", "src/Wfdf.Api/"]
-RUN dotnet restore "src\Wfdf.Api\Wfdf.Api.csproj"
-COPY . .
-WORKDIR "/src/src/Wfdf.Api"
+COPY ["Wfdf.Api/Wfdf.Api.csproj", "Wfdf.Api/"]
+RUN dotnet restore "Wfdf.Api\Wfdf.Api.csproj"
+COPY ["./Wfdf.Api", "Wfdf.Api/"]
+COPY ["./Wfdf.Core", "Wfdf.Core/"]
+WORKDIR "/src/Wfdf.Api"
 RUN dotnet build "Wfdf.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish

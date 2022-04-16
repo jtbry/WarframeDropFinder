@@ -3,10 +3,10 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["src/Wfdf.DataFetcher/Wfdf.DataFetcher.csproj", "src/Wfdf.DataFetcher/"]
-RUN dotnet restore "src\Wfdf.DataFetcher\Wfdf.DataFetcher.csproj"
+COPY ["Wfdf.DataFetcher/Wfdf.DataFetcher.csproj", "Wfdf.DataFetcher/"]
+RUN dotnet restore "Wfdf.DataFetcher\Wfdf.DataFetcher.csproj"
 COPY . .
-WORKDIR "/src/src/Wfdf.DataFetcher"
+WORKDIR "/src/Wfdf.DataFetcher"
 RUN dotnet build "Wfdf.DataFetcher.csproj" -c Release -o /app/build
 
 FROM build AS publish
