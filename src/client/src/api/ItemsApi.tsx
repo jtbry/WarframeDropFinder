@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import PartialItem from "../models/PartialItem";
+import { levenshteinDist } from "./Utilities";
 
 namespace ItemsApi {
     async function get(endpoint: string, params: any): Promise<AxiosResponse> {
@@ -17,7 +18,16 @@ namespace ItemsApi {
             return [];
         }
         var response = await get("SearchItemByName", { name: name });
-        return response.data;
+
+        // Sort by levenshtein distance
+        const results =  response.data;
+        results.sort((a: PartialItem, b: PartialItem) => levenshteinDist(a.name, name) - levenshteinDist(b.name, name));
+
+        // Trim results
+        if (results.length > 6) {
+            results.splice(6, results.length - 6);
+        }            
+        return results;
     }
 }
 
