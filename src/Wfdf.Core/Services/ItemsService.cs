@@ -12,7 +12,12 @@ public class ItemsService
     public ItemsService(WfdfDatabase database)
     {
         _items = database.GetCollection<Item>("items");
-        _items.Indexes.CreateOne(new CreateIndexModel<Item>(Builders<Item>.IndexKeys.Ascending("uniqueName")));
+        _items.Indexes.CreateOne(
+            new CreateIndexModel<Item>(
+                Builders<Item>.IndexKeys.Ascending(item => item.uniqueName),
+                new CreateIndexOptions { Unique = true }
+            )
+        );
     }
 
     private ReplaceOneModel<Item> CreateItemUpsertModel(Item item)
@@ -48,7 +53,7 @@ public class ItemsService
     {
         // These are the most abundant and least interesting so we blacklist them
         var categoryBlacklist = new List<string> { "Mods", "Arcanes", "Relics" };
-        var items =  await _items.AsQueryable()
+        var items = await _items.AsQueryable()
             .Where(i => !categoryBlacklist.Contains(i.category))
             .Sample(count)
             .ToListAsync();
