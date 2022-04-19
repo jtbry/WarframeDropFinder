@@ -36,7 +36,7 @@ public class ItemsService
 
     public async Task<IEnumerable<PartialItem>> SearchItemByName(string name)
     {
-        var filter = Builders<Item>.Filter.Regex("name", new BsonRegularExpression(name));
+        var filter = Builders<Item>.Filter.Regex("name", new BsonRegularExpression(name, "i"));
         var matches = await _items.Find(filter).ToListAsync();
         return matches.Select(i => (PartialItem)i);
     }

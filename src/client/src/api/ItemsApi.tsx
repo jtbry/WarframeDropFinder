@@ -10,6 +10,15 @@ namespace ItemsApi {
         var response = await get("GetRandomItems", { count: count });
         return response.data;
     }
+
+    export async function SearchItemByName(name: string) : Promise<PartialItem[]> {
+        // Don't search for empty values
+        if (name === "") {
+            return [];
+        }
+        var response = await get("SearchItemByName", { name: name });
+        return response.data;
+    }
 }
 
 export default ItemsApi;
