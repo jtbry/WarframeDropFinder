@@ -18,6 +18,13 @@ public class ItemsService
                 new CreateIndexOptions { Unique = true }
             )
         );
+
+        _items.Indexes.CreateOne(
+            new CreateIndexModel<Item>(
+                Builders<Item>.IndexKeys.Text(item => item.name),
+                new CreateIndexOptions { Unique = false }
+            )
+        );
     }
 
     private ReplaceOneModel<Item> CreateItemUpsertModel(Item item)
