@@ -1,31 +1,56 @@
 import { useEffect, useState } from "react";
 import ItemsApi from "../api/ItemsApi";
-import SearchBar from "../components/SearchBar";
+import ItemSearchBar from "../components/ItemSearchBar";
+import LoadingWheel from "../components/LoadingWheel";
 import PartialItem from "../models/PartialItem";
 
+interface HomeState {
+  searchExample?: PartialItem;
+  error?: unknown;
+  loading: boolean;
+}
+
 function Home() {
-  const [searchExample, setSearchExample] = useState<PartialItem>();
+  const [state, setState] = useState<HomeState>({ loading: true });
 
   useEffect(() => {
     async function fetchRandomItem() {
-      const items: PartialItem[] = await ItemsApi.GetRandomItems(1);
-      setSearchExample(items[0]);
+      try {
+        const items: PartialItem[] = await ItemsApi.GetRandomItems(1);
+        setState({ searchExample: items[0], loading: false });
+      } catch (err: unknown) {
+        setState({ error: err, loading: false });
+      }
     }
 
     fetchRandomItem();
   }, []);
 
-  if (searchExample == null) {
-    return <div>Loading...</div>;
-  } else {
+  let searchPlaceholder = "Search for an item";
+  if (state.loading) {
     return (
-      <SearchBar
-        placeholderText={`Search an item eg. ${searchExample.name}`}
-        searchFunc={ItemsApi.SearchItemByName}
-        displayFunc={(result: PartialItem) => {
-          return <p>{result.name}</p>
-        }}
-      />
+      <div className="flex h-screen">
+        <div className="m-auto">
+          <LoadingWheel />
+        </div>
+      </div>
+    );
+  } else {
+    if (state.error) {
+      console.error(state.error);
+    } else if (state.searchExample) {
+      searchPlaceholder = `Search for an item, eg. ${state.searchExample.name}`;
+    }
+
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <div className="w-full p-2 md:p-6 md:w-1/2">
+          <ItemSearchBar
+            placeholder={searchPlaceholder}
+            searchSource={ItemsApi.SearchItemByName}
+          />
+        </div>
+      </div>
     );
   }
 }
