@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import PartialItem from "../models/PartialItem";
+import React, { useState } from 'react';
+import PartialItem from '../models/PartialItem';
 
 interface ItemSearchBarProps {
   placeholder: string;
@@ -16,15 +16,20 @@ function ItemSearchBar(props: ItemSearchBarProps) {
   const [state, setState] = useState<ItemSearchBarState>({});
 
   function executeSearch(itemName: string) {
-    if (typeof props.searchSource == "function") {
-      props.searchSource(itemName).then(results => {
-        setState({ searchResults: results });
-      }).catch(err => {
-        setState({ searchError: err });
-      });
+    if (typeof props.searchSource == 'function') {
+      props
+        .searchSource(itemName)
+        .then((results) => {
+          setState({ searchResults: results });
+        })
+        .catch((err) => {
+          setState({ searchError: err });
+        });
     } else {
-      const searchRegex = new RegExp(itemName, "i");
-      const results = props.searchSource.filter(i => i.name.match(searchRegex))
+      const searchRegex = new RegExp(itemName, 'i');
+      const results = props.searchSource.filter((i) =>
+        i.name.match(searchRegex)
+      );
       setState({ searchResults: results });
     }
   }
@@ -35,8 +40,8 @@ function ItemSearchBar(props: ItemSearchBarProps) {
       ...state,
       typingTimeout: setTimeout(() => {
         executeSearch(event.target.value);
-      }, 500)
-    })
+      }, 500),
+    });
   }
 
   return (
@@ -48,7 +53,8 @@ function ItemSearchBar(props: ItemSearchBarProps) {
         onChange={onInputChange}
       />
       {/* TODO: search results */}
-      {state.searchResults && state.searchResults.map(item => (<p>{item.name}</p>))}
+      {state.searchResults &&
+        state.searchResults.map((item) => <p>{item.name}</p>)}
     </div>
   );
 }

@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import ItemsApi from "../api/ItemsApi";
-import ItemSearchBar from "../components/ItemSearchBar";
-import LoadingWheel from "../components/LoadingWheel";
-import PartialItem from "../models/PartialItem";
+import { useEffect, useState } from 'react';
+import ItemsApi from '../api/ItemsApi';
+import ItemSearchBar from '../components/ItemSearchBar';
+import LoadingWheel from '../components/LoadingWheel';
+import PartialItem from '../models/PartialItem';
 
 interface HomeState {
   searchExample?: PartialItem;
@@ -26,7 +26,7 @@ function Home() {
     fetchRandomItem();
   }, []);
 
-  let searchPlaceholder = "Search for an item";
+  let searchPlaceholder = 'Search for an item';
   if (state.loading) {
     return (
       <div className="flex h-screen">
