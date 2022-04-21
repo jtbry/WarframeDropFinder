@@ -13,20 +13,19 @@ interface SearchBarState {
 }
 
 function SearchBar<T>(props: SearchBarProps<T>) {
+  const { placeholder, seamlessResults, searchFunc, resultsCallback } = props;
   const [state, setState] = useState<SearchBarState>({});
 
   function executeSearch(searchTerm: string) {
     // Don't search empty strings, just clear the results
-    if (searchTerm === '') props.resultsCallback(undefined);
-    else if (isAsyncFunction(props.searchFunc)) {
-      const asyncSearchFunc = props.searchFunc as (
+    if (searchTerm === '') resultsCallback(undefined);
+    else if (isAsyncFunction(searchFunc)) {
+      const asyncSearchFunc = searchFunc as (
         searchTerm: string
       ) => Promise<T[]>;
-      asyncSearchFunc(searchTerm)
-        .then(props.resultsCallback)
-        .catch(props.resultsCallback);
+      asyncSearchFunc(searchTerm).then(resultsCallback).catch(resultsCallback);
     } else {
-      props.resultsCallback(props.searchFunc(searchTerm));
+      resultsCallback(searchFunc(searchTerm));
     }
   }
 
@@ -45,11 +44,11 @@ function SearchBar<T>(props: SearchBarProps<T>) {
       <input
         type="text"
         className={`w-full border-primary-900 bg-primary-600 h-10 px-5 pr-16 text-lg focus:outline-none ${
-          props.seamlessResults
+          seamlessResults
             ? 'border-2 border-b-primary-700 rounded-t-md'
             : 'border-2 rounded-md'
         }`}
-        placeholder={props.placeholder}
+        placeholder={placeholder}
         onChange={onInputChange}
       />
     </div>

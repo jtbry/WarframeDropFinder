@@ -10,7 +10,7 @@ interface HomeState {
   loading: boolean;
 }
 
-function Home() {
+function HomePage() {
   const [state, setState] = useState<HomeState>({ loading: true });
 
   useEffect(() => {
@@ -52,4 +52,4 @@ function Home() {
   }
 }
 
-export default Home;
+export default HomePage;
