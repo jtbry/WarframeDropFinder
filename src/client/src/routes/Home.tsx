@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import ItemsApi from '../api/ItemsApi';
-import ItemSearchBar from '../components/ItemSearchBar';
+import ItemSearch from '../components/ItemSearch';
 import LoadingWheel from '../components/LoadingWheel';
 import PartialItem from '../models/PartialItem';
 
@@ -45,10 +45,7 @@ function Home() {
     return (
       <div className="flex flex-col items-center justify-center">
         <div className="w-full p-2 md:p-6 md:w-1/2">
-          <ItemSearchBar
-            placeholder={searchPlaceholder}
-            searchSource={ItemsApi.SearchItemByName}
-          />
+          <ItemSearch placeholder={searchPlaceholder} />
         </div>
       </div>
     );

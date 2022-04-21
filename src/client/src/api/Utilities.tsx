@@ -35,3 +35,12 @@ export function levenshteinDist(a: string, b: string): number {
 
   return matrix[b.length][a.length];
 }
+
+/**
+ * Check if a given function is async
+ * @param func Function to check
+ * @returns true of false whether the function is an async function
+ */
+export function isAsyncFunction(func: Function): boolean {
+  return func && func.constructor && func.constructor.name === 'AsyncFunction';
+}

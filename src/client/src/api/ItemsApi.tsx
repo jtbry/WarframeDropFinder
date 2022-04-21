@@ -13,10 +13,6 @@ namespace ItemsApi {
   }
 
   export async function SearchItemByName(name: string): Promise<PartialItem[]> {
-    // Don't search for empty values
-    if (name === '') {
-      return [];
-    }
     var response = await get('SearchItemByName', { name: name });
 
     // Sort by levenshtein distance
