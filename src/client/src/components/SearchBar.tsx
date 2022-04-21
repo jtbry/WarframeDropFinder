@@ -44,9 +44,9 @@ function SearchBar<T>(props: SearchBarProps<T>) {
     <div className="relative mx-auto">
       <input
         type="text"
-        className={`w-full border-slate-900 bg-slate-600 h-10 px-5 pr-16 text-lg focus:outline-none ${
+        className={`w-full border-primary-900 bg-primary-600 h-10 px-5 pr-16 text-lg focus:outline-none ${
           props.seamlessResults
-            ? 'border-2 border-b-slate-700 rounded-t-md'
+            ? 'border-2 border-b-primary-700 rounded-t-md'
             : 'border-2 rounded-md'
         }`}
         placeholder={props.placeholder}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ItemsApi from '../api/ItemsApi';
 import PartialItem from '../models/PartialItem';
+import ItemRowPreview from './ItemRowPreview';
 import SearchBar from './SearchBar';
 
 interface ItemSearchProps {
@@ -45,7 +46,7 @@ function ItemSearch(props: ItemSearchProps) {
         } else {
           // Render search results
           content = state.searchResults.map((item) => (
-            <p key={item.uniqueName}>{item.name}</p>
+            <ItemRowPreview item={item} key={item.uniqueName} />
           ));
         }
       }
@@ -54,7 +55,7 @@ function ItemSearch(props: ItemSearchProps) {
     // Wrap content in results container
     if (content) {
       return (
-        <div className="bg-slate-600 p-4 rounded-b-md border-slate-900 border-x-2 border-b-2 flex flex-col">
+        <div className="bg-primary-600 rounded-b-md border-primary-900 border-x-2 border-b-2 flex flex-col">
           {content}
         </div>
       );
