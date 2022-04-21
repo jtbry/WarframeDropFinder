@@ -1,3 +1,9 @@
+/**
+ * Compute the levenshtein distance between two strings.
+ * @param a The first value to compare.
+ * @param b The second value to compare.
+ * @returns The levenshtein distance between the two values.
+ */
 export function levenshteinDist(a: string, b: string): number {
   if (a.length === 0) return b.length;
   if (b.length === 0) return a.length;
