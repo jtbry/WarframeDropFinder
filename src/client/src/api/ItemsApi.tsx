@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import Item from '../models/Item';
 import PartialItem from '../models/PartialItem';
 import { levenshteinDist } from './Utilities';
 
@@ -43,6 +44,11 @@ namespace ItemsApi {
       results.splice(6, results.length - 6);
     }
     return results;
+  }
+
+  export async function GetItemByUniqueName(uniqueName: string): Promise<Item> {
+    var response = await get('GetItemByUniqueName', { uniqueName: uniqueName });
+    return response.data;
   }
 }
 
