@@ -27,12 +27,13 @@ var response = await httpClient.GetAsync("https://api.github.com/repos/WFCD/warf
 if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
 {
     System.Console.WriteLine("Rate limit hit, forcing currentCommit to master");
-    currentCommit = new GithubCommit {
+    currentCommit = new GithubCommit
+    {
         sha = "master",
     };
     shouldForce = true;
 }
-else 
+else
 {
     response.EnsureSuccessStatusCode();
     var jsonString = await response.Content.ReadAsStringAsync();

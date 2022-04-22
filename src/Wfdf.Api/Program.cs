@@ -1,3 +1,4 @@
+using StackExchange.Redis;
 using Wfdf.Core;
 using Wfdf.Core.Services;
 
@@ -10,8 +11,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<WfdfDatabase>(x => new WfdfDatabase(builder.Configuration.GetConnectionString("MongoDb")));
+builder.Services.AddSingleton<WfdfRedis>(x => new WfdfRedis(builder.Configuration.GetConnectionString("Redis")));
 builder.Services.AddTransient<ItemsService>();
-builder.Services.AddCors(options => 
+builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactApp", policy =>
     {
