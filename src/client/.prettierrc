@@ -3,5 +3,15 @@
     "semi": true,
     "trailingComma": "es5",
     "bracketSpacing": true,
-    "singleQuote": true
+    "singleQuote": true,
+    "overrides": [{
+        "files": "*.cs",
+        "options": {
+            "tabWidth": 4,
+            "semi": false,
+            "trailingComma": "none",
+            "bracketSpacing": false,
+            "singleQuote": false
+        }
+    }]
 }
