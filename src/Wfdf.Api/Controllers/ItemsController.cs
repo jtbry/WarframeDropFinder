@@ -21,11 +21,22 @@ public class ItemsController : ControllerBase
     [Route("GetRandomItems")]
     public async Task<IEnumerable<PartialItem>> GetRandomItems(int count = 5)
         => await _itemsService.SelectRandomItems(count);
-    
+
     [HttpGet]
     [Route("GetItemByUniqueName")]
-    public async Task<Item> GetItemByUniqueName(string uniqueName)
-        => await _itemsService.FindItemByUniqueName(uniqueName);
+    public async Task<ActionResult<Item>> GetItemByUniqueName(string uniqueName)
+    {
+        try
+        {
+            var item = await _itemsService.FindItemByUniqueName(uniqueName);
+            return Ok(item);
+        }
+        catch (InvalidOperationException)
+        {
+
+            return NotFound();
+        }
+    }
 
     [HttpGet]
     [Route("SearchItemByName")]
