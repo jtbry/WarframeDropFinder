@@ -5,6 +5,14 @@ interface ItemRowPreviewProps {
   item: PartialItem;
 }
 
+function ItemTag({ tag }: { tag: string }) {
+  return (
+    <span className="inline-block bg-secondary-200 rounded-full px-3 py-1 text-sm font-semibold text-secondary-700 mr-2">
+      {tag}
+    </span>
+  );
+}
+
 function ItemRowPreview(props: ItemRowPreviewProps) {
   const { item } = props;
   return (
@@ -18,7 +26,7 @@ function ItemRowPreview(props: ItemRowPreviewProps) {
         className="w-10 h-10 text-sm"
       />
       <p className="text-lg">{item.name}</p>
-      {/* TODO: tags */}
+      <ItemTag tag={item.category} />
     </Link>
   );
 }
