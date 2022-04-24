@@ -13,20 +13,9 @@ public class RedisService
 
     public async Task IncrementItemTrend(string uniqueName)
     {
+        // TODO: increment time by 10 minutes rather than setting it to now + 10
         var db = _connection.GetDatabase();
-        var score = await db.SortedSetScoreAsync("trend", uniqueName);
-        if (score.HasValue)
-        {
-            // Increment
-            var currentScore = DateTimeOffset.FromUnixTimeMilliseconds((int)score.Value);
-            var newScore = currentScore.AddMinutes(10);
-            await db.SortedSetIncrementAsync("trend", uniqueName, newScore.ToUnixTimeMilliseconds());
-        }
-        else
-        {
-            // Add new
-            await db.SortedSetAddAsync("trend", uniqueName, DateTimeOffset.Now.AddMinutes(10).ToUnixTimeMilliseconds());
-        }
+        await db.SortedSetAddAsync("trend", uniqueName, DateTimeOffset.UtcNow.AddMinutes(10).ToUnixTimeMilliseconds());
     }
 
     public async Task<IEnumerable<string>> GetTrendingItems(int count)
