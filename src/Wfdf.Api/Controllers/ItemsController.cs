@@ -10,11 +10,13 @@ public class ItemsController : ControllerBase
 {
     private readonly ILogger<ItemsController> _logger;
     private readonly ItemsService _itemsService;
+    private readonly RedisService _redis;
 
-    public ItemsController(ILogger<ItemsController> logger, ItemsService itemsService)
+    public ItemsController(ILogger<ItemsController> logger, ItemsService itemsService, RedisService redis)
     {
         _logger = logger;
         _itemsService = itemsService;
+        _redis = redis;
     }
 
     [HttpGet]
@@ -29,6 +31,7 @@ public class ItemsController : ControllerBase
         try
         {
             var item = await _itemsService.FindItemByUniqueName(uniqueName);
+            await _redis.IncrementItemTrend(uniqueName);
             return Ok(item);
         }
         catch (InvalidOperationException)
@@ -42,4 +45,12 @@ public class ItemsController : ControllerBase
     [Route("SearchItemByName")]
     public async Task<IEnumerable<PartialItem>> SearchItemByName(string name)
         => await _itemsService.SearchItemByName(name);
+
+    [HttpGet]
+    [Route("GetTrendingItems")]
+    public async Task<IEnumerable<string>> GetTrendingItems(int count = 5)
+    {
+        var trendingItems = await _redis.GetTrendingItems(count);
+        return trendingItems;
+    }
 }
