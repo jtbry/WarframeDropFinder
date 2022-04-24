@@ -46,8 +46,25 @@ namespace ItemsApi {
     return results;
   }
 
+  /**
+   * Get an item by its uniqueName
+   * @param uniqueName The unique name of the item to search for
+   * @returns Item matching uniqueName or throws error if not found
+   */
   export async function GetItemByUniqueName(uniqueName: string): Promise<Item> {
     var response = await get('GetItemByUniqueName', { uniqueName: uniqueName });
+    return response.data;
+  }
+
+  /**
+   * Get a list of trending items
+   * @param count The max trending item rank to return
+   * @returns A list of trending items
+   */
+  export async function GetTrendingItems(
+    count?: number
+  ): Promise<PartialItem[]> {
+    var response = await get('GetTrendingItems', { count: count });
     return response.data;
   }
 }

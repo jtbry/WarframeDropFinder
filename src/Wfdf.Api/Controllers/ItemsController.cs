@@ -48,9 +48,15 @@ public class ItemsController : ControllerBase
 
     [HttpGet]
     [Route("GetTrendingItems")]
-    public async Task<IEnumerable<string>> GetTrendingItems(int count = 5)
+    public async Task<IEnumerable<PartialItem>> GetTrendingItems(int count = 5)
     {
         var trendingItems = await _redis.GetTrendingItems(count);
-        return trendingItems;
+        var itemList = new List<PartialItem>();
+        foreach (var uniqueName in trendingItems)
+        {
+            var item = await _itemsService.FindItemByUniqueName(uniqueName);
+            itemList.Add((PartialItem)item);
+        }
+        return itemList;
     }
 }

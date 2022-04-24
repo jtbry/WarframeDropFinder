@@ -6,6 +6,7 @@ import PartialItem from '../models/PartialItem';
 
 interface HomeState {
   searchExample?: PartialItem;
+  trendingItems?: PartialItem[];
   error?: unknown;
   loading: boolean;
 }
@@ -23,7 +24,17 @@ function HomePage() {
       }
     }
 
+    async function fetchTrendingItems() {
+      try {
+        const items: PartialItem[] = await ItemsApi.GetTrendingItems(5);
+        setState({ trendingItems: items, loading: false });
+      } catch (err: unknown) {
+        setState({ error: err, loading: false });
+      }
+    }
+
     fetchRandomItem();
+    fetchTrendingItems();
   }, []);
 
   let searchPlaceholder = 'Search for an item';
@@ -46,6 +57,8 @@ function HomePage() {
       <div className="flex flex-col items-center justify-center">
         <div className="w-full p-2 md:p-6 md:w-1/2">
           <ItemSearch placeholder={searchPlaceholder} />
+          {state.trendingItems &&
+            state.trendingItems.map((i) => <p>{i.name}</p>)}
         </div>
       </div>
     );

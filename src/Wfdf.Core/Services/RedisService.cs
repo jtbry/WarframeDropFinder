@@ -19,20 +19,24 @@ public class RedisService
         {
             // Increment
             var currentScore = DateTimeOffset.FromUnixTimeMilliseconds((int)score.Value);
-            var newScore = currentScore.Add(TimeSpan.FromMinutes(10));
+            var newScore = currentScore.AddMinutes(10);
             await db.SortedSetIncrementAsync("trend", uniqueName, newScore.ToUnixTimeMilliseconds());
         }
         else
         {
-            await db.SortedSetAddAsync("trend", uniqueName, DateTimeOffset.Now.ToUnixTimeMilliseconds());
+            // Add new
+            await db.SortedSetAddAsync("trend", uniqueName, DateTimeOffset.Now.AddMinutes(10).ToUnixTimeMilliseconds());
         }
     }
 
     public async Task<IEnumerable<string>> GetTrendingItems(int count)
     {
-        // TODO: remove those from trending that have a score older than current timestamp
         var db = _connection.GetDatabase();
-        var trendingItems = await db.SortedSetRangeByRankAsync("trend", 0, count - 1, Order.Ascending);
+
+        // TODO: determine if there's a better way to handle this i.e sorted set expire by score
+        await db.SortedSetRemoveRangeByScoreAsync("trend", 0, DateTimeOffset.Now.ToUnixTimeMilliseconds());
+
+        var trendingItems = await db.SortedSetRangeByRankAsync("trend", 0, count - 1, Order.Descending);
         return trendingItems.Select(x => x.ToString());
     }
 }
