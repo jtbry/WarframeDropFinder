@@ -36,13 +36,21 @@ function ItemSearch(props: ItemSearchProps) {
       console.error(state.searchError);
       if (state.searchError instanceof Error) {
         // Render error message
-        content = <div>An error occurred.</div>;
+        content = (
+          <div className="mx-auto p-2">
+            <p>Sorry... an error occured :(</p>
+          </div>
+        );
       }
     } else {
       if (state.searchResults) {
         if (state.searchResults.length === 0) {
           // Render no results found message
-          content = <div>No results found.</div>;
+          content = (
+            <div className="mx-auto p-2">
+              <p>No results found.</p>
+            </div>
+          );
         } else {
           // Render search results
           content = state.searchResults.map((item) => (
