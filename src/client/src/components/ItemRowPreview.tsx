@@ -7,7 +7,7 @@ interface ItemRowPreviewProps {
 
 function ItemTag({ tag }: { tag: string }) {
   return (
-    <span className="inline-block bg-secondary-200 rounded-full px-3 py-1 text-sm font-semibold text-secondary-700 mr-2">
+    <span className="inline-block bg-primary-800 text-primary-200 rounded-full px-3 py-1 text-sm font-semibold mr-2">
       {tag}
     </span>
   );
@@ -18,7 +18,7 @@ function ItemRowPreview(props: ItemRowPreviewProps) {
   return (
     <Link
       to={`/Item?uniqueName=${item.uniqueName}`}
-      className="flex flex-row items-center p-2 space-x-4 content-middle hover:bg-primary-700"
+      className="flex flex-row items-center p-2 space-x-4 content-middle hover:bg-primary-300"
     >
       <img
         alt={item.name}

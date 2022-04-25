@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom';
 import PartialItem from '../models/PartialItem';
 
-function ItemCardPreview({ item }: { item: PartialItem }) {
-  console.log(item);
+function ItemCardPreview({
+  item,
+  className,
+}: {
+  className?: string;
+  item: PartialItem;
+}) {
   return (
-    <div className="bg-primary-600 p-2 rounded-md text-center">
+    <div className={`bg-primary-200 p-2 rounded-md text-center ${className}`}>
       <img
         alt={item.name}
         src={`https://cdn.warframestat.us/img/${item.imageName}`}

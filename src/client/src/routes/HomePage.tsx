@@ -54,11 +54,17 @@ function HomePage() {
         <div className="w-full p-2 md:p-6 md:w-1/2">
           <ItemSearch placeholder={searchPlaceholder} />
           {state.trendingItems && (
-            <div className="my-8">
-              <h2 className="text-2xl font-bold">Trending Items</h2>
-              <div className="pt-4 grid grid-cols-4 space-x-4">
+            <div className="my-8 md:text-center items-center">
+              <h2 className="text-2xl text-center md:text-left font-bold">
+                Trending Items
+              </h2>
+              <div className="grid grid-cols-4 gap-4 mt-2">
                 {state.trendingItems.map((i) => (
-                  <ItemCardPreview key={i.uniqueName} item={i} />
+                  <ItemCardPreview
+                    className="col-span-2 md:col-span-1"
+                    key={i.uniqueName}
+                    item={i}
+                  />
                 ))}
               </div>
             </div>
