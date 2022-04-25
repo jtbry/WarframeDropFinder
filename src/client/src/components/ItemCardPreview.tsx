@@ -9,19 +9,16 @@ function ItemCardPreview({
   item: PartialItem;
 }) {
   return (
-    <div className={`bg-primary-200 p-2 rounded-md text-center ${className}`}>
-      <img
-        alt={item.name}
-        src={`https://cdn.warframestat.us/img/${item.imageName}`}
-        className="w-16 h-16 text-sm mx-auto m-2"
-      />
-      <Link
-        to={`/Item?uniqueName=${item.uniqueName}`}
-        className="text-xl font-bold"
-      >
-        {item.name}
-      </Link>
-    </div>
+    <Link to={`/Item?uniqueName=${item.uniqueName}`}>
+      <div className={`bg-primary-200 p-2 rounded-md text-center ${className}`}>
+        <img
+          alt={item.name}
+          src={`https://cdn.warframestat.us/img/${item.imageName}`}
+          className="w-16 h-16 text-sm mx-auto m-2"
+        />
+        <h1 className="text-xl font-bold">{item.name}</h1>
+      </div>
+    </Link>
   );
 }
 
