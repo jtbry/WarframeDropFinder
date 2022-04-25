@@ -45,7 +45,19 @@ function ItemPage() {
       return <h1>Error</h1>;
     } else {
       if (state.item) {
-        return <h1>{state.item.name}</h1>;
+        return (
+          <div className="flex flex-col items-center justify-center mx-4 md:mx-0">
+            <img
+              alt={state.item.name}
+              src={`https://cdn.warframestat.us/img/${state.item.imageName}`}
+              className="w-48 h-48 text-sm mx-auto m-2"
+            />
+            <div className="bg-primary-200 p-2 rounded-md w-full md:p-6 md:w-1/2">
+              <h1 className="text-2xl font-bold">{state.item.name}</h1>
+              <p className="text-sm">{state.item.description}</p>
+            </div>
+          </div>
+        );
       } else {
         return <h1>No item found</h1>;
       }
