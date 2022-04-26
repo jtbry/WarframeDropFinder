@@ -1,2 +1,4 @@
 # Deploy app to gcloud app engine
-gcloud app deploy ./out/api/app.yaml
+cd ./out/api
+heroku container:push -a wfdf web
+heroku container:release -a wfdf web

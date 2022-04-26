@@ -1,7 +1,0 @@
-runtime: custom
-env: flex
-
-instance_class: F1
-
-includes:
-  - cloudenv.yaml

@@ -21,6 +21,10 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+if (!string.IsNullOrWhiteSpace(builder.Configuration["PORT"]))
+{
+    app.Urls.Add("http://*:" + builder.Configuration["PORT"]);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
