@@ -53,8 +53,19 @@ function ItemSearch(props: ItemSearchProps) {
           );
         } else {
           // Render search results
+          // TODO: display search results over other elements
           content = state.searchResults.map((item) => (
-            <ItemRowPreview item={item} key={item.uniqueName} />
+            <ItemRowPreview
+              onClick={() => {
+                // Clear search results on click (for nav bar)
+                // TODO: clear search input on click as well?
+                setState({
+                  searchResults: undefined,
+                });
+              }}
+              item={item}
+              key={item.uniqueName}
+            />
           ));
         }
       }

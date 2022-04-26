@@ -4,14 +4,16 @@ import BubbleLabel from './BubbleLabel';
 
 interface ItemRowPreviewProps {
   item: PartialItem;
+  onClick?: () => void;
 }
 
 function ItemRowPreview(props: ItemRowPreviewProps) {
-  const { item } = props;
+  const { item, onClick } = props;
   return (
     <Link
       to={`/Item?uniqueName=${item.uniqueName}`}
       className="flex flex-row items-center p-2 space-x-4 content-middle hover:bg-primary-300"
+      onClick={onClick}
     >
       <img
         alt={item.name}
