@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ItemsApi from '../api/ItemsApi';
+import CardBackground from '../components/CardBackground';
 import LoadingWheel from '../components/LoadingWheel';
 import Item from '../models/Item';
 
@@ -52,10 +53,15 @@ function ItemPage() {
               src={`https://cdn.warframestat.us/img/${state.item.imageName}`}
               className="w-48 h-48 text-sm mx-auto m-2"
             />
-            <div className="bg-primary-200 p-2 rounded-md w-full md:p-6 md:w-1/2">
-              <h1 className="text-2xl font-bold">{state.item.name}</h1>
+            <CardBackground className="w-full md:w-1/2">
+              <div className="flex space-x-2">
+                <h1 className="text-2xl font-bold">{state.item.name}</h1>
+                <h1 className="text-sm font-thin self-center">
+                  {state.item.category}
+                </h1>
+              </div>
               <p className="text-sm">{state.item.description}</p>
-            </div>
+            </CardBackground>
           </div>
         );
       } else {
