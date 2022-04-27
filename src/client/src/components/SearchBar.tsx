@@ -17,10 +17,12 @@ function SearchBar<T>(props: SearchBarProps<T>) {
 
   function executeSearch(searchTerm: string) {
     // Don't search empty strings, just clear the results
+    console.log(searchTerm);
     if (searchTerm === '') resultsCallback(undefined);
-    searchFunc(searchTerm)
-      .then((results) => resultsCallback(results))
-      .catch((err) => resultsCallback(undefined, err));
+    else
+      searchFunc(searchTerm)
+        .then((results) => resultsCallback(results))
+        .catch((err) => resultsCallback(undefined, err));
   }
 
   function onInputChange(event: React.ChangeEvent<HTMLInputElement>) {

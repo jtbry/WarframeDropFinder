@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import ItemSearch from './components/ItemSearch';
 import HomePage from './routes/HomePage';
 import ItemPage from './routes/ItemPage';
