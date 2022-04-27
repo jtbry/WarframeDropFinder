@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { isAsyncFunction } from '../api/Utilities';
 
 export interface SearchBarProps<T> {
   placeholder: string;
   seamlessResults?: boolean;
-  searchFunc: (searchTerm: string) => Promise<T[]> | T[];
-  resultsCallback: (results: T[] | unknown) => void;
+  searchFunc: (searchTerm: string) => Promise<T[]>;
+  resultsCallback: (results?: T[], error?: unknown) => void;
 }
 
 interface SearchBarState {
@@ -19,14 +18,9 @@ function SearchBar<T>(props: SearchBarProps<T>) {
   function executeSearch(searchTerm: string) {
     // Don't search empty strings, just clear the results
     if (searchTerm === '') resultsCallback(undefined);
-    else if (isAsyncFunction(searchFunc)) {
-      const asyncSearchFunc = searchFunc as (
-        searchTerm: string
-      ) => Promise<T[]>;
-      asyncSearchFunc(searchTerm).then(resultsCallback).catch(resultsCallback);
-    } else {
-      resultsCallback(searchFunc(searchTerm));
-    }
+    searchFunc(searchTerm)
+      .then((results) => resultsCallback(results))
+      .catch((err) => resultsCallback(undefined, err));
   }
 
   function onInputChange(event: React.ChangeEvent<HTMLInputElement>) {

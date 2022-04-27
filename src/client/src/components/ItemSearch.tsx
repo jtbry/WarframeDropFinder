@@ -16,17 +16,11 @@ interface ItemSearchState {
 function ItemSearch(props: ItemSearchProps) {
   const [state, setState] = useState<ItemSearchState>({});
 
-  function handleSearchResults(results: PartialItem[] | unknown) {
-    if (Array.isArray(results)) {
-      setState({
-        searchResults: results,
-        searchError: undefined,
-      });
+  function handleSearchResults(results?: PartialItem[], error?: unknown) {
+    if (error) {
+      setState({ searchError: error });
     } else {
-      setState({
-        searchResults: undefined,
-        searchError: results,
-      });
+      setState({ searchResults: results });
     }
   }
 
