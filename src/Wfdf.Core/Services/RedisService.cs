@@ -8,10 +8,7 @@ public class RedisService
 
     public RedisService(string connectionString)
     {
-        _connection = ConnectionMultiplexer.Connect(connectionString, (options =>
-        {
-            options.ConnectTimeout = 10000;
-        }));
+        _connection = ConnectionMultiplexer.Connect(connectionString);
     }
 
     public async Task IncrementItemTrend(string uniqueName)
