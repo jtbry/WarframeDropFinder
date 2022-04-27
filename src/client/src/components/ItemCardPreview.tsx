@@ -10,8 +10,8 @@ function ItemCardPreview({
   item: PartialItem;
 }) {
   return (
-    <Link to={`/Item?uniqueName=${item.uniqueName}`}>
-      <CardBackground className={`text-center ${className}`}>
+    <Link to={`/Item?uniqueName=${item.uniqueName}`} className={`${className}`}>
+      <CardBackground className={`text-center`}>
         <img
           alt={item.name}
           src={`https://cdn.warframestat.us/img/${item.imageName}`}
