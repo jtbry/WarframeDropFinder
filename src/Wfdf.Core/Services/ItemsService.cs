@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -7,10 +8,12 @@ namespace Wfdf.Core.Services;
 
 public class ItemsService
 {
+    private readonly ILogger<ItemsService> _logger;
     private readonly IMongoCollection<Item> _items;
 
-    public ItemsService(WfdfDatabase database)
+    public ItemsService(WfdfDatabase database, ILogger<ItemsService> logger)
     {
+        _logger = logger;
         _items = database.GetCollection<Item>("items");
         try
         {
@@ -30,8 +33,7 @@ public class ItemsService
         }
         catch (MongoCommandException ex)
         {
-            if (ex.Code != 67) throw;
-            // TODO: log error
+            _logger.LogError(ex, "Failed to create index");
         }
     }
 

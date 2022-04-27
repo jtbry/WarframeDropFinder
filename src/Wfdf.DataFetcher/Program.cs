@@ -4,6 +4,7 @@ using Wfdf.Core.Services;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
+using Microsoft.Extensions.Logging;
 
 // Build configation from json file and evironment variables
 var configuration = new ConfigurationBuilder()
@@ -11,6 +12,8 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", true, true)
     .AddEnvironmentVariables()
     .Build();
+var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+var logger = loggerFactory.CreateLogger<Program>();
 
 // Create http client
 HttpClient httpClient = new HttpClient();
@@ -26,7 +29,7 @@ GithubCommit currentCommit;
 var response = await httpClient.GetAsync("https://api.github.com/repos/WFCD/warframe-items/commits/master");
 if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
 {
-    System.Console.WriteLine("Rate limit hit, forcing currentCommit to master");
+    logger.LogWarning("Rate limit hit, forcing currentCommit to master");
     currentCommit = new GithubCommit
     {
         sha = "master",
@@ -47,13 +50,13 @@ if (!shouldForce)
     var existingCommit = await updatesService.GetUpdateByCommitSha(currentCommit.sha);
     if (existingCommit is not null)
     {
-        Console.WriteLine("Already updated to commit " + existingCommit.commitSha);
+        logger.LogInformation("Already updated to commit " + existingCommit.commitSha);
         return;
     }
 }
 
-Console.WriteLine("Updating to sha " + currentCommit.sha);
-ItemsService itemsService = new ItemsService(dbClient);
+logger.LogInformation("Updating to sha " + currentCommit.sha);
+ItemsService itemsService = new ItemsService(dbClient, loggerFactory.CreateLogger<ItemsService>());
 List<string> whitelist = new List<string> { "Arcanes", "Melee", "Mods", "Primary", "Relics", "Secondary", "Sentinels", "SentinelWeapons", "Warframes" };
 
 // TODO: handle il8n file
@@ -81,7 +84,7 @@ foreach (var rawUrl in rawUrls)
         itemsInserted = result.InsertedCount,
         itemsDeleted = result.DeletedCount,
     });
-    System.Console.WriteLine("Updated " + items.Count + " items from " + rawUrl.Split('/').Last());
+    logger.LogInformation("Updated " + items.Count + " items from " + rawUrl.Split('/').Last());
 }
 
 var endTime = DateTime.Now;
