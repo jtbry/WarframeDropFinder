@@ -34,6 +34,7 @@ services:
       dockerfile: ./Wfdf.Api/Dockerfile
     environment:
       - ConnectionStrings__MongoDb=mongodb://mongodb:27017/
+      - ConnectionStrings__Redis=redis:6379
       - ReactAppDomain=http://localhost
     ports:
       - "8080:8080"
