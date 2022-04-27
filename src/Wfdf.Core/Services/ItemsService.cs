@@ -12,19 +12,27 @@ public class ItemsService
     public ItemsService(WfdfDatabase database)
     {
         _items = database.GetCollection<Item>("items");
-        _items.Indexes.CreateOne(
-            new CreateIndexModel<Item>(
-                Builders<Item>.IndexKeys.Ascending(item => item.uniqueName),
-                new CreateIndexOptions { Unique = true }
-            )
-        );
+        try
+        {
+            _items.Indexes.CreateOne(
+                new CreateIndexModel<Item>(
+                    Builders<Item>.IndexKeys.Ascending(item => item.uniqueName),
+                    new CreateIndexOptions { Unique = true }
+                )
+            );
 
-        _items.Indexes.CreateOne(
-            new CreateIndexModel<Item>(
-                Builders<Item>.IndexKeys.Text(item => item.name),
-                new CreateIndexOptions { Unique = false }
-            )
-        );
+            _items.Indexes.CreateOne(
+                new CreateIndexModel<Item>(
+                    Builders<Item>.IndexKeys.Text(item => item.name),
+                    new CreateIndexOptions { Unique = false }
+                )
+            );
+        }
+        catch (MongoCommandException ex)
+        {
+            if (ex.Code != 67) throw;
+            // TODO: log error
+        }
     }
 
     private ReplaceOneModel<Item> CreateItemUpsertModel(Item item)
