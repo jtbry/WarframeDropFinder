@@ -20,7 +20,14 @@ function RenderComponents(data: Component[]) {
       <CardBackground className="w-full md:w-1/2">
         <div className="flex flex-col space-y-1">
           <h1 className="text-xl font-bold">Components</h1>
-          <DataTable data={data} keys={['name', 'itemCount', 'tradable']} />
+          <DataTable
+            data={data}
+            keys={['name', 'itemCount', 'tradable']}
+            headerAlias={{ itemCount: 'Item Count' }}
+            transformFieldValue={{
+              tradable: (value: any) => (value ? 'YES' : 'NO'),
+            }}
+          />
         </div>
       </CardBackground>
     );
@@ -40,6 +47,7 @@ function RenderDropSources(data?: DropSource[]) {
               chance: (value: number) => `${(value * 100).toFixed(2)}%`,
             }}
             rowsPerPage={10}
+            headerAlias={{ location: 'Source' }}
           />
         </div>
       </CardBackground>

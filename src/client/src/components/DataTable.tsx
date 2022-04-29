@@ -4,6 +4,7 @@ interface DataTableProps {
   data: any[];
   keys?: string[];
   transformFieldValue?: { [key: string]: (value: any) => any };
+  headerAlias?: { [key: string]: string };
   className?: string;
   rowsPerPage?: number;
 }
@@ -49,7 +50,9 @@ function DataTable(props: DataTableProps) {
           <tr>
             {keys.map((key, index) => (
               <th key={index} scope="col" className="px-6 py-3">
-                {key}
+                {props.headerAlias && props.headerAlias[key]
+                  ? props.headerAlias[key]
+                  : key}
               </th>
             ))}
           </tr>
