@@ -4,6 +4,7 @@ import ItemsApi from '../api/ItemsApi';
 import CardBackground from '../components/CardBackground';
 import DataTable from '../components/DataTable';
 import LoadingWheel from '../components/LoadingWheel';
+import Component from '../models/Component';
 import DropSource from '../models/DropSource';
 import Item from '../models/Item';
 
@@ -11,6 +12,19 @@ interface ItemPageState {
   loading: boolean;
   error?: unknown;
   item?: Item;
+}
+
+function RenderComponents(data: Component[]) {
+  if (data && data.length > 0) {
+    return (
+      <CardBackground className="w-full md:w-1/2">
+        <div className="flex flex-col space-y-1">
+          <h1 className="text-xl font-bold">Components</h1>
+          <DataTable data={data} keys={['name', 'itemCount', 'tradable']} />
+        </div>
+      </CardBackground>
+    );
+  }
 }
 
 function RenderDropSources(data?: DropSource[]) {
@@ -105,6 +119,7 @@ function ItemPage() {
           </CardBackground>
 
           {RenderDropSources(state.item.drops)}
+          {RenderComponents(state.item.components)}
         </div>
       );
     }
