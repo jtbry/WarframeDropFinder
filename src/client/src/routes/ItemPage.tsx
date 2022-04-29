@@ -25,6 +25,7 @@ function RenderDropSources(data?: DropSource[]) {
             transformFieldValue={{
               chance: (value: number) => `${(value * 100).toFixed(2)}%`,
             }}
+            rowsPerPage={10}
           />
         </div>
       </CardBackground>
@@ -86,7 +87,7 @@ function ItemPage() {
       );
     } else {
       return (
-        <div className="flex flex-col items-center justify-center mx-4 md:mx-0 space-y-2">
+        <div className="flex flex-col items-center justify-center mx-4 md:mx-0 space-y-2 mb-2">
           {/* Image and header */}
           <img
             alt={state.item.name}
