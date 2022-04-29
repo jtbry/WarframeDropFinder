@@ -2,13 +2,38 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ItemsApi from '../api/ItemsApi';
 import CardBackground from '../components/CardBackground';
+import DataTable from '../components/DataTable';
 import LoadingWheel from '../components/LoadingWheel';
+import DropSource from '../models/DropSource';
 import Item from '../models/Item';
 
 interface ItemPageState {
   loading: boolean;
   error?: unknown;
   item?: Item;
+}
+
+function RenderDropSources(data?: DropSource[]) {
+  const transformHeader = (header: string) =>
+    header.charAt(0).toUpperCase() + header.slice(1);
+
+  if (data && data.length > 0) {
+    return (
+      <CardBackground className="w-full md:w-1/2">
+        <div className="flex flex-col">
+          <h1 className="text-xl font-bold">Drop Sources</h1>
+          <DataTable
+            data={data}
+            keys={['chance', 'location', 'type']}
+            transformDisplayHeader={transformHeader}
+            transformFieldValue={{
+              chance: (value: number) => `${(value * 100).toFixed(2)}%`,
+            }}
+          />
+        </div>
+      </CardBackground>
+    );
+  }
 }
 
 function ItemPage() {
@@ -65,7 +90,8 @@ function ItemPage() {
       );
     } else {
       return (
-        <div className="flex flex-col items-center justify-center mx-4 md:mx-0">
+        <div className="flex flex-col items-center justify-center mx-4 md:mx-0 space-y-2">
+          {/* Image and header */}
           <img
             alt={state.item.name}
             src={`https://cdn.warframestat.us/img/${state.item.imageName}`}
@@ -80,6 +106,8 @@ function ItemPage() {
             </div>
             <p className="text-sm">{state.item.description}</p>
           </CardBackground>
+
+          {RenderDropSources(state.item.drops)}
         </div>
       );
     }
