@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export interface SearchBarProps<T> {
+interface SearchBarProps<T> {
   placeholder: string;
   seamlessResults?: boolean;
   searchFunc: (searchTerm: string) => Promise<T[]>;
@@ -17,7 +17,6 @@ function SearchBar<T>(props: SearchBarProps<T>) {
 
   function executeSearch(searchTerm: string) {
     // Don't search empty strings, just clear the results
-    console.log(searchTerm);
     if (searchTerm === '') resultsCallback(undefined);
     else
       searchFunc(searchTerm)

@@ -2,7 +2,7 @@ function CardBackground({
   children,
   className,
 }: {
-  children: any;
+  children?: any;
   className?: string;
 }) {
   return (

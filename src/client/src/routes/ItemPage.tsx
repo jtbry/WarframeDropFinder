@@ -40,33 +40,48 @@ function ItemPage() {
       </div>
     );
   } else {
-    if (state.error) {
-      console.error(state.error);
-      // TODO: show error
-      return <h1>Error</h1>;
-    } else {
-      if (state.item) {
-        return (
-          <div className="flex flex-col items-center justify-center mx-4 md:mx-0">
-            <img
-              alt={state.item.name}
-              src={`https://cdn.warframestat.us/img/${state.item.imageName}`}
-              className="w-48 h-48 text-sm mx-auto m-2"
+    if (state.error || !state.item) {
+      if (!state.item) console.error('State item is undefined: ' + state.item);
+      if (state.error) console.error(state.error);
+      return (
+        <div className="flex flex-col text-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="mx-auto h-60 w-60"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
             />
-            <CardBackground className="w-full md:w-1/2">
-              <div className="flex space-x-2">
-                <h1 className="text-2xl font-bold">{state.item.name}</h1>
-                <h1 className="text-sm font-thin self-center">
-                  {state.item.category}
-                </h1>
-              </div>
-              <p className="text-sm">{state.item.description}</p>
-            </CardBackground>
-          </div>
-        );
-      } else {
-        return <h1>No item found</h1>;
-      }
+          </svg>
+          <h1 className="text-2xl">There was an error fetching this item</h1>
+          <h2 className="text-xl">
+            Try changing your search term or looking for a different item
+          </h2>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex flex-col items-center justify-center mx-4 md:mx-0">
+          <img
+            alt={state.item.name}
+            src={`https://cdn.warframestat.us/img/${state.item.imageName}`}
+            className="w-48 h-48 text-sm mx-auto m-2"
+          />
+          <CardBackground className="w-full md:w-1/2">
+            <div className="flex space-x-2">
+              <h1 className="text-2xl font-bold">{state.item.name}</h1>
+              <h1 className="text-sm font-thin self-center">
+                {state.item.category}
+              </h1>
+            </div>
+            <p className="text-sm">{state.item.description}</p>
+          </CardBackground>
+        </div>
+      );
     }
   }
 }
