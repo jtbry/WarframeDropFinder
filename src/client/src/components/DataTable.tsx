@@ -1,47 +1,47 @@
 interface DataTableProps {
   data: any[];
   keys?: string[];
-  transformDisplayHeader?: (header: string) => string;
   transformFieldValue?: { [key: string]: (value: any) => any };
+  className?: string;
 }
 
 function DataTable(props: DataTableProps) {
   const keys = props.keys ? props.keys : Object.keys(props.data[0]);
-  const displayHeaders = keys.map((header, index) =>
-    props.transformDisplayHeader ? (
-      <th key={index}>{props.transformDisplayHeader(header)}</th>
-    ) : (
-      <th key={index}>{header}</th>
-    )
-  );
 
   return (
-    <div className="overflow-x-auto">
-      <div className="py-2 inline-block min-w-full">
-        <div className="overflow-hidden rounded-t-md">
-          <table className="min-w-full text-left bg-primary-50">
-            <thead className="border-b border-primary-400">
-              <tr>{displayHeaders}</tr>
-            </thead>
-            <tbody>
-              {props.data.map((row) => (
-                <tr className="border-b border-primary-400">
-                  {keys.map((key) => {
-                    let displayValue = row[key];
-                    if (
-                      props.transformFieldValue &&
-                      props.transformFieldValue[key]
-                    )
-                      displayValue =
-                        props.transformFieldValue[key](displayValue);
-                    return <td>{displayValue}</td>;
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div
+      className={`relative overflow-x-auto shadow-md sm:rounded-lg ${props.className}`}
+    >
+      <table className="w-full text-sm text-left text-gray-500">
+        <thead className="text-xs text-gray-700 uppercase bg-primary-50 border-b">
+          <tr>
+            {keys.map((key) => (
+              <th scope="col" className="px-6 py-3">
+                {key}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {props.data.map((row) => {
+            return (
+              <tr className="bg-primary-100 border-b">
+                {keys.map((key) => {
+                  let value = row[key];
+                  if (
+                    props.transformFieldValue &&
+                    props.transformFieldValue[key]
+                  )
+                    value = props.transformFieldValue[key](value);
+                  return (
+                    <td className="px-6 py-4 whitespace-no-wrap">{value}</td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }

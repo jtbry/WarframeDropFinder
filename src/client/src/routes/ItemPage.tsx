@@ -14,18 +14,14 @@ interface ItemPageState {
 }
 
 function RenderDropSources(data?: DropSource[]) {
-  const transformHeader = (header: string) =>
-    header.charAt(0).toUpperCase() + header.slice(1);
-
   if (data && data.length > 0) {
     return (
       <CardBackground className="w-full md:w-1/2">
-        <div className="flex flex-col">
+        <div className="flex flex-col space-y-1">
           <h1 className="text-xl font-bold">Drop Sources</h1>
           <DataTable
-            data={data}
+            data={data.sort((a, b) => b.chance - a.chance)}
             keys={['chance', 'location', 'type']}
-            transformDisplayHeader={transformHeader}
             transformFieldValue={{
               chance: (value: number) => `${(value * 100).toFixed(2)}%`,
             }}
