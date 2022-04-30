@@ -1,38 +1,53 @@
+version: '3.4'
 services:
-  items-db:
-    container_name: item-db
-    image: mongo
-    restart: always
-    ports:
-      - "27017:27017"
+  redis:
+      container_name: redis
+      image: redis:latest
+      ports:
+        - "6379:6379"
+      volumes:
+        - wfdf:/data/redis
+  mongodb:
+      container_name: mongodb
+      image: mongo:latest
+      restart: always
+      ports:
+        - "27017:27017"
+      volumes:
+        - wfdf:/data/db
+  scheduler:
+    image: jtbry/ofelia:latest
+    container_name: scheduler
+    depends_on:
+      - mongodb
+    command: daemon --config=/etc/ofelia/config.ini
     volumes:
-      - wfdf:/data/db
-  item-updaters:
-    container_name: item-updaters
-    build: ./item-updaters/
-    image: wfdf:item-updaters
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./ofelia.ini:/etc/ofelia/config.ini
+  api:
+    container_name: web-api
+    image: web-api
     depends_on:
-      - items-db
+      - mongodb
+    build:
+      context: ./src/
+      dockerfile: ./Wfdf.Api/Dockerfile
     environment:
-      - mongoConnectionUrl=mongodb://items-db:27017
-  item-api:
-    container_name: item-api
-    build: ./api/
-    image: wfdf:item-api
-    restart: always
-    depends_on:
-      - items-db
+      - ConnectionStrings__MongoDb=mongodb://mongodb:27017/
+      - ConnectionStrings__Redis=redis:6379
+      - ReactAppDomain=http://localhost
     ports:
       - "8080:8080"
-    environment:
-      - NODE_ENV=production
-      - mongoConnectionUrl=mongodb://items-db:27017
-    command: "npm start"
-  wfdf-client:
-    container_name: wfdf-client
-    build: ./client/
-    image: wfdf:client
-    restart: always
+  client:
+    container_name: client
+    image: client
+    depends_on:
+      - api
+    build:
+      context: ./src/client
+      dockerfile: Dockerfile
+      args:
+        - API_URL=http://localhost:8080
     ports:
       - "80:80"
 volumes:

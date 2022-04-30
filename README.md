@@ -3,15 +3,19 @@ WFDF is an open-source web app to find all information about Warframe Items in o
 
 <br />
 
-# Getting started / Deployment
-You will need docker installed to easily run this application, it can be ran without docker but that process will not be explained here. Do note, if you are trying to run these services in a development environment without Docker you will need to change the React App's proxy in `package.json`. Using Docker will allow you to start all of WFDF's services in a single command. Docker will create a seperate container for all of the app's services.
+# Run this app
+To run this app locally you can use docker-compose. 
+- Clone the repository: (`git clone https://github.com/jtbry/WarframeDropFinder`)
+- Run the `build.sh` script in the root directory (`./build.sh`)
+- Run `docker-compose up`. After that (`docker-compose up`)
 
-<br />
+To run this app locally without docker (i.e for development) you can use the language appropriate commands
+- `cd ./src/Wfdf.Api && dotnet run` for the REST API
+- `cd ./src/client && npm run start` for the React app
+- `cd ./src/Wfdf.DataFetcher && dotnet run` for the DataFetcher. You *must* use docker, or an ofelia binary on your local machine, to run the datafetcher on a schedule. Also, you may use the `--force` flag when running the datafetcher to force an update regardless of commit sha.
+- Make sure you have an accessible MongoDB instance running and have the ConnectionString set in the Api and DataFetcher
 
-You can start all services at once by executing `docker-compose up -d`. To start the project in a development friendly environment execute `docker-compose -f docker-compose.dev.yml up --build -d`. 
-
-To watch the output of the service you're developing you can use the `docker-compose logs -f service_name_here` command.
-
+Deploying this app to a production environment will not be covered here, the deployment scripts will only work if your local machine has all the appropriate tools already installed and configured.
 <br />
 
 # Credits
