@@ -87,6 +87,9 @@ foreach (var rawUrl in rawUrls)
     logger.LogInformation("Updated " + items.Count + " items from " + rawUrl.Split('/').Last());
 }
 
+var translationParser = new TranslationFileParser(currentCommit.sha, httpClient);
+await translationParser.Parse();
+
 var endTime = DateTime.Now;
 var wfdfUpdate = new WfdfUpdate
 {
