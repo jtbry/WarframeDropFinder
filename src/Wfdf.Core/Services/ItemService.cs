@@ -6,12 +6,12 @@ using Wfdf.Core.Models;
 
 namespace Wfdf.Core.Services;
 
-public class ItemsService
+public class ItemService
 {
-    private readonly ILogger<ItemsService> _logger;
+    private readonly ILogger<ItemService> _logger;
     private readonly IMongoCollection<Item> _items;
 
-    public ItemsService(WfdfDatabase database, ILogger<ItemsService> logger)
+    public ItemService(WfdfDatabase database, ILogger<ItemService> logger)
     {
         _logger = logger;
         _items = database.GetCollection<Item>("items");

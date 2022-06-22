@@ -21,7 +21,7 @@ httpClient.DefaultRequestHeaders.Add("User-Agent", "wfdf-data-fetcher/1.0");
 
 // Create mongo client and updates services
 WfdfDatabase dbClient = new WfdfDatabase(configuration.GetConnectionString("MongoDb"));
-UpdatesService updatesService = new UpdatesService(dbClient);
+UpdateService updateService = new UpdateService(dbClient);
 
 // Get current commit
 bool shouldForce = Environment.GetCommandLineArgs().Contains("--force");
@@ -47,7 +47,7 @@ else
 if (!shouldForce)
 {
     // Check if we've already updated for the most recent git commit
-    var existingCommit = await updatesService.GetUpdateByCommitSha(currentCommit.sha);
+    var existingCommit = await updateService.GetUpdateByCommitSha(currentCommit.sha);
     if (existingCommit is not null)
     {
         logger.LogInformation("Already updated to commit " + existingCommit.commitSha);
@@ -56,7 +56,7 @@ if (!shouldForce)
 }
 
 logger.LogInformation("Updating to sha " + currentCommit.sha);
-ItemsService itemsService = new ItemsService(dbClient, loggerFactory.CreateLogger<ItemsService>());
+ItemService itemService = new ItemService(dbClient, loggerFactory.CreateLogger<ItemService>());
 List<string> whitelist = new List<string> { "Arcanes", "Melee", "Mods", "Primary", "Relics", "Secondary", "Sentinels", "SentinelWeapons", "Warframes" };
 
 // TODO: handle il8n file
@@ -76,7 +76,7 @@ foreach (var rawUrl in rawUrls)
     // TODO: handle item deletions
     ItemFileParser parser = new ItemFileParser(rawUrl, httpClient);
     var items = await parser.Parse();
-    var result = await itemsService.UpsertManyItems(items);
+    var result = await itemService.UpsertManyItems(items);
     categoryResults.Add(new WfdfCategoryUpdateResult
     {
         category = rawUrl.Split('/').Last().Split('.').First(),
@@ -95,4 +95,4 @@ var wfdfUpdate = new WfdfUpdate
     updatedCategories = categoryResults,
     secondsTaken = (int)(endTime - startTime).TotalSeconds,
 };
-await updatesService.AddWfdfUpdate(wfdfUpdate);
+await updateService.AddWfdfUpdate(wfdfUpdate);

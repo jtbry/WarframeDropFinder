@@ -3,7 +3,7 @@ import Item from '../models/Item';
 import PartialItem from '../models/PartialItem';
 import { levenshteinDist } from './Utilities';
 
-namespace ItemsApi {
+namespace ItemApi {
   /**
    * Make a get request to an endpoint in the ItemsApi
    * @param endpoint The endpoint to query
@@ -69,4 +69,4 @@ namespace ItemsApi {
   }
 }
 
-export default ItemsApi;
+export default ItemApi;

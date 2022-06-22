@@ -41,3 +41,13 @@ export function levenshteinDist(a: string, b: string): number {
 
   return matrix[b.length][a.length];
 }
+
+export function createPercent(
+  total: number,
+  sample: number,
+  decimalPlaces: number
+): number {
+  const factorOfTen = Math.pow(10, decimalPlaces);
+  const percentage = (sample / total) * 100;
+  return Math.round(percentage * factorOfTen) / factorOfTen;
+}

@@ -9,20 +9,20 @@ namespace Wfdf.Api.Controllers;
 public class ItemsController : ControllerBase
 {
     private readonly ILogger<ItemsController> _logger;
-    private readonly ItemsService _itemsService;
+    private readonly ItemService _itemService;
     private readonly RedisService _redis;
 
-    public ItemsController(ILogger<ItemsController> logger, ItemsService itemsService, RedisService redis)
+    public ItemsController(ILogger<ItemsController> logger, ItemService itemService, RedisService redis)
     {
         _logger = logger;
-        _itemsService = itemsService;
+        _itemService = itemService;
         _redis = redis;
     }
 
     [HttpGet]
     [Route("GetRandomItems")]
     public async Task<IEnumerable<PartialItem>> GetRandomItems(int count = 5)
-        => await _itemsService.SelectRandomItems(count);
+        => await _itemService.SelectRandomItems(count);
 
     [HttpGet]
     [Route("GetItemByUniqueName")]
@@ -30,7 +30,7 @@ public class ItemsController : ControllerBase
     {
         try
         {
-            var item = await _itemsService.FindItemByUniqueName(uniqueName);
+            var item = await _itemService.FindItemByUniqueName(uniqueName);
             await _redis.IncrementItemTrend(uniqueName);
             return Ok(item);
         }
@@ -44,7 +44,7 @@ public class ItemsController : ControllerBase
     [HttpGet]
     [Route("SearchItemByName")]
     public async Task<IEnumerable<PartialItem>> SearchItemByName(string name)
-        => await _itemsService.SearchItemByName(name);
+        => await _itemService.SearchItemByName(name);
 
     [HttpGet]
     [Route("GetTrendingItems")]
@@ -54,7 +54,7 @@ public class ItemsController : ControllerBase
         var itemList = new List<PartialItem>();
         foreach (var uniqueName in trendingItems)
         {
-            var item = await _itemsService.FindItemByUniqueName(uniqueName);
+            var item = await _itemService.FindItemByUniqueName(uniqueName);
             itemList.Add((PartialItem)item);
         }
         return itemList;

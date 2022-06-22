@@ -11,7 +11,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<WfdfDatabase>(x => new WfdfDatabase(builder.Configuration.GetConnectionString("MongoDb")));
 builder.Services.AddSingleton<RedisService>(x => new RedisService(builder.Configuration.GetConnectionString("Redis")));
-builder.Services.AddTransient<ItemsService>();
+builder.Services.AddTransient<ItemService>();
+builder.Services.AddTransient<StatService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactApp", policy =>

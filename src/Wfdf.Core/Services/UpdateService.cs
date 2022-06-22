@@ -3,11 +3,11 @@ using MongoDB.Driver;
 
 namespace Wfdf.Core.Services;
 
-public class UpdatesService
+public class UpdateService
 {
     private readonly IMongoCollection<WfdfUpdate> _updates;
 
-    public UpdatesService(WfdfDatabase database)
+    public UpdateService(WfdfDatabase database)
     {
         _updates = database.GetCollection<WfdfUpdate>("updates");
     }

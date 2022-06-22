@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ItemsApi from '../api/ItemsApi';
+import ItemApi from '../api/ItemApi';
 import PartialItem from '../models/PartialItem';
 import ItemRowPreview from './ItemRowPreview';
 import SearchBar from './SearchBar';
@@ -82,7 +82,7 @@ function ItemSearch(props: ItemSearchProps) {
     <div>
       <SearchBar
         {...props}
-        searchFunc={ItemsApi.SearchItemByName}
+        searchFunc={ItemApi.SearchItemByName}
         resultsCallback={handleSearchResults}
         seamlessResults={makeSeamless}
       />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import ItemsApi from '../api/ItemsApi';
+import ItemApi from '../api/ItemApi';
 import CardBackground from '../components/CardBackground';
 import DataTable from '../components/DataTable';
 import LoadingWheel from '../components/LoadingWheel';
@@ -63,7 +63,7 @@ function ItemPage() {
   useEffect(() => {
     async function fetchItem() {
       try {
-        const item: Item = await ItemsApi.GetItemByUniqueName(
+        const item: Item = await ItemApi.GetItemByUniqueName(
           uniqueName as string
         );
         setState({ loading: false, item: item });
