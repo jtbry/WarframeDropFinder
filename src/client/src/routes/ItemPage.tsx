@@ -7,11 +7,25 @@ import LoadingWheel from '../components/LoadingWheel';
 import Component from '../models/Component';
 import DropSource from '../models/DropSource';
 import Item from '../models/Item';
+import Patchlog from '../models/Patchlog';
 
 interface ItemPageState {
   loading: boolean;
   error?: unknown;
   item?: Item;
+}
+
+function RenderPatchlogs(data: Patchlog[]) {
+  if (data && data.length > 0) {
+    return (
+      <CardBackground className="w-full md:w-1/2">
+        <div className="flex flex-col space-y-1">
+          <h1 className="text-xl font-bold">Patchlogs</h1>
+          <DataTable data={data} keys={['name', 'date']} rowsPerPage={10} />
+        </div>
+      </CardBackground>
+    );
+  }
 }
 
 function RenderComponents(data: Component[]) {
@@ -128,6 +142,7 @@ function ItemPage() {
 
           {RenderDropSources(state.item.drops)}
           {RenderComponents(state.item.components)}
+          {RenderPatchlogs(state.item.patchlogs)}
         </div>
       );
     }
