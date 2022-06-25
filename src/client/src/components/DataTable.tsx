@@ -83,8 +83,8 @@ function DataTable(props: DataTableProps) {
         </tbody>
       </table>
       {props.rowsPerPage && (
-        <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between p-4 bg-primary-50 dark:bg-primary-900">
-          <div>
+        <div className="sm:flex-1 sm:flex sm:items-center sm:justify-between p-4 bg-primary-50 dark:bg-primary-900">
+          <div className="hidden sm:flex">
             <p className="text-sm">
               Showing {state.page * props.rowsPerPage + 1} to{' '}
               {state.page * props.rowsPerPage + props.rowsPerPage >
@@ -94,7 +94,7 @@ function DataTable(props: DataTableProps) {
               of {props.data.length} results
             </p>
           </div>
-          <div>
+          <div className="text-center">
             <nav
               className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
               aria-label="Pagination"
