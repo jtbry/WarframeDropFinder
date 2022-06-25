@@ -8,10 +8,10 @@ namespace Wfdf.Api.Controllers;
 [ApiController]
 public class StatsController : ControllerBase
 {
-    private readonly ILogger<ItemsController> _logger;
+    private readonly ILogger<ItemController> _logger;
     private readonly StatService _statService;
 
-    public StatsController(ILogger<ItemsController> logger, StatService statService)
+    public StatsController(ILogger<ItemController> logger, StatService statService)
     {
         _logger = logger;
         _statService = statService;

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import ItemApi from '../api/ItemApi';
+import { createPercent } from '../api/Utilities';
 import CardBackground from '../components/CardBackground';
 import DataTable from '../components/DataTable';
 import LoadingWheel from '../components/LoadingWheel';
@@ -15,13 +16,30 @@ interface ItemPageState {
   item?: Item;
 }
 
-function RenderPatchlogs(data: Patchlog[]) {
+function RenderPatchlogs(data: Patchlog[], uniqueName: string) {
   if (data && data.length > 0) {
     return (
       <CardBackground className="w-full md:w-1/2">
         <div className="flex flex-col space-y-1">
           <h1 className="text-xl font-bold">Patchlogs</h1>
-          <DataTable data={data} keys={['name', 'date']} rowsPerPage={10} />
+          <DataTable
+            data={data}
+            keys={['name', 'date']}
+            rowsPerPage={5}
+            transformFieldValue={{
+              date: (value: any) => new Date(value).toLocaleDateString(),
+              name: (value: string, root: Patchlog) => (
+                <a
+                  className="hover:text-blue-400"
+                  href={root.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {value}
+                </a>
+              ),
+            }}
+          />
         </div>
       </CardBackground>
     );
@@ -58,7 +76,7 @@ function RenderDropSources(data?: DropSource[]) {
             data={data.sort((a, b) => b.chance - a.chance)}
             keys={['chance', 'location', 'type']}
             transformFieldValue={{
-              chance: (value: number) => `${(value * 100).toFixed(2)}%`,
+              chance: (value: number) => `${createPercent(1, value, 2)}%`,
             }}
             rowsPerPage={10}
             headerAlias={{ location: 'Source' }}
@@ -142,7 +160,7 @@ function ItemPage() {
 
           {RenderDropSources(state.item.drops)}
           {RenderComponents(state.item.components)}
-          {RenderPatchlogs(state.item.patchlogs)}
+          {RenderPatchlogs(state.item.patchlogs, state.item.uniqueName)}
         </div>
       );
     }

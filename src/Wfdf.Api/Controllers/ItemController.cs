@@ -6,13 +6,13 @@ namespace Wfdf.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ItemsController : ControllerBase
+public class ItemController : ControllerBase
 {
-    private readonly ILogger<ItemsController> _logger;
+    private readonly ILogger<ItemController> _logger;
     private readonly ItemService _itemService;
     private readonly RedisService _redis;
 
-    public ItemsController(ILogger<ItemsController> logger, ItemService itemService, RedisService redis)
+    public ItemController(ILogger<ItemController> logger, ItemService itemService, RedisService redis)
     {
         _logger = logger;
         _itemService = itemService;

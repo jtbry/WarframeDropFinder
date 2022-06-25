@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import ItemSearch from './components/ItemSearch';
 import HomePage from './routes/HomePage';
 import ItemPage from './routes/ItemPage';
+import NotFoundPage from './routes/NotFoundPage';
 
 function WithNavbar(element: JSX.Element) {
   return (
@@ -22,6 +23,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/Item" element={WithNavbar(<ItemPage />)} />
+      <Route path="*" element={WithNavbar(<NotFoundPage />)} />
     </Routes>
   );
 }

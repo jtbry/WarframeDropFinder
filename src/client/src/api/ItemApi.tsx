@@ -11,7 +11,7 @@ namespace ItemApi {
    * @returns The pending request
    */
   async function get(endpoint: string, params: any): Promise<AxiosResponse> {
-    return axios.get(`/api/Items/${endpoint}`, { params });
+    return axios.get(`/api/Item/${endpoint}`, { params });
   }
 
   /**

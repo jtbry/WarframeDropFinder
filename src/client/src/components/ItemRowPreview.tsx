@@ -12,7 +12,7 @@ function ItemRowPreview(props: ItemRowPreviewProps) {
   return (
     <Link
       to={`/Item?uniqueName=${item.uniqueName}`}
-      className="flex flex-row items-center p-2 space-x-4 content-middle hover:bg-primary-300"
+      className="flex flex-row items-center p-2 space-x-4 content-middle hover:bg-primary-300 dark:hover:bg-primary-500"
       onClick={onClick}
     >
       <img

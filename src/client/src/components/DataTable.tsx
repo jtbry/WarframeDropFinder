@@ -3,7 +3,7 @@ import { useState } from 'react';
 interface DataTableProps {
   data: any[];
   keys?: string[];
-  transformFieldValue?: { [key: string]: (value: any) => any };
+  transformFieldValue?: { [key: string]: (value: any, root: any) => any };
   headerAlias?: { [key: string]: string };
   className?: string;
   rowsPerPage?: number;
@@ -35,7 +35,7 @@ function DataTable(props: DataTableProps) {
     const proposedEnd = proposedStart + props.rowsPerPage;
     if (
       proposedStart < 0 ||
-      proposedEnd > props.data.length + props.rowsPerPage
+      proposedEnd > props.data.length + props.rowsPerPage - 1
     )
       return;
     setState({ page: state.page + value });
@@ -45,8 +45,8 @@ function DataTable(props: DataTableProps) {
     <div
       className={`relative overflow-x-auto shadow-md sm:rounded-lg ${props.className}`}
     >
-      <table className="w-full text-sm text-left text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-primary-50 border-b">
+      <table className="w-full text-sm text-left">
+        <thead className="text-xs uppercase bg-primary-50 dark:bg-primary-900 border-b dark:border-b-slate-700">
           <tr>
             {keys.map((key, index) => (
               <th key={index} scope="col" className="px-6 py-3">
@@ -60,14 +60,17 @@ function DataTable(props: DataTableProps) {
         <tbody>
           {displayData.map((row, index) => {
             return (
-              <tr key={index} className="bg-primary-100 border-b">
+              <tr
+                key={index}
+                className="bg-primary-100 dark:bg-primary-800 border-b dark:border-b-slate-700"
+              >
                 {keys.map((key, index) => {
                   let value = row[key];
                   if (
                     props.transformFieldValue &&
                     props.transformFieldValue[key]
                   )
-                    value = props.transformFieldValue[key](value);
+                    value = props.transformFieldValue[key](value, row);
                   return (
                     <td key={index} className="px-6 py-4 whitespace-no-wrap">
                       {value}
@@ -80,10 +83,10 @@ function DataTable(props: DataTableProps) {
         </tbody>
       </table>
       {props.rowsPerPage && (
-        <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between p-4 bg-primary-50">
+        <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between p-4 bg-primary-50 dark:bg-primary-900">
           <div>
-            <p className="text-sm text-gray-700">
-              Showing {state.page * props.rowsPerPage} to{' '}
+            <p className="text-sm">
+              Showing {state.page * props.rowsPerPage + 1} to{' '}
               {state.page * props.rowsPerPage + props.rowsPerPage >
               props.data.length
                 ? props.data.length
@@ -97,13 +100,13 @@ function DataTable(props: DataTableProps) {
               aria-label="Pagination"
             >
               <button
-                className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-primary-800 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700"
                 onClick={() => changePageValueBy(-1)}
               >
                 Previous
               </button>
               <button
-                className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-primary-800 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700"
                 onClick={() => changePageValueBy(1)}
               >
                 Next
