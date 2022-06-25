@@ -1,6 +1,3 @@
-# Terminate on failure
-set -e
-
 # Build apps
 echo -e "Building\n----"
 ./api/build.sh
