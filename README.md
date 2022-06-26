@@ -10,6 +10,7 @@ To run this app locally you can use docker-compose.
 - Clone the repository: (`git clone https://github.com/jtbry/WarframeDropFinder`)
 - Run the `build.sh` script in the root directory (`./build.sh`)
 - Run `docker-compose up`.
+- Visit `localhost` for the front-end and `localhost:8080` for the back-end
 
 To run this app locally without docker (i.e for development) you can use the language appropriate commands
 
