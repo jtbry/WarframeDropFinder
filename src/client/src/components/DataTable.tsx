@@ -7,6 +7,7 @@ interface DataTableProps {
   headerAlias?: { [key: string]: string };
   className?: string;
   rowsPerPage?: number;
+  clickableRows?: (row: any) => void;
 }
 
 interface DataTableState {
@@ -59,10 +60,16 @@ function DataTable(props: DataTableProps) {
         </thead>
         <tbody>
           {displayData.map((row, index) => {
+            const clickableClassNames = props.clickableRows
+              ? 'hover:bg-primary-300 dark:hover:bg-primary-500 hover:cursor-pointer'
+              : '';
             return (
               <tr
                 key={index}
-                className="bg-primary-100 dark:bg-primary-800 border-b dark:border-b-slate-700"
+                className={`bg-primary-100 dark:bg-primary-800 border-b dark:border-b-slate-700 ${clickableClassNames}`}
+                onClick={() =>
+                  props.clickableRows ? props.clickableRows(row) : {}
+                }
               >
                 {keys.map((key, index) => {
                   let value = row[key];
@@ -82,7 +89,7 @@ function DataTable(props: DataTableProps) {
           })}
         </tbody>
       </table>
-      {props.rowsPerPage && (
+      {props.rowsPerPage && props.data.length > props.rowsPerPage && (
         <div className="sm:flex-1 sm:flex sm:items-center sm:justify-between p-4 bg-primary-50 dark:bg-primary-900">
           <div className="hidden sm:flex">
             <p className="text-sm">

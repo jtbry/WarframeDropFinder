@@ -77,4 +77,10 @@ public class ItemService
             .ToListAsync();
         return items.Select(i => (PartialItem)i);
     }
+
+    public async Task<IEnumerable<Item>> FindItemsWithComponent(string componentUniqueName)
+            => await _items.Find(Builders<Item>.Filter.ElemMatch(i => i.components, c => c.uniqueName.Equals(componentUniqueName)))
+                .ToListAsync();
+
+
 }

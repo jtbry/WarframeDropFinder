@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import ItemSearch from './components/ItemSearch';
+import ComponentPage from './routes/ComponentPage';
 import HomePage from './routes/HomePage';
 import ItemPage from './routes/ItemPage';
 import NotFoundPage from './routes/NotFoundPage';
@@ -23,6 +24,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/Item" element={WithNavbar(<ItemPage />)} />
+      <Route path="/Component" element={WithNavbar(<ComponentPage />)} />
       <Route path="*" element={WithNavbar(<NotFoundPage />)} />
     </Routes>
   );
