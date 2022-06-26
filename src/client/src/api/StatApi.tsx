@@ -17,7 +17,7 @@ namespace StatApi {
    * @returns An object with stats about wfdf
    */
   export async function GetWfdfStats(): Promise<WfdfStats> {
-    var response = await get('GetWfdfStats', {});
+    var response = await get('WfdfStats', {});
     return response.data;
   }
 }

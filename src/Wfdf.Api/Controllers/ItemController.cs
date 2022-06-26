@@ -20,13 +20,13 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet]
-    [Route("GetRandomItems")]
-    public async Task<IEnumerable<PartialItem>> GetRandomItems(int count = 5)
+    [Route("RandomItems")]
+    public async Task<IEnumerable<PartialItem>> RandomItems(int count = 5)
         => await _itemService.SelectRandomItems(count);
 
     [HttpGet]
-    [Route("GetItemByUniqueName")]
-    public async Task<ActionResult<Item>> GetItemByUniqueName(string uniqueName)
+    [Route("ItemByUniqueName")]
+    public async Task<ActionResult<Item>> ItemByUniqueName(string uniqueName)
     {
         try
         {
@@ -42,13 +42,13 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet]
-    [Route("SearchItemByName")]
-    public async Task<IEnumerable<PartialItem>> SearchItemByName(string name)
+    [Route("ItemByName")]
+    public async Task<IEnumerable<PartialItem>> ItemByName(string name)
         => await _itemService.SearchItemByName(name);
 
     [HttpGet]
-    [Route("GetTrendingItems")]
-    public async Task<IEnumerable<PartialItem>> GetTrendingItems(int count = 5)
+    [Route("TrendingItems")]
+    public async Task<IEnumerable<PartialItem>> TrendingItems(int count = 5)
     {
         var trendingItems = await _redis.GetTrendingItems(count);
         var itemList = new List<PartialItem>();

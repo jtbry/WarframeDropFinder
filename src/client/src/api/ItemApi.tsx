@@ -20,7 +20,7 @@ namespace ItemApi {
    * @returns A list of random PartialItems
    */
   export async function GetRandomItems(count?: number): Promise<PartialItem[]> {
-    var response = await get('GetRandomItems', { count: count });
+    var response = await get('RandomItems', { count: count });
     return response.data;
   }
 
@@ -30,7 +30,7 @@ namespace ItemApi {
    * @returns PartialItems matching name or empty list if none found
    */
   export async function SearchItemByName(name: string): Promise<PartialItem[]> {
-    var response = await get('SearchItemByName', { name: name });
+    var response = await get('ItemByName', { name: name });
 
     // Sort by levenshtein distance
     const results = response.data;
@@ -52,7 +52,7 @@ namespace ItemApi {
    * @returns Item matching uniqueName or throws error if not found
    */
   export async function GetItemByUniqueName(uniqueName: string): Promise<Item> {
-    var response = await get('GetItemByUniqueName', { uniqueName: uniqueName });
+    var response = await get('ItemByUniqueName', { uniqueName: uniqueName });
     return response.data;
   }
 
@@ -64,7 +64,7 @@ namespace ItemApi {
   export async function GetTrendingItems(
     count?: number
   ): Promise<PartialItem[]> {
-    var response = await get('GetTrendingItems', { count: count });
+    var response = await get('TrendingItems', { count: count });
     return response.data;
   }
 }

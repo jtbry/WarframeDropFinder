@@ -16,8 +16,8 @@ public class StatsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("GetWfdfStats")]
-    public async Task<WfdfStats> GetWfdfStats()
+    [Route("WfdfStats")]
+    public async Task<WfdfStats> WfdfStats()
     {
         return new WfdfStats
         {
