@@ -1,7 +1,7 @@
 using Wfdf.Core.Models;
 using MongoDB.Driver;
 
-namespace Wfdf.Core.Services;
+namespace Wfdf.Core.Service;
 
 public class UpdateService
 {

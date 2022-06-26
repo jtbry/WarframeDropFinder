@@ -4,7 +4,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Wfdf.Core.Models;
 
-namespace Wfdf.Core.Services;
+namespace Wfdf.Core.Service;
 
 public class ItemService
 {

@@ -1,6 +1,6 @@
 ﻿using Wfdf.Core;
 using Wfdf.Core.Models;
-using Wfdf.Core.Services;
+using Wfdf.Core.Service;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
@@ -16,8 +16,7 @@ var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
 var logger = loggerFactory.CreateLogger<Program>();
 
 // Create http client
-HttpClient httpClient = new HttpClient();
-httpClient.DefaultRequestHeaders.Add("User-Agent", "wfdf-data-fetcher/1.0");
+WfdfHttpClient httpClient = new WfdfHttpClient();
 
 // Create mongo client and updates services
 WfdfDatabase dbClient = new WfdfDatabase(configuration.GetConnectionString("MongoDb"));

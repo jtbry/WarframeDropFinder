@@ -1,8 +1,9 @@
 using Wfdf.Core.Models;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using Wfdf.Core;
 
-namespace Wfdf.Core.Services;
+namespace Wfdf.Api.Service;
 
 public class StatService
 {

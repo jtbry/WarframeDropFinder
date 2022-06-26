@@ -1,5 +1,6 @@
+using Wfdf.Api.Service;
 using Wfdf.Core;
-using Wfdf.Core.Services;
+using Wfdf.Core.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +12,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<WfdfDatabase>(x => new WfdfDatabase(builder.Configuration.GetConnectionString("MongoDb")));
 builder.Services.AddSingleton<RedisService>(x => new RedisService(builder.Configuration.GetConnectionString("Redis")));
+builder.Services.AddSingleton<WfdfHttpClient>();
 builder.Services.AddTransient<ItemService>();
 builder.Services.AddTransient<StatService>();
+builder.Services.AddTransient<MarketService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactApp", policy =>

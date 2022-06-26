@@ -1,6 +1,6 @@
 using StackExchange.Redis;
 
-namespace Wfdf.Core.Services;
+namespace Wfdf.Api.Service;
 
 public class RedisService
 {
