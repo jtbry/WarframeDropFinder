@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import ItemApi from '../api/ItemApi';
 import { createPercent } from '../api/Utilities';
 import CardBackground from '../components/CardBackground';
@@ -9,14 +9,14 @@ import Component from '../models/Component';
 import DropSource from '../models/DropSource';
 import Item from '../models/Item';
 import Patchlog from '../models/Patchlog';
-
+import ErrorDisplay from '../components/ErrorDisplay';
 interface ItemPageState {
   loading: boolean;
   error?: unknown;
   item?: Item;
 }
 
-function RenderPatchlogs(data: Patchlog[], uniqueName: string) {
+function RenderPatchlogs(data: Patchlog[]) {
   if (data && data.length > 0) {
     return (
       <CardBackground className="w-full md:w-1/2">
@@ -46,7 +46,7 @@ function RenderPatchlogs(data: Patchlog[], uniqueName: string) {
   }
 }
 
-function RenderComponents(data: Component[]) {
+function RenderComponents(data: Component[], parent: Item) {
   if (data && data.length > 0) {
     return (
       <CardBackground className="w-full md:w-1/2">
@@ -57,6 +57,14 @@ function RenderComponents(data: Component[]) {
             keys={['name', 'itemCount', 'tradable']}
             headerAlias={{ itemCount: 'Item Count' }}
             transformFieldValue={{
+              name: (value: any, root: Component) => (
+                <Link
+                  className="hover:text-blue-400"
+                  to={`/Component?uniqueName=${root.uniqueName}&parent=${parent.uniqueName}`}
+                >
+                  {value}
+                </Link>
+              ),
               tradable: (value: any) => (value ? 'YES' : 'NO'),
             }}
           />
@@ -120,24 +128,12 @@ function ItemPage() {
       if (!state.item) console.error('State item is undefined: ' + state.item);
       if (state.error) console.error(state.error);
       return (
-        <div className="flex flex-col text-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="mx-auto h-60 w-60"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-              clip-rule="evenodd"
-            />
-          </svg>
+        <ErrorDisplay>
           <h1 className="text-2xl">There was an error fetching this item</h1>
           <h2 className="text-xl">
             Try changing your search term or looking for a different item
           </h2>
-        </div>
+        </ErrorDisplay>
       );
     } else {
       return (
@@ -159,8 +155,8 @@ function ItemPage() {
           </CardBackground>
 
           {RenderDropSources(state.item.drops)}
-          {RenderComponents(state.item.components)}
-          {RenderPatchlogs(state.item.patchlogs, state.item.uniqueName)}
+          {RenderComponents(state.item.components, state.item)}
+          {RenderPatchlogs(state.item.patchlogs)}
         </div>
       );
     }
