@@ -3,7 +3,6 @@ import ItemApi from '../api/ItemApi';
 import StatApi from '../api/StatApi';
 import { createPercent } from '../api/Utilities';
 import CardBackground from '../components/CardBackground';
-import ErrorDisplay from '../components/ErrorDisplay';
 import ItemCardPreview from '../components/ItemCardPreview';
 import ItemSearch from '../components/ItemSearch';
 import LoadingWheel from '../components/LoadingWheel';
@@ -84,12 +83,6 @@ function HomePage() {
                 ))}
               </div>
             </div>
-          )}
-          {state.error && (
-            <ErrorDisplay>
-              <h1 className="text-2xl">The app is having some issues</h1>
-              <h2 className="text-xl">Try refreshing or checking back later</h2>
-            </ErrorDisplay>
           )}
           {state.featuredItems && (
             <div className="my-8 md:text-center items-center">
