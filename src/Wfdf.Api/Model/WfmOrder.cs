@@ -8,4 +8,7 @@ public class WfmOrder
     public DateTime CreationDate { get; set; }
     public int Quantity { get; set; }
     public int Platinum { get; set; }
+    [JsonPropertyName("order_type")]
+    public string OrderType { get; set; } = "N/A";
+    public string Platform { get; set; } = "N/A";
 }

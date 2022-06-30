@@ -9,14 +9,27 @@ namespace Wfdf.Api.Controllers;
 public class MarketController : ControllerBase
 {
     private readonly MarketService _marketService;
+    private readonly ILogger<MarketController> _logger;
 
-    public MarketController(ILogger<ItemController> logger, MarketService marketService)
+    public MarketController(ILogger<MarketController> logger, MarketService marketService)
     {
         _marketService = marketService;
+        _logger = logger;
     }
 
     [HttpGet]
     [Route("OrdersForItem")]
-    public async Task<IEnumerable<WfmOrder>> OrdersForItem(string uniqueName)
-        => (await _marketService.GetOrdersForItem(uniqueName)) ?? Enumerable.Empty<WfmOrder>();
+    public async Task<ActionResult<IEnumerable<WfmOrder>>> OrdersForItem(string wfmName)
+    {
+        try
+        {
+            var orders = await _marketService.GetOrdersForItem(wfmName);
+            return Ok(orders);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Error getting orders for item {wfmName}", wfmName);
+            return Problem();
+        }
+    }
 }

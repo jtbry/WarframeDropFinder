@@ -16,7 +16,7 @@ namespace ComponentApi {
    * Get a component and it's associated items by uniqueName
    * @returns An object holding a component and the items it belongs to
    */
-  export async function ComponentByUniqueName(
+  export async function GetComponentByUniqueName(
     uniqueName: string
   ): Promise<ComponentWithItems> {
     var response = await get('ComponentByUniqueName', {

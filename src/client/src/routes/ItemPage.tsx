@@ -10,6 +10,9 @@ import DropSource from '../models/DropSource';
 import Item from '../models/Item';
 import Patchlog from '../models/Patchlog';
 import ErrorDisplay from '../components/ErrorDisplay';
+import MarketInfoWidget from '../components/MarketInfoWidget';
+import BubbleLabel from '../components/BubbleLabel';
+
 interface ItemPageState {
   loading: boolean;
   error?: unknown;
@@ -145,15 +148,19 @@ function ItemPage() {
             className="w-48 h-48 text-sm mx-auto m-2"
           />
           <CardBackground className="w-full md:w-1/2">
-            <div className="flex space-x-2">
+            <div className="flex flex-row space-x-2">
               <h1 className="text-2xl font-bold">{state.item.name}</h1>
               <h1 className="text-sm font-thin self-center">
-                {state.item.category}
+                ({state.item.category})
               </h1>
             </div>
-            <p className="text-sm">{state.item.description}</p>
+            {state.item.description != 'N/A' && (
+              <p className="text-sm">{state.item.description}</p>
+            )}
+            {state.item.tradable && <BubbleLabel>Tradable</BubbleLabel>}
           </CardBackground>
 
+          {state.item.tradable && <MarketInfoWidget item={state.item} />}
           {RenderDropSources(state.item.drops)}
           {RenderComponents(state.item.components, state.item)}
           {RenderPatchlogs(state.item.patchlogs)}
