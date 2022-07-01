@@ -154,16 +154,16 @@ function ItemPage() {
                 ({state.item.category})
               </h1>
             </div>
-            {state.item.description != 'N/A' && (
+            {state.item.description !== 'N/A' && (
               <p className="text-sm">{state.item.description}</p>
             )}
             {state.item.tradable && <BubbleLabel>Tradable</BubbleLabel>}
           </CardBackground>
 
-          {state.item.tradable ||
-            (state.item.components.findIndex((c) => c.tradable) !== -1 && (
-              <MarketInfoWidget item={state.item} />
-            ))}
+          {(state.item.tradable ||
+            state.item?.components.findIndex((c) => c.tradable) !== -1) && (
+            <MarketInfoWidget item={state.item} />
+          )}
           {RenderDropSources(state.item.drops)}
           {RenderComponents(state.item.components, state.item)}
           {RenderPatchlogs(state.item.patchlogs)}
