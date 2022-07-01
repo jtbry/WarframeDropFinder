@@ -9,6 +9,8 @@ import DropSource from '../models/DropSource';
 import DataTable from '../components/DataTable';
 import { createPercent } from '../api/Utilities';
 import PartialItem from '../models/PartialItem';
+import MarketInfoWidget from '../components/MarketInfoWidget';
+import BubbleLabel from '../components/BubbleLabel';
 
 interface ComponentPageState {
   loading: boolean;
@@ -81,7 +83,7 @@ function ComponentPage() {
     async function fetchComponent() {
       try {
         const data: ComponentWithItems =
-          await ComponentApi.ComponentByUniqueName(uniqueName as string);
+          await ComponentApi.GetComponentByUniqueName(uniqueName as string);
         setState({ loading: false, data: data });
       } catch (error) {
         setState({ loading: false, error: error });
@@ -128,8 +130,19 @@ function ComponentPage() {
               </h1>
             </div>
             <p className="text-sm">{state.data.component.description}</p>
+            {state.data.component.tradable && (
+              <BubbleLabel>Tradable</BubbleLabel>
+            )}
           </CardBackground>
 
+          {state.data.component.tradable && (
+            <MarketInfoWidget
+              item={state.data.component}
+              parent={state.data.items.find(
+                (i) => i.uniqueName === parentUniqueName
+              )}
+            />
+          )}
           {RenderDropSources(state.data?.component.drops)}
           {RenderCraftableItems(state.data.items, (url: string) =>
             navigate(url)

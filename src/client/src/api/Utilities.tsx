@@ -1,3 +1,7 @@
+import Component from '../models/Component';
+import Item from '../models/Item';
+import PartialItem from '../models/PartialItem';
+
 /**
  * Compute the levenshtein distance between two strings.
  * @param a The first value to compare.
@@ -50,4 +54,15 @@ export function createPercent(
   const factorOfTen = Math.pow(10, decimalPlaces);
   const percentage = (sample / total) * 100;
   return Math.round(percentage * factorOfTen) / factorOfTen;
+}
+
+export function createWfmName(
+  item: Item | Component,
+  parent?: PartialItem,
+  set?: boolean
+) {
+  let name = item.name.toLowerCase().replace(' ', '_');
+  if (parent) name = parent.name.toLowerCase().replace(' ', '_') + '_' + name;
+  if (set) name += '_set';
+  return name;
 }

@@ -1,8 +1,9 @@
-function LoadingWheel() {
+function LoadingWheel({ small }: { small?: boolean }) {
+  const size = small ? 'w-5 h-5' : 'w-16 h-16';
   return (
     <svg
       role="status"
-      className="inline mr-2 w-16 h-16 text-primary-100 animate-spin fill-primary-800 dark:text-primary-800 dark:fill-primary-100"
+      className={`inline mr-2 ${size} text-primary-100 animate-spin fill-primary-800 dark:text-primary-800 dark:fill-primary-100`}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
