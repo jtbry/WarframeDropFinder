@@ -160,7 +160,10 @@ function ItemPage() {
             {state.item.tradable && <BubbleLabel>Tradable</BubbleLabel>}
           </CardBackground>
 
-          {state.item.tradable && <MarketInfoWidget item={state.item} />}
+          {state.item.tradable ||
+            (state.item.components.findIndex((c) => c.tradable) !== -1 && (
+              <MarketInfoWidget item={state.item} />
+            ))}
           {RenderDropSources(state.item.drops)}
           {RenderComponents(state.item.components, state.item)}
           {RenderPatchlogs(state.item.patchlogs)}

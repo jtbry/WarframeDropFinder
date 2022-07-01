@@ -5,8 +5,8 @@ import Component from '../models/Component';
 import Item from '../models/Item';
 import PartialItem from '../models/PartialItem';
 import WfmOrder from '../models/WfmOrder';
+import WfmPriceData from '../models/WfmPriceData';
 import CardBackground from './CardBackground';
-import ErrorDisplay from './ErrorDisplay';
 import LoadingWheel from './LoadingWheel';
 
 interface WfmPriceDisplayProps {
@@ -18,6 +18,7 @@ interface WfmPriceDisplayState {
   loading: boolean;
   error?: unknown;
   orders?: WfmOrder[];
+  prices?: WfmPriceData[];
 }
 
 function MarketInfoWidget(props: WfmPriceDisplayProps) {
@@ -32,7 +33,8 @@ function MarketInfoWidget(props: WfmPriceDisplayProps) {
     async function fetchData() {
       try {
         const orders = await MarketApi.GetOrdersForItem(wfmItemName);
-        setState({ loading: false, orders: orders });
+        const prices = await MarketApi.GetPriceDataForItem(wfmItemName);
+        setState({ loading: false, orders: orders, prices: prices });
       } catch (error) {
         console.error(error);
         setState({ loading: false, error: error });
@@ -72,12 +74,46 @@ function MarketInfoWidget(props: WfmPriceDisplayProps) {
             <p>{state.orders?.length}</p>
           </div>
           <div>
-            <h2>Number of buy orders</h2>
+            <h2>Total buy orders</h2>
             <p>{state.orders?.filter((o) => o.order_type === 'buy').length}</p>
           </div>
           <div>
-            <h2>Number of sell orders</h2>
+            <h2>Total sell orders</h2>
             <p>{state.orders?.filter((o) => o.order_type === 'sell').length}</p>
+          </div>
+          <div>
+            <h2>Min buy price</h2>
+            <p>
+              {state.prices?.find((pd) => pd.order_type === 'buy')?.min_price}
+            </p>
+          </div>
+          <div>
+            <h2>Max buy price</h2>
+            <p>
+              {state.prices?.find((pd) => pd.order_type === 'buy')?.max_price}
+            </p>
+          </div>
+          <div>
+            <h2>Median buy price</h2>
+            <p>{state.prices?.find((pd) => pd.order_type === 'buy')?.median}</p>
+          </div>
+          <div>
+            <h2>Min sell price</h2>
+            <p>
+              {state.prices?.find((pd) => pd.order_type === 'sell')?.min_price}
+            </p>
+          </div>
+          <div>
+            <h2>Max sell price</h2>
+            <p>
+              {state.prices?.find((pd) => pd.order_type === 'sell')?.max_price}
+            </p>
+          </div>
+          <div>
+            <h2>Median sell price</h2>
+            <p>
+              {state.prices?.find((pd) => pd.order_type === 'sell')?.median}
+            </p>
           </div>
         </div>
       </div>

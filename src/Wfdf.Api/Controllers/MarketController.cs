@@ -44,7 +44,7 @@ public class MarketController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError("Error getting prices for item {wfmName}", wfmName);
+            _logger.LogError(ex, "Error getting prices for item {wfmName}", wfmName);
             return Problem();
         }
     }

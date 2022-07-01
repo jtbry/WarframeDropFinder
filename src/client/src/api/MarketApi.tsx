@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import WfmOrder from '../models/WfmOrder';
+import WfmPriceData from '../models/WfmPriceData';
 
 namespace MarketApi {
   /**
@@ -13,11 +14,24 @@ namespace MarketApi {
   }
 
   /**
-   * Get a component and it's associated items by uniqueName
-   * @returns An object holding a component and the items it belongs to
+   * Get orders for an item given it's warframe market compatible name
+   * @returns An array of WfmOrder objects
    */
   export async function GetOrdersForItem(wfmName: string): Promise<WfmOrder[]> {
     var response = await get('OrdersForItem', {
+      wfmName: wfmName,
+    });
+    return response.data;
+  }
+
+  /**
+   * Get recent price data for an item given it's warframe market compatible name
+   * @returns The two most recent data points for buy and sell as WfmPriceData objects
+   */
+  export async function GetPriceDataForItem(
+    wfmName: string
+  ): Promise<WfmPriceData[]> {
+    var response = await get('PricesForItem', {
       wfmName: wfmName,
     });
     return response.data;

@@ -13,6 +13,7 @@ public class WfmPriceData
     public int MaxPrice { get; set; }
     [JsonPropertyName("avg_price")]
     public double AvgPrice { get; set; }
+    public double Median { get; set; }
     [JsonPropertyName("order_type")]
     public string? OrderType { get; set; }
 }
