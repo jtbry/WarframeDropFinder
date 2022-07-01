@@ -32,4 +32,20 @@ public class MarketController : ControllerBase
             return Problem();
         }
     }
+
+    [HttpGet]
+    [Route("PricesForItem")]
+    public async Task<ActionResult<IEnumerable<WfmPriceData>>> PricesForItem(string wfmName)
+    {
+        try
+        {
+            var prices = await _marketService.GetItemPriceData(wfmName);
+            return Ok(prices);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Error getting prices for item {wfmName}", wfmName);
+            return Problem();
+        }
+    }
 }

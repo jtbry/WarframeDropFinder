@@ -20,4 +20,11 @@ public class MarketService
         var orderResponse = await _httpClient.GetFromJsonAsync<WfmOrderResponse>(requestUrl);
         return orderResponse?.payload?.orders;
     }
+
+    public async Task<Object?> GetItemPriceData(string itemName)
+    {
+        var requestUrl = $"https://api.warframe.market/v1/items/{itemName}/statistics";
+        var priceResponse = await _httpClient.GetFromJsonAsync<WfmPriceResponse>(requestUrl);
+        return priceResponse?.Recent?.TakeLast(2);
+    }
 }
