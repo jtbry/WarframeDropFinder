@@ -157,7 +157,28 @@ function ItemPage() {
             {state.item.description !== 'N/A' && (
               <p className="text-sm">{state.item.description}</p>
             )}
-            {state.item.tradable && <BubbleLabel>Tradable</BubbleLabel>}
+
+            {state.item.wikiaUrl !== '' && (
+              <p className="text-sm">
+                View the{' '}
+                <a
+                  href={state.item.wikiaUrl}
+                  target="_blank"
+                  className="text-blue-400 hover:text-blue-500"
+                  rel="noopener noreferrer"
+                >
+                  Wikia Page
+                </a>
+              </p>
+            )}
+
+            <div className="mt-2">
+              {(state.item.tradable ||
+                state.item?.components.findIndex((c) => c.tradable) !== -1) && (
+                <BubbleLabel>Tradable</BubbleLabel>
+              )}
+              {state.item.vaulted && <BubbleLabel>Vaulted</BubbleLabel>}
+            </div>
           </CardBackground>
 
           {(state.item.tradable ||
