@@ -8,9 +8,9 @@ public class WfmPriceData
     public DateTime Timestamp { get; set; }
     public int Volume { get; set; }
     [JsonPropertyName("min_price")]
-    public int MinPrice { get; set; }
+    public double MinPrice { get; set; }
     [JsonPropertyName("max_price")]
-    public int MaxPrice { get; set; }
+    public double MaxPrice { get; set; }
     [JsonPropertyName("avg_price")]
     public double AvgPrice { get; set; }
     public double Median { get; set; }
