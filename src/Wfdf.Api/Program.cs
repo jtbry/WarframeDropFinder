@@ -1,21 +1,24 @@
 using Wfdf.Api.Service;
 using Wfdf.Core;
+using Wfdf.Core.Config;
 using Wfdf.Core.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<WfdfDatabase>(x => new WfdfDatabase(builder.Configuration.GetConnectionString("MongoDb")));
-builder.Services.AddSingleton<RedisService>(x => new RedisService(builder.Configuration.GetConnectionString("Redis")));
+builder.Services.Configure<MongoDbConfig>(builder.Configuration.GetSection("MongoDb"));
+builder.Services.Configure<RedisConfig>(builder.Configuration.GetSection("Redis"));
+builder.Services.AddSingleton<WfdfDatabase>();
+builder.Services.AddSingleton<RedisService>();
 builder.Services.AddSingleton<WfdfHttpClient>();
 builder.Services.AddTransient<ItemService>();
 builder.Services.AddTransient<StatService>();
 builder.Services.AddTransient<MarketService>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactApp", policy =>
@@ -38,14 +41,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors("ReactApp");
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
 app.Run();

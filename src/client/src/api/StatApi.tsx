@@ -9,7 +9,7 @@ namespace StatApi {
    * @returns The pending request
    */
   async function get(endpoint: string, params: any): Promise<AxiosResponse> {
-    return axios.get(`/api/Stats/${endpoint}`, { params });
+    return axios.get(`/api/Stat/${endpoint}`, { params });
   }
 
   /**
@@ -17,7 +17,7 @@ namespace StatApi {
    * @returns An object with stats about wfdf
    */
   export async function GetWfdfStats(): Promise<WfdfStats> {
-    var response = await get('WfdfStats', {});
+    var response = await get('Wfdf', {});
     return response.data;
   }
 }

@@ -58,18 +58,16 @@ public class ItemService
 
     public async Task<IEnumerable<PartialItem>> SearchItemByName(string name)
     {
-        // TODO: some sort of fuzzy search
         var filter = Builders<Item>.Filter.Regex("name", new BsonRegularExpression(name, "i"));
         var matches = await _items.Find(filter).ToListAsync();
         return matches.Select(i => (PartialItem)i);
     }
 
-    public async Task<Item> FindItemByUniqueName(string uniqueName)
-        => await _items.Find(i => i.uniqueName == uniqueName).FirstAsync();
+    public async Task<Item> GetItemByUniqueName(string uniqueName)
+        => await _items.Find(i => i.uniqueName == uniqueName).FirstOrDefaultAsync();
 
-    public async Task<IEnumerable<PartialItem>> SelectRandomItems(int count)
+    public async Task<IEnumerable<PartialItem>> GetRandomItems(int count)
     {
-        // These are the most abundant and least interesting so we blacklist them
         var categoryBlacklist = new List<string> { "Mods", "Arcanes", "Relics" };
         var items = await _items.AsQueryable()
             .Where(i => !categoryBlacklist.Contains(i.category))

@@ -10,21 +10,28 @@ namespace Wfdf.Api.Controllers;
 public class ComponentController : ControllerBase
 {
     private readonly ItemService _itemService;
+    private readonly ILogger<ComponentController> _logger;
 
-    public ComponentController(ILogger<ItemController> logger, ItemService itemService)
+    public ComponentController(ItemService itemService, ILogger<ComponentController> logger)
     {
         _itemService = itemService;
+        _logger = logger;
     }
 
     [HttpGet]
-    [Route("ComponentByUniqueName")]
-    public async Task<ComponentWithItems> ComponentByUniqueName(string uniqueName)
+    public async Task<ActionResult<ComponentWithItems>> ComponentByUniqueName(string uniqueName)
     {
         var items = await _itemService.FindItemsWithComponent(uniqueName);
-        return new ComponentWithItems
+        if (!items.Any())
+        {
+            _logger.LogWarning("no items with {uniqueName} component found", uniqueName);
+            return NotFound();
+        }
+
+        return Ok(new ComponentWithItems
         {
             component = items.First().components.FirstOrDefault(c => c.uniqueName.Equals(uniqueName)),
             items = items.Select(i => (PartialItem)i)
-        };
+        });
     }
 }

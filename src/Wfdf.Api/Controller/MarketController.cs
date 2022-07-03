@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Wfdf.Api.Model;
 using Wfdf.Api.Service;
@@ -17,35 +18,33 @@ public class MarketController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet]
-    [Route("OrdersForItem")]
-    public async Task<ActionResult<IEnumerable<WfmOrder>>> OrdersForItem(string wfmName)
+    [HttpGet("Orders")]
+    public async Task<ActionResult<IEnumerable<WfmOrder>>> Orders(string wfmName)
     {
         try
         {
-            var orders = await _marketService.GetOrdersForItem(wfmName);
+            var orders = await _marketService.GetOrdersAsync(wfmName);
             return Ok(orders);
         }
-        catch (Exception ex)
+        catch (JsonException ex)
         {
-            _logger.LogError("Error getting orders for item {wfmName}", wfmName);
-            return Problem();
+            _logger.LogError("InvalidWfmResponse on Orders for {wfmName}\r\n{message}", wfmName, ex.Message);
+            return Problem(ex.Message);
         }
     }
 
-    [HttpGet]
-    [Route("PricesForItem")]
+    [HttpGet("Prices")]
     public async Task<ActionResult<IEnumerable<WfmPriceData>>> PricesForItem(string wfmName)
     {
         try
         {
-            var prices = await _marketService.GetItemPriceData(wfmName);
+            var prices = await _marketService.GetPriceDataAsync(wfmName);
             return Ok(prices);
         }
-        catch (Exception ex)
+        catch (JsonException ex)
         {
-            _logger.LogError(ex, "Error getting prices for item {wfmName}", wfmName);
-            return Problem();
+            _logger.LogError("InvalidWfmResponse on Prices for {wfmName}\r\n{message}", wfmName, ex.Message);
+            return Problem(ex.Message);
         }
     }
 }

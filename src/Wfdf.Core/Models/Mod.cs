@@ -2,8 +2,8 @@ using Wfdf.Core;
 
 namespace Wfdf.Core.Models;
 
-[ItemCategoryAttr("Mods")]
+[ItemCategoryAttribute("Mods")]
 public class Mod : Item
 {
-    public string polarity { get; set; } = string.Empty;   
+    public string polarity { get; set; } = string.Empty;
 }

@@ -19,7 +19,7 @@ namespace ComponentApi {
   export async function GetComponentByUniqueName(
     uniqueName: string
   ): Promise<ComponentWithItems> {
-    var response = await get('ComponentByUniqueName', {
+    var response = await get('', {
       uniqueName: uniqueName,
     });
     return response.data;

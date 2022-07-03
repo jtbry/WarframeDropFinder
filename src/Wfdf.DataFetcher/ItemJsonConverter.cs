@@ -20,7 +20,7 @@ public class ItemJsonConverter : JsonConverter<Item>
             if (document.RootElement.TryGetProperty("category", out var itemCategory))
             {
                 string category = itemCategory.GetString() ?? string.Empty;
-                Type? itemType = _types.FirstOrDefault(t => t.GetCustomAttribute<ItemCategoryAttr>()!.Category == category);
+                Type? itemType = _types.FirstOrDefault(t => t.GetCustomAttribute<ItemCategoryAttribute>()!.Category == category);
                 // TODO: potentially fill in empty fields here
                 if (itemType is null)
                 {

@@ -1,9 +1,9 @@
 namespace Wfdf.Core;
 
-public class ItemCategoryAttr : System.Attribute
+public class ItemCategoryAttribute : System.Attribute
 {
-    public string Category { get; init; } 
-    public ItemCategoryAttr(string category)
+    public string Category { get; init; }
+    public ItemCategoryAttribute(string category)
     {
         Category = category;
     }
