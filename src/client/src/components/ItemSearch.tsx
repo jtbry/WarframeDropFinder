@@ -68,7 +68,7 @@ function ItemSearch(props: ItemSearchProps) {
     // Wrap content in results container
     if (content) {
       return (
-        <div className="bg-primary-200 dark:bg-primary-600  rounded-b-md border-primary-400 dark:border-primary-900 border-x-2 border-b-2 flex flex-col">
+        <div className="bg-primary-50 dark:bg-primary-600  rounded-b-md border-primary-400 dark:border-primary-900 border-x-2 border-b-2 flex flex-col w-full absolute">
           {content}
         </div>
       );

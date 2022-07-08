@@ -1,31 +1,20 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import ItemSearch from './components/ItemSearch';
+import NavLayout from './components/NavLayout';
 import ComponentPage from './routes/ComponentPage';
 import HomePage from './routes/HomePage';
 import ItemPage from './routes/ItemPage';
 import NotFoundPage from './routes/NotFoundPage';
 
-function WithNavbar(element: JSX.Element) {
-  return (
-    <div>
-      <div className="flex flex-row justify-between p-2 md:p-6 ">
-        <div className="mx-auto w-full md:w-1/2">
-          <ItemSearch placeholder="Search for an item" />
-        </div>
-      </div>
-      {element}
-    </div>
-  );
-}
-
 function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/Item" element={WithNavbar(<ItemPage />)} />
-      <Route path="/Component" element={WithNavbar(<ComponentPage />)} />
-      <Route path="*" element={WithNavbar(<NotFoundPage />)} />
+      <Route path="/" element={<NavLayout />}>
+        <Route path="/Item" element={<ItemPage />} />
+        <Route path="/Component" element={<ComponentPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
     </Routes>
   );
 }

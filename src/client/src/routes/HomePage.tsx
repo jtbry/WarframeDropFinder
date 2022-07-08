@@ -73,10 +73,10 @@ function HomePage() {
               <h2 className="text-2xl text-center md:text-left font-bold">
                 Trending Items
               </h2>
-              <div className="grid grid-cols-4 gap-4 mt-2">
+              <div className="grid grid-cols-4 gap-4 mt-2 md:grid-cols-none md:grid-flow-col md:auto-cols-max">
                 {state.trendingItems.map((i) => (
                   <ItemCardPreview
-                    className="col-span-2 md:col-span-1"
+                    className="col-span-2"
                     key={i.uniqueName}
                     item={i}
                   />
@@ -89,10 +89,10 @@ function HomePage() {
               <h2 className="text-2xl text-center md:text-left font-bold">
                 Featured Items
               </h2>
-              <div className="grid grid-cols-4 gap-4 mt-2">
+              <div className="grid grid-cols-4 gap-4 mt-2 md:grid-cols-none md:grid-flow-col md:auto-cols-max">
                 {state.featuredItems.map((i) => (
                   <ItemCardPreview
-                    className="col-span-2 md:col-span-1"
+                    className="col-span-2"
                     key={i.uniqueName}
                     item={i}
                   />
