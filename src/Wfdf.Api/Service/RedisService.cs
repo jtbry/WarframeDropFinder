@@ -1,31 +1,30 @@
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
+using Wfdf.Core.Config;
 
 namespace Wfdf.Api.Service;
 
 public class RedisService
 {
     private readonly IConnectionMultiplexer _connection;
+    private readonly IDatabase _database;
 
-    public RedisService(string connectionString)
+    public RedisService(IOptions<RedisConfig> config)
     {
-        _connection = ConnectionMultiplexer.Connect(connectionString);
+        _connection = ConnectionMultiplexer.Connect(config.Value.ConnectionString);
+        _database = _connection.GetDatabase();
     }
 
-    public async Task IncrementItemTrend(string uniqueName)
+    public async Task IncrementTrendAsync(string uniqueName)
     {
-        // TODO: increment time by 10 minutes rather than setting it to now + 10
-        var db = _connection.GetDatabase();
-        await db.SortedSetAddAsync("trend", uniqueName, DateTimeOffset.UtcNow.AddMinutes(10).ToUnixTimeMilliseconds());
+        await _database.SortedSetAddAsync("trend", uniqueName, DateTimeOffset.UtcNow.AddMinutes(10).ToUnixTimeMilliseconds());
     }
 
-    public async Task<IEnumerable<string>> GetTrendingItems(int count)
+    public async Task<IEnumerable<string>> GetTrendingItemsAsync(int count)
     {
-        var db = _connection.GetDatabase();
+        await _database.SortedSetRemoveRangeByScoreAsync("trend", 0, DateTimeOffset.Now.ToUnixTimeMilliseconds());
 
-        // TODO: determine if there's a better way to handle this i.e sorted set expire by score
-        await db.SortedSetRemoveRangeByScoreAsync("trend", 0, DateTimeOffset.Now.ToUnixTimeMilliseconds());
-
-        var trendingItems = await db.SortedSetRangeByRankAsync("trend", 0, count - 1, Order.Descending);
+        var trendingItems = await _database.SortedSetRangeByRankAsync("trend", 0, count - 1, Order.Descending);
         return trendingItems.Select(x => x.ToString());
     }
 }

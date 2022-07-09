@@ -21,41 +21,35 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet]
-    [Route("RandomItems")]
-    public async Task<IEnumerable<PartialItem>> RandomItems(int count = 5)
-        => await _itemService.SelectRandomItems(count);
-
-    [HttpGet]
-    [Route("ItemByUniqueName")]
-    public async Task<ActionResult<Item>> ItemByUniqueName(string uniqueName)
+    public async Task<ActionResult<Item>> GetByUniqueName(string uniqueName)
     {
-        try
+        var item = await _itemService.GetItemByUniqueName(uniqueName);
+        if (item is null)
         {
-            var item = await _itemService.FindItemByUniqueName(uniqueName);
-            await _redis.IncrementItemTrend(uniqueName);
-            return Ok(item);
-        }
-        catch (InvalidOperationException)
-        {
-
+            _logger.LogWarning("{uniqueName} item not found", uniqueName);
             return NotFound();
         }
+
+        await _redis.IncrementTrendAsync(uniqueName);
+        return Ok(item);
     }
 
-    [HttpGet]
-    [Route("ItemByName")]
-    public async Task<IEnumerable<PartialItem>> ItemByName(string name)
+    [HttpGet("Random")]
+    public async Task<IEnumerable<PartialItem>> Random(int count = 1)
+        => await _itemService.GetRandomItems(count);
+
+    [HttpGet("Search")]
+    public async Task<IEnumerable<PartialItem>> SearchByName(string name)
         => await _itemService.SearchItemByName(name);
 
-    [HttpGet]
-    [Route("TrendingItems")]
+    [HttpGet("Trending")]
     public async Task<IEnumerable<PartialItem>> TrendingItems(int count = 4)
     {
-        var trendingItems = await _redis.GetTrendingItems(count);
+        var trendingItems = await _redis.GetTrendingItemsAsync(count);
         var itemList = new List<PartialItem>();
         foreach (var uniqueName in trendingItems)
         {
-            var item = await _itemService.FindItemByUniqueName(uniqueName);
+            var item = await _itemService.GetItemByUniqueName(uniqueName);
             itemList.Add((PartialItem)item);
         }
         return itemList;

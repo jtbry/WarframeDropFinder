@@ -18,7 +18,7 @@ namespace MarketApi {
    * @returns An array of WfmOrder objects
    */
   export async function GetOrdersForItem(wfmName: string): Promise<WfmOrder[]> {
-    var response = await get('OrdersForItem', {
+    var response = await get('Orders', {
       wfmName: wfmName,
     });
     return response.data;
@@ -28,10 +28,10 @@ namespace MarketApi {
    * Get recent price data for an item given it's warframe market compatible name
    * @returns The two most recent data points for buy and sell as WfmPriceData objects
    */
-  export async function GetPriceDataForItem(
+  export async function GetPricesForItem(
     wfmName: string
   ): Promise<WfmPriceData[]> {
-    var response = await get('PricesForItem', {
+    var response = await get('Prices', {
       wfmName: wfmName,
     });
     return response.data;
