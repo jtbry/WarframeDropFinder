@@ -145,7 +145,7 @@ function ItemPage() {
           <img
             alt={state.item.name}
             src={`https://cdn.warframestat.us/img/${state.item.imageName}`}
-            className="w-48 h-48 text-sm mx-auto m-2"
+            className="w-48 h-48 text-sm mx-auto m-2 mt-4"
           />
           <CardBackground className="w-full md:w-1/2">
             <div className="flex flex-row space-x-2">
