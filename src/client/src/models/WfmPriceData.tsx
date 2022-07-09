@@ -1,4 +1,4 @@
-interface WfmPriceData {
+export default interface WfmPriceData {
   datetime: Date;
   volume: number;
   minPrice: number;
@@ -7,5 +7,3 @@ interface WfmPriceData {
   median: number;
   orderType: string;
 }
-
-export default WfmPriceData;

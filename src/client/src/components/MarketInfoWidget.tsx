@@ -14,23 +14,23 @@ interface WfmPriceDisplayProps {
   parent?: PartialItem;
 }
 
-interface WfmPriceDisplayState {
+interface State {
   loading: boolean;
   error?: unknown;
   orders?: WfmOrder[];
   prices?: WfmPriceData[];
 }
 
-function MarketInfoWidget(props: WfmPriceDisplayProps) {
-  const { item } = props;
-  const [state, setState] = useState<WfmPriceDisplayState>({ loading: true });
-  const isSet = (item as Item).components?.find((c) => c.tradable)
-    ? true
-    : false;
+export default function MarketInfoWidget({
+  item,
+  parent,
+}: WfmPriceDisplayProps) {
+  const [state, setState] = useState<State>({ loading: true });
+  const isSet = (item as Item).components.some((c) => c.tradable);
 
-  const wfmItemName = createWfmName(item, props.parent, isSet);
+  const wfmItemName = createWfmName(item, parent, isSet);
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
         const orders = await MarketApi.GetOrdersForItem(wfmItemName);
         const prices = await MarketApi.GetPricesForItem(wfmItemName);
@@ -39,7 +39,7 @@ function MarketInfoWidget(props: WfmPriceDisplayProps) {
         console.error(error);
         setState({ loading: false, error: error });
       }
-    }
+    };
 
     fetchData();
   }, [wfmItemName]);
@@ -120,5 +120,3 @@ function MarketInfoWidget(props: WfmPriceDisplayProps) {
 
   return <CardBackground className="w-full md:w-1/2">{content}</CardBackground>;
 }
-
-export default MarketInfoWidget;

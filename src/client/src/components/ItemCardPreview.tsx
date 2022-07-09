@@ -2,13 +2,15 @@ import { Link } from 'react-router-dom';
 import PartialItem from '../models/PartialItem';
 import CardBackground from './CardBackground';
 
-function ItemCardPreview({
+interface ItemCardPreviewProps {
+  item: PartialItem;
+  className?: string;
+}
+
+export default function ItemCardPreview({
   item,
   className,
-}: {
-  className?: string;
-  item: PartialItem;
-}) {
+}: ItemCardPreviewProps) {
   return (
     <Link to={`/Item?uniqueName=${item.uniqueName}`} className={`${className}`}>
       <CardBackground className={`text-center`}>
@@ -22,5 +24,3 @@ function ItemCardPreview({
     </Link>
   );
 }
-
-export default ItemCardPreview;

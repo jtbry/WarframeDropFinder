@@ -4,14 +4,18 @@ import PartialItem from '../models/PartialItem';
 import ItemRowPreview from './ItemRowPreview';
 import SearchBar from './SearchBar';
 
-interface ItemSearchState {
+interface ItemSearchProps {
+  provideExample?: boolean;
+}
+
+interface State {
   searchPlaceholder: string;
   searchResults?: PartialItem[];
   searchError?: unknown;
 }
 
-function ItemSearch({ provideExample }: { provideExample?: boolean }) {
-  const [state, setState] = useState<ItemSearchState>({
+export default function ItemSearch({ provideExample }: ItemSearchProps) {
+  const [state, setState] = useState<State>({
     searchPlaceholder: 'Search for an item',
   });
 
@@ -48,5 +52,3 @@ function ItemSearch({ provideExample }: { provideExample?: boolean }) {
     </div>
   );
 }
-
-export default ItemSearch;

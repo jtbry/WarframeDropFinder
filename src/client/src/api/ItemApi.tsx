@@ -59,6 +59,7 @@ namespace ItemApi {
   /**
    * Get a list of trending items
    * @param count The max trending item rank to return
+   * @param canFillWithRandom If true, will fill the list with random items if there are not enough trending items
    * @returns A list of trending items
    */
   export async function GetTrendingItems(

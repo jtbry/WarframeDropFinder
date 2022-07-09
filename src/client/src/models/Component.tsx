@@ -1,6 +1,6 @@
 import DropSource from './DropSource';
 
-interface Component {
+export default interface Component {
   uniqueName: string;
   name: string;
   description: string;
@@ -9,5 +9,3 @@ interface Component {
   itemCount: number;
   drops: DropSource[];
 }
-
-export default Component;

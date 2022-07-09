@@ -7,8 +7,7 @@ interface ItemRowPreviewProps {
   onClick?: () => void;
 }
 
-function ItemRowPreview(props: ItemRowPreviewProps) {
-  const { item, onClick } = props;
+export default function ItemRowPreview({ item, onClick }: ItemRowPreviewProps) {
   return (
     <Link
       to={`/Item?uniqueName=${item.uniqueName}`}
@@ -25,5 +24,3 @@ function ItemRowPreview(props: ItemRowPreviewProps) {
     </Link>
   );
 }
-
-export default ItemRowPreview;

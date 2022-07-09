@@ -10,12 +10,12 @@ interface DataTableProps {
   clickableRows?: (row: any) => void;
 }
 
-interface DataTableState {
+interface State {
   page: number;
 }
 
-function DataTable(props: DataTableProps) {
-  const [state, setState] = useState<DataTableState>({ page: 0 });
+export default function DataTable(props: DataTableProps) {
+  const [state, setState] = useState<State>({ page: 0 });
   const keys = props.keys ? props.keys : Object.keys(props.data[0]);
 
   // Paginate data if needed
@@ -125,5 +125,3 @@ function DataTable(props: DataTableProps) {
     </div>
   );
 }
-
-export default DataTable;

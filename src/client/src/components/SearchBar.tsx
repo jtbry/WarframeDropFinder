@@ -13,7 +13,7 @@ interface SearchBarState<T> {
   searchError?: unknown;
 }
 
-function SearchBar<T>(props: SearchBarProps<T>) {
+export default function SearchBar<T>(props: SearchBarProps<T>) {
   const { placeholder, searchFunc, createResultElement } = props;
   const [state, setState] = useState<SearchBarState<T>>({});
 
@@ -105,5 +105,3 @@ function SearchBar<T>(props: SearchBarProps<T>) {
     </form>
   );
 }
-
-export default SearchBar;

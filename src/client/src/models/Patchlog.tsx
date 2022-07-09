@@ -1,4 +1,4 @@
-interface Patchlog {
+export default interface Patchlog {
   name: string;
   date: Date;
   url: string;
@@ -6,5 +6,3 @@ interface Patchlog {
   changes: string;
   fixes: string;
 }
-
-export default Patchlog;
