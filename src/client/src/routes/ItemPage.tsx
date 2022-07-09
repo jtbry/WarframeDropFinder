@@ -140,7 +140,7 @@ function ItemPage() {
       );
     } else {
       return (
-        <div className="flex flex-col items-center justify-center mx-4 md:mx-0 space-y-2 mb-2">
+        <div className="flex flex-col items-center justify-center mx-2 md:mx-0 space-y-2 mb-2">
           {/* Image and header */}
           <img
             alt={state.item.name}

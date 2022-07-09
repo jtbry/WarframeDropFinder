@@ -2,51 +2,107 @@ import { useState } from 'react';
 
 interface SearchBarProps<T> {
   placeholder: string;
-  seamlessResults?: boolean;
   searchFunc: (searchTerm: string) => Promise<T[]>;
-  resultsCallback: (results?: T[], error?: unknown) => void;
+  createResultElement: (result: T) => JSX.Element;
 }
 
-interface SearchBarState {
+interface SearchBarState<T> {
   typingTimeout?: NodeJS.Timeout;
+  searchValue?: string;
+  searchResults?: T[];
+  searchError?: unknown;
 }
 
 function SearchBar<T>(props: SearchBarProps<T>) {
-  const { placeholder, seamlessResults, searchFunc, resultsCallback } = props;
-  const [state, setState] = useState<SearchBarState>({});
+  const { placeholder, searchFunc, createResultElement } = props;
+  const [state, setState] = useState<SearchBarState<T>>({});
 
-  function executeSearch(searchTerm: string) {
+  const executeSearch = (searchTerm: string) => {
     // Don't search empty strings, just clear the results
-    if (searchTerm === '') resultsCallback(undefined);
-    else
+    if (searchTerm === '') {
+      setState({});
+    } else {
       searchFunc(searchTerm)
-        .then((results) => resultsCallback(results))
-        .catch((err) => resultsCallback(undefined, err));
-  }
+        .then((results) => setState({ searchResults: results }))
+        .catch((err) => setState({ searchError: err }));
+    }
+  };
 
-  function onInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    if (state.typingTimeout) clearTimeout(state.typingTimeout);
+  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (state.typingTimeout) {
+      clearTimeout(state.typingTimeout);
+    }
     setState({
       ...state,
+      searchValue: event.target.value,
       typingTimeout: setTimeout(() => {
         executeSearch(event.target.value);
       }, 500),
     });
+  };
+
+  let searchResultDisplay;
+  let roundedClassName = 'rounded-lg';
+  if (state.searchResults) {
+    roundedClassName = 'rounded-t-lg';
+    if (state.searchResults.length === 0) {
+      searchResultDisplay = (
+        <h1 className="text-center p-2">No results found</h1>
+      );
+    } else {
+      searchResultDisplay = state.searchResults.map((result, idx) => (
+        <div key={idx} onClick={() => setState({ searchValue: '' })}>
+          {createResultElement(result)}
+        </div>
+      ));
+    }
+  }
+  if (state.searchError) {
+    console.error('Search error: ', state.searchError);
+    roundedClassName = 'rounded-t-lg';
+    searchResultDisplay = (
+      <h1 className="text-center p-2">There was an error</h1>
+    );
   }
 
   return (
-    <div className="relative mx-auto">
-      <input
-        type="text"
-        className={`w-full border-primary-400 dark:border-primary-900 bg-primary-200 dark:bg-primary-600 h-10 px-5 pr-16 text-lg focus:outline-none ${
-          seamlessResults
-            ? 'border-2 border-b-primary-400 rounded-t-md'
-            : 'border-2 rounded-md'
-        }`}
-        placeholder={placeholder}
-        onChange={onInputChange}
-      />
-    </div>
+    <form>
+      <label
+        htmlFor="default-search"
+        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
+      >
+        Search
+      </label>
+      <div className="relative">
+        <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+          <svg
+            className="w-5 h-5 text-gray-500 dark:text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
+          </svg>
+        </div>
+        <input
+          className={`border-primary-400 dark:border-primary-900 bg-primary-50 dark:bg-primary-600 text-md focus:outline-none block p-3 pl-10 w-full text-gray-900 ${roundedClassName} border  dark:placeholder-gray-400 dark:text-white`}
+          value={state.searchValue}
+          placeholder={placeholder}
+          onChange={onInputChange}
+        />
+      </div>
+      {searchResultDisplay && (
+        <div className="border-primary-400 dark:border-primary-900 bg-primary-50 dark:bg-primary-600 text-md focus:outline-none block w-full text-gray-900 rounded-b-lg border  dark:placeholder-gray-400 dark:text-white relative z-10">
+          {searchResultDisplay}
+        </div>
+      )}
+    </form>
   );
 }
 
