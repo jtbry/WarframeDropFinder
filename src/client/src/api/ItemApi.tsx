@@ -62,9 +62,14 @@ namespace ItemApi {
    * @returns A list of trending items
    */
   export async function GetTrendingItems(
-    count?: number
+    count: number = 4,
+    canFillWithRandom?: boolean
   ): Promise<PartialItem[]> {
     var response = await get('TrendingItems', { count: count });
+    if (canFillWithRandom && response.data.length < count) {
+      const randomItems = await GetRandomItems(count - response.data.length);
+      response.data.push(...randomItems);
+    }
     return response.data;
   }
 }

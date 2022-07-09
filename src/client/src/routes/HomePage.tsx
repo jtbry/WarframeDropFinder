@@ -4,13 +4,11 @@ import StatApi from '../api/StatApi';
 import { createPercent } from '../api/Utilities';
 import CardBackground from '../components/CardBackground';
 import ItemCardPreview from '../components/ItemCardPreview';
-import ItemSearch from '../components/ItemSearch';
 import LoadingWheel from '../components/LoadingWheel';
 import PartialItem from '../models/PartialItem';
 import WfdfStats from '../models/WfdfStats';
 
 interface HomeState {
-  searchExample?: PartialItem;
   trendingItems?: PartialItem[];
   featuredItems?: PartialItem[];
   trackingBreakdown?: WfdfStats;
@@ -24,8 +22,7 @@ function HomePage() {
   useEffect(() => {
     async function updateState() {
       try {
-        const searchExample = await ItemApi.GetRandomItems(1);
-        const trendingItems = await ItemApi.GetTrendingItems(4);
+        const trendingItems = await ItemApi.GetTrendingItems(4, true);
         const trackingBreakdown = await StatApi.GetWfdfStats();
         let featuredItems = undefined;
 
@@ -34,7 +31,6 @@ function HomePage() {
         }
 
         setState({
-          searchExample: searchExample[0],
           trendingItems: trendingItems.length > 0 ? trendingItems : undefined,
           featuredItems: featuredItems,
           trackingBreakdown: trackingBreakdown,
@@ -48,7 +44,6 @@ function HomePage() {
     updateState();
   }, []);
 
-  let searchPlaceholder = 'Search for an item';
   if (state.loading) {
     return (
       <div className="flex h-screen">
@@ -60,20 +55,16 @@ function HomePage() {
   } else {
     if (state.error) {
       console.error(state.error);
-    } else if (state.searchExample) {
-      searchPlaceholder = `Search for an item, eg. ${state.searchExample.name}`;
     }
-
     return (
-      <div className="flex flex-col items-center justify-center">
-        <div className="w-full p-2 md:p-6 md:w-1/2">
-          <ItemSearch placeholder={searchPlaceholder} />
+      <div className="flex flex-col items-center justify-center mx-2 md:mx-0">
+        <div className="w-full md:w-1/2">
           {state.trendingItems && (
             <div className="my-8 md:text-center items-center">
               <h2 className="text-2xl text-center md:text-left font-bold">
                 Trending Items
               </h2>
-              <div className="grid grid-cols-4 gap-4 mt-2 md:grid-cols-none md:grid-flow-col md:auto-cols-max">
+              <div className="grid grid-cols-4 md:grid-flow-col md:auto-cols-max justify-items-stretch gap-4 mt-2">
                 {state.trendingItems.map((i) => (
                   <ItemCardPreview
                     className="col-span-2"
@@ -89,7 +80,7 @@ function HomePage() {
               <h2 className="text-2xl text-center md:text-left font-bold">
                 Featured Items
               </h2>
-              <div className="grid grid-cols-4 gap-4 mt-2 md:grid-cols-none md:grid-flow-col md:auto-cols-max">
+              <div className="grid grid-cols-4 md:grid-flow-col md:auto-cols-max justify-items-stretch gap-4 mt-2">
                 {state.featuredItems.map((i) => (
                   <ItemCardPreview
                     className="col-span-2"

@@ -9,8 +9,8 @@ import NotFoundPage from './routes/NotFoundPage';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
       <Route path="/" element={<NavLayout />}>
+        <Route path="/" element={<HomePage />} />
         <Route path="/Item" element={<ItemPage />} />
         <Route path="/Component" element={<ComponentPage />} />
         <Route path="*" element={<NotFoundPage />} />

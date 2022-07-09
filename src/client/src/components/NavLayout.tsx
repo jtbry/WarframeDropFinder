@@ -5,8 +5,8 @@ import ItemSearch from './ItemSearch';
 function NavLayout() {
   return (
     <div>
-      <div className="flex flex-row p-2 md:p-4 bg-primary-200 dark:bg-primary-900">
-        <Link to="/" className="self-center left-0">
+      <div className="flex flex-row pt-2 md:pt-4 max-h-14 bg-primary">
+        <Link to="/" className="self-center pl-2 md:pl-4 relative md:absolute">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-8 w-8"
@@ -23,10 +23,13 @@ function NavLayout() {
           </svg>
         </Link>
 
-        <div className="w-full md:w-1/2">
-          <ItemSearch placeholder="Search for an item" />
+        <div className="flex flex-1 justify-center mx-2 md:mx-0">
+          <div className="w-full md:w-1/2">
+            <ItemSearch provideExample />
+          </div>
         </div>
       </div>
+
       <Outlet />
     </div>
   );
