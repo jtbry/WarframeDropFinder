@@ -23,7 +23,7 @@ public class ItemController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<Item>> GetByUniqueName(string uniqueName)
     {
-        var item = await _itemService.GetItemByUniqueName(uniqueName);
+        var item = await _itemService.GetItemAsync(uniqueName);
         if (item is null)
         {
             _logger.LogWarning("{uniqueName} item not found", uniqueName);
@@ -36,11 +36,11 @@ public class ItemController : ControllerBase
 
     [HttpGet("Random")]
     public async Task<IEnumerable<PartialItem>> Random(int count = 1)
-        => await _itemService.GetRandomItems(count);
+        => await _itemService.GetRandomItemsAsync(count);
 
     [HttpGet("Search")]
     public async Task<IEnumerable<PartialItem>> SearchByName(string name)
-        => await _itemService.SearchItemByName(name);
+        => await _itemService.SearchForItemAsync(name);
 
     [HttpGet("Trending")]
     public async Task<IEnumerable<PartialItem>> TrendingItems(int count = 4)
@@ -49,7 +49,7 @@ public class ItemController : ControllerBase
         var itemList = new List<PartialItem>();
         foreach (var uniqueName in trendingItems)
         {
-            var item = await _itemService.GetItemByUniqueName(uniqueName);
+            var item = await _itemService.GetItemAsync(uniqueName);
             itemList.Add((PartialItem)item);
         }
         return itemList;

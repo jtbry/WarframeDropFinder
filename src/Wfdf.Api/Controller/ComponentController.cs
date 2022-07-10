@@ -21,7 +21,7 @@ public class ComponentController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<ComponentWithItems>> ComponentByUniqueName(string uniqueName)
     {
-        var items = await _itemService.FindItemsWithComponent(uniqueName);
+        var items = await _itemService.FindItemsWithComponentAsync(uniqueName);
         if (!items.Any())
         {
             _logger.LogWarning("no items with {uniqueName} component found", uniqueName);

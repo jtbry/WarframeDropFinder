@@ -1,6 +1,6 @@
 ﻿namespace Wfdf.Core.Models;
 
-public class GithubCommit
+public record GithubCommit
 {
-    public string sha { get; set; } = string.Empty;
+    public string sha { get; init; } = string.Empty;
 }

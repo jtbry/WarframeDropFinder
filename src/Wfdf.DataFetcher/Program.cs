@@ -46,7 +46,7 @@ else
 if (!shouldForce)
 {
     // Check if we've already updated for the most recent git commit
-    var existingCommit = await updateService.GetUpdateByCommitSha(currentCommit.sha);
+    var existingCommit = await updateService.GetUpdateByShaAsync(currentCommit.sha);
     if (existingCommit is not null)
     {
         logger.LogInformation("Already updated to commit " + existingCommit.commitSha);
@@ -75,7 +75,7 @@ foreach (var rawUrl in rawUrls)
     // TODO: handle item deletions
     ItemFileParser parser = new ItemFileParser(rawUrl, httpClient);
     var items = await parser.Parse();
-    var result = await itemService.UpsertManyItems(items);
+    var result = await itemService.UpsertItemsAsync(items);
     categoryResults.Add(new WfdfCategoryUpdateResult
     {
         category = rawUrl.Split('/').Last().Split('.').First(),
@@ -94,4 +94,4 @@ var wfdfUpdate = new WfdfUpdate
     updatedCategories = categoryResults,
     secondsTaken = (int)(endTime - startTime).TotalSeconds,
 };
-await updateService.AddWfdfUpdate(wfdfUpdate);
+await updateService.AddUpdateAsync(wfdfUpdate);
