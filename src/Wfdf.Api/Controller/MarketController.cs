@@ -21,30 +21,22 @@ public class MarketController : ControllerBase
     [HttpGet("Orders")]
     public async Task<ActionResult<IEnumerable<WfmOrder>>> Orders(string wfmName)
     {
-        try
+        var orders = await _marketService.GetOrdersAsync(wfmName);
+        if (!orders.Any())
         {
-            var orders = await _marketService.GetOrdersAsync(wfmName);
-            return Ok(orders);
+            return NotFound();
         }
-        catch (JsonException ex)
-        {
-            _logger.LogError("InvalidWfmResponse on Orders for {wfmName}\r\n{message}", wfmName, ex.Message);
-            return Problem(ex.Message);
-        }
+        return Ok(orders);
     }
 
     [HttpGet("Prices")]
     public async Task<ActionResult<IEnumerable<WfmPriceData>>> PricesForItem(string wfmName)
     {
-        try
+        var prices = await _marketService.GetPriceDataAsync(wfmName);
+        if (!prices.Any())
         {
-            var prices = await _marketService.GetPriceDataAsync(wfmName);
-            return Ok(prices);
+            return NotFound();
         }
-        catch (JsonException ex)
-        {
-            _logger.LogError("InvalidWfmResponse on Prices for {wfmName}\r\n{message}", wfmName, ex.Message);
-            return Problem(ex.Message);
-        }
+        return Ok(prices);
     }
 }

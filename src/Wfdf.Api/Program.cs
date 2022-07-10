@@ -36,10 +36,12 @@ if (!string.IsNullOrWhiteSpace(builder.Configuration["PORT"]))
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    // app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseExceptionHandler("/error");
 app.UseHttpsRedirection();
 app.UseCors("ReactApp");
 app.UseAuthorization();

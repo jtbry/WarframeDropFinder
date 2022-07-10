@@ -16,4 +16,8 @@ public class HomeController : ControllerBase
     {
         return Redirect(_config["ReactAppDomain"]);
     }
+
+    [ApiExplorerSettings(IgnoreApi = true)]
+    [Route("/error")]
+    public IActionResult HandleError() => Problem();
 }
