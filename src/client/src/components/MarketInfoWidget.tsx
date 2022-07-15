@@ -7,7 +7,7 @@ import PartialItem from '../models/PartialItem';
 import WfmOrder from '../models/WfmOrder';
 import WfmPriceData from '../models/WfmPriceData';
 import CardBackground from './CardBackground';
-import LoadingWheel from './LoadingWheel';
+import LoadingElement from '../components/LoadingElement';
 
 interface WfmPriceDisplayProps {
   item: Item | Component;
@@ -46,7 +46,11 @@ export default function MarketInfoWidget({
 
   let content;
   if (state.loading) {
-    content = <LoadingWheel />;
+    content = (
+      <div className="text-center justify-center">
+        <LoadingElement />
+      </div>
+    );
   } else if (state.error) {
     return <></>;
   } else {

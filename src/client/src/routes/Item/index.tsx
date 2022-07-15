@@ -4,7 +4,7 @@ import ItemApi from '../../api/ItemApi';
 import BubbleLabel from '../../components/BubbleLabel';
 import CardBackground from '../../components/CardBackground';
 import ErrorDisplay from '../../components/ErrorDisplay';
-import LoadingWheel from '../../components/LoadingWheel';
+import LoadingElement from '../../components/LoadingElement';
 import MarketInfoWidget from '../../components/MarketInfoWidget';
 import Item from '../../models/Item';
 import ComponentTable from './ComponentTable';
@@ -42,7 +42,7 @@ export default function ItemPage() {
     return (
       <div className="flex h-screen">
         <div className="m-auto">
-          <LoadingWheel />
+          <LoadingElement />
         </div>
       </div>
     );
