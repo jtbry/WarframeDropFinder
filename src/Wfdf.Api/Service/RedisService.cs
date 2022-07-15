@@ -17,7 +17,15 @@ public class RedisService
 
     public async Task IncrementTrendAsync(string uniqueName)
     {
-        await _database.SortedSetAddAsync("trend", uniqueName, DateTimeOffset.UtcNow.AddMinutes(10).ToUnixTimeMilliseconds());
+        var existingKey = await _database.SortedSetScoreAsync("trend", uniqueName);
+        if (existingKey is null)
+        {
+            await _database.SortedSetAddAsync("trend", uniqueName, DateTimeOffset.UtcNow.AddMinutes(10).ToUnixTimeMilliseconds());
+        }
+        else
+        {
+            await _database.SortedSetIncrementAsync("trend", uniqueName, TimeSpan.FromMinutes(5).TotalMilliseconds);
+        }
     }
 
     public async Task<IEnumerable<string>> GetTrendingItemsAsync(int count)
