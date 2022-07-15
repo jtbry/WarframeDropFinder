@@ -26,7 +26,7 @@ export default function MarketInfoWidget({
   parent,
 }: WfmPriceDisplayProps) {
   const [state, setState] = useState<State>({ loading: true });
-  const isSet = (item as Item).components.some((c) => c.tradable);
+  const isSet = (item as Item)?.components?.some((c) => c.tradable);
 
   const wfmItemName = createWfmName(item, parent, isSet);
   useEffect(() => {
