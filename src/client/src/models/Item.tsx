@@ -2,7 +2,7 @@ import Component from './Component';
 import DropSource from './DropSource';
 import Patchlog from './Patchlog';
 
-interface Item {
+export default interface Item {
   uniqueName: string;
   name: string;
   description: string;
@@ -15,5 +15,3 @@ interface Item {
   drops: DropSource[];
   components: Component[];
 }
-
-export default Item;

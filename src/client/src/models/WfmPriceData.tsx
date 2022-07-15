@@ -1,11 +1,9 @@
-interface WfmPriceData {
-  timestamp: Date;
+export default interface WfmPriceData {
+  datetime: Date;
   volume: number;
-  min_price: number;
-  max_price: number;
-  avg_price: number;
+  minPrice: number;
+  maxPrice: number;
+  avgPrice: number;
   median: number;
-  order_type: string;
+  orderType: string;
 }
-
-export default WfmPriceData;

@@ -1,9 +1,9 @@
 namespace Wfdf.Core.Models;
 
-public class WfdfStats
+public record WfdfStats
 {
-    public long totalItems { get; set; }
-    public long tradableItems { get; set; }
-    public long totalRelics { get; set; }
-    public long totalMods { get; set; }
+    public long totalItems { get; init; }
+    public long tradableItems { get; init; }
+    public long totalRelics { get; init; }
+    public long totalMods { get; init; }
 }

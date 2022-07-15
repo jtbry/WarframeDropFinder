@@ -1,14 +1,10 @@
-using System.Text.Json.Serialization;
-
 namespace Wfdf.Api.Model;
 
-public class WfmOrder
+public record WfmOrder
 {
-    [JsonPropertyName("creation_date")]
-    public DateTime CreationDate { get; set; }
-    public int Quantity { get; set; }
-    public int Platinum { get; set; }
-    [JsonPropertyName("order_type")]
-    public string OrderType { get; set; } = "N/A";
-    public string Platform { get; set; } = "N/A";
+    public DateTime CreationDate { get; init; }
+    public int Quantity { get; init; }
+    public int Platinum { get; init; }
+    public string OrderType { get; init; } = "N/A";
+    public string Platform { get; init; } = "N/A";
 }

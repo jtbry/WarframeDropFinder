@@ -1,4 +1,8 @@
-function ErrorDisplay({ children }: { children?: any }) {
+interface ErrorDisplayProps {
+  children: React.ReactNode;
+}
+
+export default function ErrorDisplay({ children }: ErrorDisplayProps) {
   return (
     <div className="flex flex-col text-center">
       <svg
@@ -17,5 +21,3 @@ function ErrorDisplay({ children }: { children?: any }) {
     </div>
   );
 }
-
-export default ErrorDisplay;

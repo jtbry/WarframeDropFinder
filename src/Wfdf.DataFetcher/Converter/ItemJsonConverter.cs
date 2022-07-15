@@ -20,16 +20,13 @@ public class ItemJsonConverter : JsonConverter<Item>
             if (document.RootElement.TryGetProperty("category", out var itemCategory))
             {
                 string category = itemCategory.GetString() ?? string.Empty;
-                Type? itemType = _types.FirstOrDefault(t => t.GetCustomAttribute<ItemCategoryAttr>()!.Category == category);
-                // TODO: potentially fill in empty fields here
+                Type? itemType = _types.FirstOrDefault(t => t.GetCustomAttribute<ItemCategoryAttribute>()!.Category == category);
                 if (itemType is null)
                 {
-                    // Process as generic item
                     return JsonSerializer.Deserialize<Item>(document) ?? throw new JsonException("Unable to desrialize item document");
                 }
                 else
                 {
-                    // Process as specific item type
                     return (Item)(JsonSerializer.Deserialize(document, itemType) ?? throw new JsonException($"Unable to {itemType.Name} document"));
                 }
             }

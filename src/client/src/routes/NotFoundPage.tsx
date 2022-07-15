@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-function NotFoundPage() {
+export default function NotFoundPage() {
   return (
     <div className="text-center mt-4">
       <h1 className="text-5xl font-bold">Oops!</h1>
@@ -14,5 +14,3 @@ function NotFoundPage() {
     </div>
   );
 }
-
-export default NotFoundPage;

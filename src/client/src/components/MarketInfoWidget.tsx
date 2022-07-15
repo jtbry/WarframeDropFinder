@@ -14,32 +14,32 @@ interface WfmPriceDisplayProps {
   parent?: PartialItem;
 }
 
-interface WfmPriceDisplayState {
+interface State {
   loading: boolean;
   error?: unknown;
   orders?: WfmOrder[];
   prices?: WfmPriceData[];
 }
 
-function MarketInfoWidget(props: WfmPriceDisplayProps) {
-  const { item } = props;
-  const [state, setState] = useState<WfmPriceDisplayState>({ loading: true });
-  const isSet = (item as Item).components?.find((c) => c.tradable)
-    ? true
-    : false;
+export default function MarketInfoWidget({
+  item,
+  parent,
+}: WfmPriceDisplayProps) {
+  const [state, setState] = useState<State>({ loading: true });
+  const isSet = (item as Item).components.some((c) => c.tradable);
 
-  const wfmItemName = createWfmName(item, props.parent, isSet);
+  const wfmItemName = createWfmName(item, parent, isSet);
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
         const orders = await MarketApi.GetOrdersForItem(wfmItemName);
-        const prices = await MarketApi.GetPriceDataForItem(wfmItemName);
+        const prices = await MarketApi.GetPricesForItem(wfmItemName);
         setState({ loading: false, orders: orders, prices: prices });
       } catch (error) {
         console.error(error);
         setState({ loading: false, error: error });
       }
-    }
+    };
 
     fetchData();
   }, [wfmItemName]);
@@ -75,45 +75,43 @@ function MarketInfoWidget(props: WfmPriceDisplayProps) {
           </div>
           <div>
             <h2>Total buy orders</h2>
-            <p>{state.orders?.filter((o) => o.order_type === 'buy').length}</p>
+            <p>{state.orders?.filter((o) => o.orderType === 'buy').length}</p>
           </div>
           <div>
             <h2>Total sell orders</h2>
-            <p>{state.orders?.filter((o) => o.order_type === 'sell').length}</p>
+            <p>{state.orders?.filter((o) => o.orderType === 'sell').length}</p>
           </div>
           <div>
             <h2>Min buy price</h2>
             <p>
-              {state.prices?.find((pd) => pd.order_type === 'buy')?.min_price}
+              {state.prices?.find((pd) => pd.orderType === 'buy')?.minPrice}
             </p>
           </div>
           <div>
             <h2>Max buy price</h2>
             <p>
-              {state.prices?.find((pd) => pd.order_type === 'buy')?.max_price}
+              {state.prices?.find((pd) => pd.orderType === 'buy')?.maxPrice}
             </p>
           </div>
           <div>
             <h2>Median buy price</h2>
-            <p>{state.prices?.find((pd) => pd.order_type === 'buy')?.median}</p>
+            <p>{state.prices?.find((pd) => pd.orderType === 'buy')?.median}</p>
           </div>
           <div>
             <h2>Min sell price</h2>
             <p>
-              {state.prices?.find((pd) => pd.order_type === 'sell')?.min_price}
+              {state.prices?.find((pd) => pd.orderType === 'sell')?.minPrice}
             </p>
           </div>
           <div>
             <h2>Max sell price</h2>
             <p>
-              {state.prices?.find((pd) => pd.order_type === 'sell')?.max_price}
+              {state.prices?.find((pd) => pd.orderType === 'sell')?.maxPrice}
             </p>
           </div>
           <div>
             <h2>Median sell price</h2>
-            <p>
-              {state.prices?.find((pd) => pd.order_type === 'sell')?.median}
-            </p>
+            <p>{state.prices?.find((pd) => pd.orderType === 'sell')?.median}</p>
           </div>
         </div>
       </div>
@@ -122,5 +120,3 @@ function MarketInfoWidget(props: WfmPriceDisplayProps) {
 
   return <CardBackground className="w-full md:w-1/2">{content}</CardBackground>;
 }
-
-export default MarketInfoWidget;

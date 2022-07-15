@@ -2,8 +2,8 @@ namespace Wfdf.Api.Model;
 
 using Wfdf.Core.Models;
 
-public class ComponentWithItems
+public record ComponentWithItems
 {
-    public Component? component { get; set; }
-    public IEnumerable<PartialItem> items { get; set; } = new List<PartialItem>();
+    public Component? component { get; init; }
+    public IEnumerable<PartialItem>? items { get; init; }
 }

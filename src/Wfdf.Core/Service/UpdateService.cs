@@ -12,9 +12,9 @@ public class UpdateService
         _updates = database.GetCollection<WfdfUpdate>("updates");
     }
 
-    public async Task<WfdfUpdate> GetUpdateByCommitSha(string sha)
+    public async Task<WfdfUpdate> GetUpdateByShaAsync(string sha)
         => await _updates.Find(update => update.commitSha == sha).FirstOrDefaultAsync();
 
-    public async Task AddWfdfUpdate(WfdfUpdate update)
+    public async Task AddUpdateAsync(WfdfUpdate update)
         => await _updates.InsertOneAsync(update);
 }

@@ -1,9 +1,9 @@
 namespace Wfdf.Core.Models;
 
-public class DropSource
+public record DropSource
 {
-    public float? chance { get; set; } = 0;
-    public string location { get; set; } = string.Empty;
-    public string rarity { get; set; } = string.Empty;
-    public string type { get; set; } = string.Empty;
+    public float? chance { get; init; } = 0;
+    public string location { get; init; } = string.Empty;
+    public string rarity { get; init; } = string.Empty;
+    public string type { get; init; } = string.Empty;
 }

@@ -1,9 +1,8 @@
-import React, { ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import NavLayout from './components/NavLayout';
-import ComponentPage from './routes/ComponentPage';
-import HomePage from './routes/HomePage';
-import ItemPage from './routes/ItemPage';
+import ComponentPage from './routes/Component';
+import HomePage from './routes/Home';
+import ItemPage from './routes/Item';
 import NotFoundPage from './routes/NotFoundPage';
 
 function App() {

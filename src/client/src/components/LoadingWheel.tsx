@@ -1,4 +1,8 @@
-function LoadingWheel({ small }: { small?: boolean }) {
+interface LoadingWheelProps {
+  small?: boolean;
+}
+
+export default function LoadingWheel({ small }: LoadingWheelProps) {
   const size = small ? 'w-5 h-5' : 'w-16 h-16';
   return (
     <svg
@@ -19,5 +23,3 @@ function LoadingWheel({ small }: { small?: boolean }) {
     </svg>
   );
 }
-
-export default LoadingWheel;

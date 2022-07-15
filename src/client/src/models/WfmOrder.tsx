@@ -1,9 +1,7 @@
-interface WfmOrder {
-  creation_date: Date;
+export default interface WfmOrder {
+  creationDate: Date;
   quantity: number;
   platinum: number;
-  order_type: string;
+  orderType: string;
   platform: string;
 }
-
-export default WfmOrder;

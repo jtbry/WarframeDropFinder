@@ -1,97 +1,54 @@
-﻿using Wfdf.Core;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Wfdf.Core;
+using Wfdf.Core.Config;
 using Wfdf.Core.Models;
 using Wfdf.Core.Service;
-using System.Text.Json;
-using Microsoft.Extensions.Configuration;
-using MongoDB.Driver;
-using Microsoft.Extensions.Logging;
 
-// Build configation from json file and evironment variables
+using var loggerFactory = LoggerFactory.Create(options =>
+{
+    options.AddConsole();
+});
+var logger = loggerFactory.CreateLogger<Program>();
+
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", true, true)
     .AddEnvironmentVariables()
     .Build();
-var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-var logger = loggerFactory.CreateLogger<Program>();
+MongoDbConfig mongoDbConfig = new MongoDbConfig();
+configuration.Bind("MongoDb", mongoDbConfig);
 
-// Create http client
 WfdfHttpClient httpClient = new WfdfHttpClient();
+WfdfDatabase database = new WfdfDatabase(Options.Create<MongoDbConfig>(mongoDbConfig));
+GithubService githubService = new GithubService(httpClient, loggerFactory.CreateLogger<GithubService>());
+UpdateService updateService = new UpdateService(database);
+ItemService itemService = new ItemService(database, loggerFactory.CreateLogger<ItemService>());
+FileProcessingService fileProcessingService = new FileProcessingService(loggerFactory.CreateLogger<FileProcessingService>(), itemService, httpClient);
 
-// Create mongo client and updates services
-WfdfDatabase dbClient = new WfdfDatabase(configuration.GetConnectionString("MongoDb"));
-UpdateService updateService = new UpdateService(dbClient);
+GithubCommit commit = await githubService.GetGithubCommitAsync();
 
-// Get current commit
 bool shouldForce = Environment.GetCommandLineArgs().Contains("--force");
-GithubCommit currentCommit;
-var response = await httpClient.GetAsync("https://api.github.com/repos/WFCD/warframe-items/commits/master");
-if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
-{
-    logger.LogWarning("Rate limit hit, forcing currentCommit to master");
-    currentCommit = new GithubCommit
-    {
-        sha = "master",
-    };
-    shouldForce = true;
-}
-else
-{
-    response.EnsureSuccessStatusCode();
-    var jsonString = await response.Content.ReadAsStringAsync();
-    currentCommit = JsonSerializer.Deserialize<GithubCommit>(jsonString) ?? throw new Exception("Failed to fetch commit data");
-}
-
-// Check if we should update
 if (!shouldForce)
 {
-    // Check if we've already updated for the most recent git commit
-    var existingCommit = await updateService.GetUpdateByCommitSha(currentCommit.sha);
-    if (existingCommit is not null)
+    WfdfUpdate update = await updateService.GetUpdateByShaAsync(commit.sha);
+    if (update is not null)
     {
-        logger.LogInformation("Already updated to commit " + existingCommit.commitSha);
+        logger.LogInformation("Wfdf is already up to date with commit " + commit.shortSha);
         return;
     }
 }
-
-logger.LogInformation("Updating to sha " + currentCommit.sha);
-ItemService itemService = new ItemService(dbClient, loggerFactory.CreateLogger<ItemService>());
-List<string> whitelist = new List<string> { "Arcanes", "Melee", "Mods", "Primary", "Relics", "Secondary", "Sentinels", "SentinelWeapons", "Warframes" };
-
-// TODO: handle il8n file
-// Fill update file list
-List<string> rawUrls = new List<string>();
-// Create rawUrls for all categories
-foreach (var category in whitelist)
+else
 {
-    rawUrls.Add($"https://raw.githubusercontent.com/WFCD/warframe-items/{currentCommit.sha}/data/json/{category}.json");
+    commit.isForced = true;
 }
 
-var startTime = DateTime.Now;
-// TODO: fix category results, currently full inserts report a 0 and all items are marked as modified
-List<WfdfCategoryUpdateResult> categoryResults = new List<WfdfCategoryUpdateResult>();
-foreach (var rawUrl in rawUrls)
+logger.LogInformation("Updating Wfdf to commit " + commit.shortSha);
+await fileProcessingService.ProcessFilesAsync(commit);
+await updateService.AddUpdateAsync(new WfdfUpdate
 {
-    // TODO: handle item deletions
-    ItemFileParser parser = new ItemFileParser(rawUrl, httpClient);
-    var items = await parser.Parse();
-    var result = await itemService.UpsertManyItems(items);
-    categoryResults.Add(new WfdfCategoryUpdateResult
-    {
-        category = rawUrl.Split('/').Last().Split('.').First(),
-        itemsModified = result.ModifiedCount,
-        itemsInserted = result.InsertedCount,
-        itemsDeleted = result.DeletedCount,
-    });
-    logger.LogInformation("Updated " + items.Count + " items from " + rawUrl.Split('/').Last());
-}
-
-var endTime = DateTime.Now;
-var wfdfUpdate = new WfdfUpdate
-{
-    commitSha = currentCommit.sha,
-    isForced = shouldForce,
-    updatedCategories = categoryResults,
-    secondsTaken = (int)(endTime - startTime).TotalSeconds,
-};
-await updateService.AddWfdfUpdate(wfdfUpdate);
+    commitSha = commit.sha,
+    isForced = commit.isForced
+});
+logger.LogInformation("Wfdf is now up to date with commit " + commit.shortSha);
