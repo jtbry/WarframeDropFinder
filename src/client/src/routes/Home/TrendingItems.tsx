@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import ItemApi from '../../api/ItemApi';
 import ItemCardPreview from '../../components/ItemCardPreview';
-import LoadingWheel from '../../components/LoadingWheel';
+import LoadingElement from '../../components/LoadingElement';
 import PartialItem from '../../models/PartialItem';
 
 interface State {
@@ -33,7 +33,7 @@ export default function TrendingItems() {
     return (
       <div className="flex h-screen">
         <div className="m-auto">
-          <LoadingWheel />
+          <LoadingElement />
         </div>
       </div>
     );
