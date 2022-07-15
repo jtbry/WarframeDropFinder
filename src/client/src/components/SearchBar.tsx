@@ -4,6 +4,8 @@ interface SearchBarProps<T> {
   placeholder: string;
   searchFunc: (searchTerm: string) => Promise<T[]>;
   createResultElement: (result: T) => JSX.Element;
+  inputRef?: React.RefObject<HTMLInputElement>;
+  endDectorator?: JSX.Element;
 }
 
 interface SearchBarState<T> {
@@ -95,7 +97,9 @@ export default function SearchBar<T>(props: SearchBarProps<T>) {
           value={state.searchValue}
           placeholder={placeholder}
           onChange={onInputChange}
+          ref={props.inputRef}
         />
+        {props.endDectorator}
       </div>
       {searchResultDisplay && (
         <div className="border-primary-400 dark:border-primary-900 bg-primary-50 dark:bg-primary-600 text-md focus:outline-none block w-full text-gray-900 rounded-b-lg border  dark:placeholder-gray-400 dark:text-white relative z-10">
