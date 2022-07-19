@@ -63,7 +63,7 @@ export default function ItemSearch({ provideExample }: ItemSearchProps) {
         createResultElement={createResultElement}
         inputRef={inputRef}
         endDectorator={
-          <div className="flex absolute inset-y-0 right-0 items-center pr-3 pointer-events-none">
+          <div className="hidden md:flex absolute inset-y-0 right-0 items-center pr-3 pointer-events-none">
             <span className="border rounded-sm text-sm p-1 dark:text-gray-400 border-gray-400">
               ESC
             </span>

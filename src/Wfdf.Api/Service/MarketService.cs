@@ -54,9 +54,14 @@ public class MarketService
 
             if (priceResponse is null
                 || priceResponse.Payload is null
-                || priceResponse.Payload.RecentPrices is null)
+                || priceResponse.Payload.RecentPrices is null
+                || priceResponse.Payload.HistoricalPrices is null)
             {
                 throw new InvalidWfmResponseException("priceResponse or a nested field is null");
+            }
+            if (!priceResponse.Payload.RecentPrices.Any())
+            {
+                return priceResponse.Payload.HistoricalPrices.TakeLast(2);
             }
             return priceResponse.Payload.RecentPrices.TakeLast(2);
         }
