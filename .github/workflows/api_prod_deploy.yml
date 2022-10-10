@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - 'src/Wfdf.Api/**'
+      - 'src/Wfdf.Core/**'
   workflow_dispatch:
 
 jobs:
