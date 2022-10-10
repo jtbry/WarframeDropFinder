@@ -1,4 +1,4 @@
-name: Deploy Wfdf.Api to the production environment on Azure
+name: Wfdf.Api Azure PROD Deploy
 
 on:
   push:
