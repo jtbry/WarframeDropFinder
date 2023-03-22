@@ -6,4 +6,4 @@ public record DropSource
     public string location { get; init; } = string.Empty;
     public string rarity { get; init; } = string.Empty;
     public string type { get; init; } = string.Empty;
-}
+}   

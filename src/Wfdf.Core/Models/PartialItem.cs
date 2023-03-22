@@ -1,7 +1,10 @@
 
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace Wfdf.Core.Models;
 
 // This class is to be used where an item's full data is not needed (i.e item searches)
+[BsonIgnoreExtraElements]
 public record PartialItem
 {
     public string uniqueName { get; init; } = string.Empty;
