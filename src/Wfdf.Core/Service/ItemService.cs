@@ -81,4 +81,8 @@ public class ItemService
                 .ToListAsync();
 
 
+    public async Task<IEnumerable<PartialItem>> FindItemsWithDropSourceAsync(string location)
+            => await _items.Find(Builders<Item>.Filter.ElemMatch(i => i.drops, d => d.location.Equals(location)))
+                .As<PartialItem>()
+                .ToListAsync();
 }
