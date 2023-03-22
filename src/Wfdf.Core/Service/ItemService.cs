@@ -59,8 +59,8 @@ public class ItemService
     public async Task<IEnumerable<PartialItem>> SearchForItemAsync(string name)
     {
         var filter = Builders<Item>.Filter.Regex("name", new BsonRegularExpression(name, "i"));
-        var matches = await _items.Find(filter).ToListAsync();
-        return matches.Select(i => (PartialItem)i);
+        var matches = await _items.Find(filter).As<PartialItem>().ToListAsync();
+        return matches;
     }
 
     public async Task<Item> GetItemAsync(string uniqueName)
@@ -72,8 +72,9 @@ public class ItemService
         var items = await _items.AsQueryable()
             .Where(i => !categoryBlacklist.Contains(i.category))
             .Sample(count)
+            .Select(i => (PartialItem)i)
             .ToListAsync();
-        return items.Select(i => (PartialItem)i);
+        return items;
     }
 
     public async Task<IEnumerable<Item>> FindItemsWithComponentAsync(string componentUniqueName)
